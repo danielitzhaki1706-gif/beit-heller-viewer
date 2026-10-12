@@ -1,0 +1,152 @@
+{
+  "schema": "beit-heller-context-v1",
+  "accepted": true,
+  "nearfield": "./assets/models/context/surroundings-r3.glb",
+  "replacesNodes": [
+    "Building_part_0754",
+    "Building_part_0735"
+  ],
+  "hideDefaultGround": true,
+  "surfaceMaterials": [],
+  "nearfieldSha256": "3edec63c4b99411b1e85032f5937875da1c214bb1f3f60c4f190f117c1f748dc",
+  "backgroundGeometry": "Geographic mapped surroundings plus neutral continuous ground apron",
+  "acceptance": "Duplicate roof caps removed; geometry-only patch verified. Browser recheck of roof/rail depth precision pending.",
+  "attribution": [
+    "OpenStreetMap contributors, ODbL1.0",
+    "Poly Haven assets, CC0",
+    "Satellite research reference: Esri, Vantor and GIS User Community (capture2025-02-26; no raster texture in model)"
+  ],
+  "limitations": [
+    "The dated satellite is26February2025 and shows excavation. Retrieval12October2026 does not make it a current completed-building photo.",
+    "Street-centre lines, parking and neighbouring footprints come from live OSM. Building heights use OSM levels/height when present; otherwise two storeys are an explicit unverified proxy. Facades, roof equipment and parked cars are proposed visualization detail.",
+    "Road widths7.4m tertiary/6.4m residential/4.6m service and6.0m roundabout lane are visual reconstruction estimates, not a measured survey. They retain source alignment but should not be used as construction dimensions.",
+    "New local registration uses the source-plan roundabout and a fitted current OSM circle. The inherited model bearing62.2deg is retained and visually checked with rail/site orientation. No geodetic registration or positional accuracy better than the supplier8.47m is claimed.",
+    "The source ground and ramp remain unchanged. Extended grades smoothly continue the model levels; no external topographic survey or DEM was obtained.",
+    "External-ramp plan/profile chainage is a visualization reconciliation. B01 edge match is preserved but full vehicle headroom is not certified.",
+    "A neutral ground apron extends beyond mapped geometry only to support the display and remove floating cut edges. It carries no site-data claim.",
+    "Satellite imagery is retained as an attributed research reference, never baked into the model. Rendered references preserve map geometry; later AI images must be labelled conceptual."
+  ],
+  "scope": "Source-registered streets, actual neighbouring footprints, parking and rail/station corridor; source detailed site/ramp retained",
+  "radiusMetres": 270,
+  "sources": [
+    {
+      "id": "official-identity",
+      "title": "Developer: Class A / Beit Heller at Bergman, Oppenheimer and Antin junction",
+      "url": "https://itzhaki-info.co.il/class-a/",
+      "type": "current primary project location page",
+      "observed": "2026-10-12",
+      "use": "identity/location; marketing images are not actual neighbours"
+    },
+    {
+      "id": "official-plan",
+      "title": "Statutory plan414-1068667 regulations",
+      "url": "https://apps.land.gov.il/IturTabotData/takanonim/merkaz/4053784.pdf",
+      "type": "official statutory source",
+      "date": "2024-09-16",
+      "use": "ITM182029/646481; north of railway/south of Antin-Oppenheimer roundabout; block3695 parts172/173; continuous public pedestrian frontage"
+    },
+    {
+      "id": "facade-contractor",
+      "title": "Kostika: Beit Heller",
+      "url": "https://kostika.co.il/projects/בית-הלר/",
+      "type": "primary contractor page",
+      "use": "Itzhaki developer/Peleg architect/project identity; not a surveyed context plan"
+    },
+    {
+      "id": "satellite",
+      "title": "Esri World Imagery / Vantor Vivid Advanced",
+      "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+      "type": "georeferenced satellite raster with provider metadata",
+      "captureDate": "2025-02-26",
+      "retrievalDate": "2026-10-12",
+      "resolutionM": 0.34,
+      "supplierAccuracyM": 8.47,
+      "localImage": "world-imagery-satellite.png",
+      "localMetadata": "world-imagery-capture-metadata.json",
+      "use": "existing roads, parking, rail corridor, neighbouring roofs and visible tree positions; construction-stage site only"
+    },
+    {
+      "id": "osm-live",
+      "title": "OpenStreetMap current site extract",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=34.8055,31.9080,34.8120,31.9135",
+      "type": "live map API snapshot",
+      "retrievedAt": "2026-10-12T22:26:30.200842+03:00",
+      "sha256": "e9397dc3ac4470b1a83a40355a5f0fc16783a7ece84943bd975692c36587709f",
+      "use": "source-linked lines/polygons. Individual map feature update dates preserved in context-v3-input.json"
+    },
+    {
+      "id": "SITE016",
+      "title": "06-546-01 rev36 development/planting execution plan",
+      "date": "2026-08-27",
+      "type": "local execution design",
+      "use": "planned site layout/grades/planting/source grid; not as-built",
+      "local": {
+        "source_id": "SITE-016",
+        "sheet": "06-546-01",
+        "revision": 36,
+        "date": "2026-08-27",
+        "status": "for_execution",
+        "original_path": "תכנית פיתוח לביצוע-עדכונים-קובץ - k_06-546 -- בית הלר נספח פיתוח וגינון-תכנית ביצוע-100 06-546-01.pdf",
+        "working_copy": "SITE-016.pdf",
+        "sha256": "d9f0eb7d140ac0057546c1f766d333636ad83ac3e46c1ac17ee0e13aaec0877d"
+      }
+    },
+    {
+      "id": "SITE019",
+      "title": "1464-04/20 rev17 traffic/ramp profile",
+      "date": "2026-02-17",
+      "type": "older FOR REVIEW design",
+      "use": "ramp profile, width and source context; not engineering acceptance",
+      "local": {
+        "path": "D-nispah shlav B-25.01.2026_recover-250.pdf",
+        "sha256": "572b1082ada44674e119b9e99e9507ff3cc54134868d2d27a06ea45aa0028f9e",
+        "drawing": "1464-04/20",
+        "revision": "17",
+        "date": "2026-02-17",
+        "status": "FOR REVIEW; comparison only, not current execution",
+        "evidence": "ramp_sections.png"
+      }
+    }
+  ],
+  "review": {
+    "modelBytes": 30206624,
+    "meshes": 1796,
+    "triangles": 3029400,
+    "geometry": "context-v3-integrity-qa.json",
+    "sourceResearch": "revision3-source-surroundings.json",
+    "visual": "Five technical renders reviewed on the previous SHA; subsequent duplicate-cap-only fix verified in context-v3-roof-depth-qa.json; browser recheck pending",
+    "http": "context-v3-http-qa.json",
+    "roofDepthFix": "context-v3-roof-depth-qa.json"
+  },
+  "detailRadiusMetres": 10,
+  "extentPolicy": "source-registered-site",
+  "sourceRegistration": {
+    "method": "SITE016 roundabout centre to least-squares circle fitted to current OSM roundabout ways; source architectural scale retained; +X bearing62.2deg retained and visually crosschecked against dated satellite/railway",
+    "osmCenterLonLat": [
+      34.808675536266044,
+      31.911040228176148
+    ],
+    "sourceDisplayRoundaboutPt": [
+      5615.0,
+      586.0
+    ],
+    "modelRoundaboutXY": [
+      32.927525506451666,
+      23.742488392805015
+    ],
+    "osmCarriagewayCenterRadiusM": 10.808742414891732,
+    "modelXbearingDegrees": 62.2,
+    "northModelXY": [
+      0.46638664033989125,
+      0.8845809752150839
+    ],
+    "eastModelXY": [
+      0.8845809752150839,
+      -0.46638664033989125
+    ],
+    "supplierSatelliteAccuracyM": 8.47,
+    "manualSourceAnchorUncertaintyM": 0.6,
+    "notSurveyed": true
+  },
+  "backgroundApron": true
+}

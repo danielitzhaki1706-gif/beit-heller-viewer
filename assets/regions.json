@@ -1,0 +1,2690 @@
+{
+  "schema": 1,
+  "coordinateSystem": "Three.js X,height,-Y",
+  "status": "NAVIGATION_CATALOG_WITH_EXPLICIT_GEOMETRY_GAPS",
+  "floors": [
+    {
+      "id": "B04",
+      "label": "מרתף 04",
+      "group": "מרתפים",
+      "base": -11.56,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "מבט משולב במרתף 04",
+          "target": [
+            20,
+            -11.56,
+            10
+          ],
+          "position": [
+            36,
+            0.4399999999999995,
+            28
+          ],
+          "status": "partial",
+          "caption": "חיבור מרחבי של חניה, מדרגות, מחסנים, חדר משאבות ומאגרים לפי אותה מערכת צירים. תקרות הוסרו לתצוגה. אזורים חסרים מופיעים בתוכנית השטוחה שמתחת למודל; החיבורים עדיין חלקיים. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "cameraBasis": "Registered source service footprints with disclosed cutaways, source levels, and design assumptions",
+          "mode": "B04-overview",
+          "view": 0,
+          "render": "./assets/renders/B04-overview.png",
+          "plan": "./assets/plans/B04-overview-source.png"
+        },
+        {
+          "id": "parking",
+          "label": "אזור החניה",
+          "target": [
+            6.5,
+            -10.373600006103516,
+            13.699999809265137
+          ],
+          "position": [
+            10.0,
+            -9.833998680114746,
+            23.0
+          ],
+          "status": "partial",
+          "caption": "מקטע חניה מערבי מתוך תוכנית המקור. המרתף והרמפות עדיין אינם ממודלים במלואם. חומרים, תאורה ושיפוע מקומי להמחשה. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B04_parking.png",
+          "sourceCropWorldXY": [
+            -9,
+            -27,
+            17,
+            -8
+          ],
+          "cameraBasis": "Source clipped wall and column footprints; bounded visualization scene",
+          "mode": "B04-parking",
+          "view": 0,
+          "render": "./assets/renders/B04_parking.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            20,
+            -11.56,
+            10
+          ],
+          "position": [
+            36,
+            0.4399999999999995,
+            28
+          ],
+          "status": "model",
+          "caption": "מדרגות מערביות: 7 ו־9 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "plan": "./assets/plans/lower-stair-west-B04-source.png",
+          "sourceCropWorldXY": [
+            13,
+            -18,
+            18,
+            -9
+          ],
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-west-B04",
+          "view": 0,
+          "render": "./assets/renders/lower-stair-west-B04.png"
+        },
+        {
+          "id": "storage",
+          "label": "אשכול המחסנים",
+          "target": [
+            20,
+            -11.56,
+            10
+          ],
+          "position": [
+            36,
+            0.4399999999999995,
+            28
+          ],
+          "status": "partial",
+          "caption": "מבט חתוך במחסנים B04-03–07 ובמעבר לפי תוכנית המקור. המחסן B04-02 מחוץ לסצנה. רצפת בטון; גובה קירות 2.60 מ׳ הוא הנחה. תקרה הוסרה לתצוגה; מדפים, דלתות ותאורה להמחשה.",
+          "kind": "detail",
+          "plan": "./assets/plans/B04-storage-source.png",
+          "sourceCropWorldXY": [
+            7,
+            -35,
+            21,
+            -21
+          ],
+          "cameraBasis": "Registered source service footprints with disclosed cutaways, source levels, and design assumptions",
+          "mode": "B04-storage",
+          "view": 0,
+          "render": "./assets/renders/B04-storage.png"
+        },
+        {
+          "id": "plant",
+          "label": "חדר המשאבות",
+          "target": [
+            20,
+            -11.56,
+            10
+          ],
+          "position": [
+            36,
+            0.4399999999999995,
+            28
+          ],
+          "status": "partial",
+          "caption": "חתך חדר המשאבות: כניסה −11.56, רצפה −12.07 ושלוש מדרגות של 17 ס״מ. בור 1.80×2.20 מ׳, תחתית −13.87. הקיר הקדמי והתקרה חתוכים; אזור הגישה גבוה מחלל המשאבות. ציוד וצנרת מוצעים, ללא תכנון מערכות.",
+          "kind": "detail",
+          "plan": "./assets/plans/B04-pump-room-source.png",
+          "sourceCropWorldXY": [
+            20,
+            -22,
+            32,
+            -15
+          ],
+          "cameraBasis": "Registered source service footprints with disclosed cutaways, source levels, and design assumptions",
+          "mode": "B04-pump-room",
+          "view": 0,
+          "render": "./assets/renders/B04-pump-room.png"
+        },
+        {
+          "id": "reservoirs",
+          "label": "מאגרי המים",
+          "target": [
+            20,
+            -11.56,
+            10
+          ],
+          "position": [
+            36,
+            0.4399999999999995,
+            28
+          ],
+          "status": "partial",
+          "caption": "חתך בשני המאגרים: תחתית −11.86, פני מים −7.86 ועומק מים 4 מ׳. השטחים 25.0 ו־24.9 מ״ר מהמקור. הקיר המערבי והתקרה הוסרו לצפייה. הגבול המעוקל משוחזר בקירוב; הפרש תקרה של 6 ס״מ בין פרטי המקור טרם הוכרע.",
+          "kind": "detail",
+          "plan": "./assets/plans/B04-reservoirs-source.png",
+          "sourceCropWorldXY": [
+            22,
+            -19,
+            36,
+            -10
+          ],
+          "cameraBasis": "Registered source service footprints with disclosed cutaways, source levels, and design assumptions",
+          "mode": "B04-reservoirs",
+          "view": 0,
+          "render": "./assets/renders/B04-reservoirs.png"
+        }
+      ],
+      "shortLabel": "B04"
+    },
+    {
+      "id": "B03",
+      "label": "מרתף 03",
+      "group": "מרתפים",
+      "base": -8.67,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "מבט כולל במרתף 03",
+          "target": [
+            20,
+            -8.67,
+            10
+          ],
+          "position": [
+            36,
+            3.33,
+            28
+          ],
+          "status": "partial",
+          "caption": "חתך של הקומה: מעטפת, עמודים, חניה, מבואה, מדרגות וחדרי גרעין. הפרשי גובה משוחזרים בקירוב ממפלסי המקור; אזור ההפרדה במערב נשאר חתוך. התקרה הוסרה לצפייה. גובה הקירות, הגמר וחלק מגבולות רצפות החדרים להמחשה. מאגרי המים של B04 נמשכים דרך מפלס זה ומוצגים בחתך. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "cameraBasis": "Whole registered floor, source walls, approximate helical grades, bounded source components",
+          "mode": "B03-overview",
+          "view": 0,
+          "render": "./assets/renders/B03-overview.png",
+          "plan": "./assets/plans/B03-overview-source.png"
+        },
+        {
+          "id": "parking",
+          "label": "אזור החניה",
+          "target": [
+            32.0,
+            -9.617740631103516,
+            2.5999999046325684
+          ],
+          "position": [
+            17.0,
+            -8.962903022766113,
+            -0.800000011920929
+          ],
+          "status": "partial",
+          "caption": "מקטע חניה צפוני מתוך תוכנית המקור. המרתף והרמפות עדיין אינם ממודלים במלואם. חומרים, תאורה ושיפוע מקומי להמחשה. גובה פנוי 2.70 מ׳ הוא הנחת הדמיה. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B03_parking.png",
+          "sourceCropWorldXY": [
+            -8,
+            -35,
+            49,
+            15
+          ],
+          "cameraBasis": "Source clipped wall and column footprints; bounded visualization scene",
+          "mode": "B03-parking",
+          "view": 0,
+          "render": "./assets/renders/B03_parking.png"
+        },
+        {
+          "id": "ramp",
+          "label": "חניה מערבית ונתיב משופע",
+          "target": [
+            20,
+            -8.67,
+            10
+          ],
+          "position": [
+            36,
+            3.33,
+            28
+          ],
+          "status": "partial",
+          "caption": "מבט בגובה אדם בחניה ובקירות לפי תוכנית הקומה. הרצפה עוקבת בקירוב אחר מפלסי המקור; גובה התקרה 2.70 מ׳ הוא הנחה. חומרי הגמר, התאורה והמערכות להמחשה. גבולות חתוכים לצורך תצוגת האזור. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B03-west-drive-source.png",
+          "sourceCropWorldXY": [
+            -8,
+            -26,
+            17,
+            -13
+          ],
+          "cameraBasis": "Registered source walls and floor-grade illustration; disclosed design assumptions",
+          "mode": "B03-west-drive",
+          "view": 0,
+          "render": "./assets/renders/B03-west-drive.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            20,
+            -8.67,
+            10
+          ],
+          "position": [
+            36,
+            3.33,
+            28
+          ],
+          "status": "model",
+          "caption": "מדרגות מערביות: 9 ו־9 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "plan": "./assets/plans/lower-stair-west-B03-source.png",
+          "sourceCropWorldXY": [
+            13,
+            -18,
+            18,
+            -9
+          ],
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-west-B03",
+          "view": 0
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            20,
+            -8.67,
+            10
+          ],
+          "position": [
+            36,
+            3.33,
+            28
+          ],
+          "status": "partial",
+          "caption": "מדרגות מזרחיות: 9 ו־9 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים. בתוכנית המזרחית B03 מופיעה ריצה252ס״מ ובחתך224ס״מ; ההדמיה משתמשת בחתך.",
+          "kind": "detail",
+          "plan": "./assets/plans/lower-stair-east-B03-source.png",
+          "sourceCropWorldXY": [
+            23,
+            -13,
+            34,
+            -7
+          ],
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-east-B03",
+          "view": 0
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            20,
+            -8.67,
+            10
+          ],
+          "position": [
+            36,
+            3.33,
+            28
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. זהו חלל נפרד מהמסדרונות שטרם הושלמו. מפלס המבואה לפי המקור -10.50 מ׳; תקרה בגובה2.70 מ׳ היא הנחת הדמיה.",
+          "kind": "detail",
+          "plan": "./assets/plans/B03_lift_lobby_source.png",
+          "sourceCropWorldXY": [
+            17,
+            -19,
+            25,
+            -7
+          ],
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "B03-lift-lobby",
+          "view": 0
+        },
+        {
+          "id": "south-services",
+          "label": "חניה דרומית ופירי אוורור",
+          "target": [
+            20,
+            -8.67,
+            10
+          ],
+          "position": [
+            36,
+            3.33,
+            28
+          ],
+          "status": "partial",
+          "caption": "מבט בגובה אדם בחניה ובקירות לפי תוכנית הקומה. הרצפה עוקבת בקירוב אחר מפלסי המקור; גובה התקרה 2.70 מ׳ הוא הנחה. פתחי האוורור לפי מיקומי המקור; עומק התריסים וצורתם מוצעים. חומרי הגמר, התאורה והמערכות להמחשה. גבולות חתוכים לצורך תצוגת האזור. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B03-south-parking-source.png",
+          "sourceCropWorldXY": [
+            7,
+            -35,
+            28,
+            -24
+          ],
+          "cameraBasis": "Registered source walls and floor-grade illustration; disclosed design assumptions",
+          "mode": "B03-south-parking",
+          "view": 0,
+          "render": "./assets/renders/B03-south-parking.png"
+        }
+      ],
+      "shortLabel": "B03"
+    },
+    {
+      "id": "B02",
+      "label": "מרתף 02",
+      "group": "מרתפים",
+      "base": -5.61,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "מבט כולל במרתף 02",
+          "target": [
+            20,
+            -5.61,
+            10
+          ],
+          "position": [
+            36,
+            6.39,
+            28
+          ],
+          "status": "partial",
+          "caption": "חתך של הקומה: מעטפת, עמודים, חניה, מבואה, מדרגות וחדרי גרעין. הפרשי גובה משוחזרים בקירוב ממפלסי המקור; אזור ההפרדה במערב נשאר חתוך. התקרה הוסרה לצפייה. גובה הקירות, הגמר וחלק מגבולות רצפות החדרים להמחשה. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "cameraBasis": "Whole registered floor, source walls, approximate helical grades, bounded source components",
+          "mode": "B02-overview",
+          "view": 0,
+          "render": "./assets/renders/B02-overview.png",
+          "plan": "./assets/plans/B02-overview-source.png"
+        },
+        {
+          "id": "parking",
+          "label": "אזור החניה",
+          "target": [
+            32.0,
+            -6.617742538452148,
+            2.5999999046325684
+          ],
+          "position": [
+            17.0,
+            -5.962903022766113,
+            -0.800000011920929
+          ],
+          "status": "partial",
+          "caption": "מקטע חניה צפוני מתוך תוכנית המקור. המרתף והרמפות עדיין אינם ממודלים במלואם. חומרים, תאורה ושיפוע מקומי להמחשה. גובה פנוי 2.70 מ׳ הוא הנחת הדמיה. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B02_parking.png",
+          "sourceCropWorldXY": [
+            -8,
+            -35,
+            49,
+            15
+          ],
+          "cameraBasis": "Source clipped wall and column footprints; bounded visualization scene",
+          "mode": "B02-parking",
+          "view": 0,
+          "render": "./assets/renders/B02_parking.png"
+        },
+        {
+          "id": "ramp",
+          "label": "חניה מערבית ונתיב משופע",
+          "target": [
+            20,
+            -5.61,
+            10
+          ],
+          "position": [
+            36,
+            6.39,
+            28
+          ],
+          "status": "partial",
+          "caption": "מבט בגובה אדם בחניה ובקירות לפי תוכנית הקומה. הרצפה עוקבת בקירוב אחר מפלסי המקור; גובה התקרה 2.70 מ׳ הוא הנחה. חומרי הגמר, התאורה והמערכות להמחשה. גבולות חתוכים לצורך תצוגת האזור. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B02-west-drive-source.png",
+          "sourceCropWorldXY": [
+            -8,
+            -26,
+            17,
+            -13
+          ],
+          "cameraBasis": "Registered source walls and floor-grade illustration; disclosed design assumptions",
+          "mode": "B02-west-drive",
+          "view": 0,
+          "render": "./assets/renders/B02-west-drive.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            20,
+            -5.61,
+            10
+          ],
+          "position": [
+            36,
+            6.39,
+            28
+          ],
+          "status": "model",
+          "caption": "מדרגות מערביות: 9 ו־8 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "plan": "./assets/plans/lower-stair-west-B02-source.png",
+          "sourceCropWorldXY": [
+            13,
+            -18,
+            18,
+            -9
+          ],
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-west-B02",
+          "view": 0
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            20,
+            -5.61,
+            10
+          ],
+          "position": [
+            36,
+            6.39,
+            28
+          ],
+          "status": "model",
+          "caption": "מדרגות מזרחיות: 9 ו־9 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "plan": "./assets/plans/lower-stair-east-B02-source.png",
+          "sourceCropWorldXY": [
+            23,
+            -13,
+            34,
+            -7
+          ],
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-east-B02",
+          "view": 0
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            20,
+            -5.61,
+            10
+          ],
+          "position": [
+            36,
+            6.39,
+            28
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. זהו חלל נפרד מהמסדרונות שטרם הושלמו. מפלס המבואה לפי המקור -7.50 מ׳; תקרה בגובה2.70 מ׳ היא הנחת הדמיה.",
+          "kind": "detail",
+          "plan": "./assets/plans/B02_lift_lobby_source.png",
+          "sourceCropWorldXY": [
+            17,
+            -19,
+            25,
+            -7
+          ],
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "B02-lift-lobby",
+          "view": 0
+        },
+        {
+          "id": "south-services",
+          "label": "חניה דרומית ופירי אוורור",
+          "target": [
+            20,
+            -5.61,
+            10
+          ],
+          "position": [
+            36,
+            6.39,
+            28
+          ],
+          "status": "partial",
+          "caption": "מבט בגובה אדם בחניה ובקירות לפי תוכנית הקומה. הרצפה עוקבת בקירוב אחר מפלסי המקור; גובה התקרה 2.70 מ׳ הוא הנחה. פתחי האוורור לפי מיקומי המקור; עומק התריסים וצורתם מוצעים. חומרי הגמר, התאורה והמערכות להמחשה. גבולות חתוכים לצורך תצוגת האזור. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B02-south-parking-source.png",
+          "sourceCropWorldXY": [
+            7,
+            -35,
+            28,
+            -24
+          ],
+          "cameraBasis": "Registered source walls and floor-grade illustration; disclosed design assumptions",
+          "mode": "B02-south-parking",
+          "view": 0,
+          "render": "./assets/renders/B02-south-parking.png"
+        }
+      ],
+      "shortLabel": "B02"
+    },
+    {
+      "id": "B01",
+      "label": "מרתף 01",
+      "group": "מרתפים",
+      "base": -2.72,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "מבט כולל במרתף 01",
+          "target": [
+            20,
+            -2.72,
+            10
+          ],
+          "position": [
+            36,
+            9.28,
+            28
+          ],
+          "status": "partial",
+          "caption": "חתך של הקומה: מעטפת, עמודים, חניה, מבואה, מדרגות וחדרי גרעין. הפרשי גובה משוחזרים בקירוב ממפלסי המקור; אזור ההפרדה במערב נשאר חתוך. התקרה הוסרה לצפייה. גובה הקירות, הגמר וחלק מגבולות רצפות החדרים להמחשה. הרמפה המעוקלת מופיעה כמרכיב נפרד במפלסי המקור. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "cameraBasis": "Whole registered floor, source walls, approximate helical grades, bounded source components",
+          "mode": "B01-overview",
+          "view": 0,
+          "render": "./assets/renders/B01-overview.png",
+          "plan": "./assets/plans/B01-overview-source.png"
+        },
+        {
+          "id": "parking",
+          "label": "אזור החניה",
+          "target": [
+            32.0,
+            -3.6177406311035156,
+            2.5999999046325684
+          ],
+          "position": [
+            17.0,
+            -2.9629032611846924,
+            -0.800000011920929
+          ],
+          "status": "partial",
+          "caption": "מקטע חניה צפוני מתוך תוכנית המקור. המרתף והרמפות עדיין אינם ממודלים במלואם. חומרים, תאורה ושיפוע מקומי להמחשה. גובה פנוי 2.70 מ׳ הוא הנחת הדמיה. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B01_parking.png",
+          "sourceCropWorldXY": [
+            -8,
+            -35,
+            49,
+            15
+          ],
+          "cameraBasis": "Source clipped wall and column footprints; bounded visualization scene",
+          "mode": "B01-parking",
+          "view": 0,
+          "render": "./assets/renders/B01_parking.png"
+        },
+        {
+          "id": "ramp",
+          "label": "הרמפה המעוקלת",
+          "target": [
+            20,
+            -2.72,
+            10
+          ],
+          "position": [
+            36,
+            9.28,
+            28
+          ],
+          "status": "partial",
+          "caption": "מבט ברמפה המעוקלת לפי גבולות ומפלסים מהתוכנית; מעקות בגובה 1.10 מ׳ וסימון הנתיב מוצעים. חומרי הגמר, התאורה והמערכות להמחשה. גבולות חתוכים לצורך תצוגת האזור. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B01-west-drive-source.png",
+          "sourceCropWorldXY": [
+            -8,
+            -26,
+            17,
+            -13
+          ],
+          "cameraBasis": "Registered source walls and floor-grade illustration; disclosed design assumptions",
+          "mode": "B01-west-drive",
+          "view": 0,
+          "render": "./assets/renders/B01-west-drive.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            20,
+            -2.72,
+            10
+          ],
+          "position": [
+            36,
+            9.28,
+            28
+          ],
+          "status": "model",
+          "caption": "מדרגות מערביות: 8 ו־8 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "plan": "./assets/plans/lower-stair-west-B01-source.png",
+          "sourceCropWorldXY": [
+            13,
+            -18,
+            18,
+            -9
+          ],
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-west-B01",
+          "view": 0
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            20,
+            -2.72,
+            10
+          ],
+          "position": [
+            36,
+            9.28,
+            28
+          ],
+          "status": "model",
+          "caption": "מדרגות מזרחיות: 11 ו־11 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "plan": "./assets/plans/lower-stair-east-B01-source.png",
+          "sourceCropWorldXY": [
+            23,
+            -13,
+            34,
+            -7
+          ],
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-east-B01",
+          "view": 0,
+          "render": "./assets/renders/lower-stair-east-B01.png"
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            20,
+            -2.72,
+            10
+          ],
+          "position": [
+            36,
+            9.28,
+            28
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. זהו חלל נפרד מהמסדרונות שטרם הושלמו. מפלס המבואה לפי המקור -4.40 מ׳; תקרה בגובה2.70 מ׳ היא הנחת הדמיה.",
+          "kind": "detail",
+          "plan": "./assets/plans/B01_lift_lobby_source.png",
+          "sourceCropWorldXY": [
+            17,
+            -19,
+            25,
+            -7
+          ],
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "B01-lift-lobby",
+          "view": 0,
+          "render": "./assets/renders/B01_lift_lobby.png"
+        },
+        {
+          "id": "south-services",
+          "label": "חניית אופנועים ופירי אוורור",
+          "target": [
+            20,
+            -2.72,
+            10
+          ],
+          "position": [
+            36,
+            9.28,
+            28
+          ],
+          "status": "partial",
+          "caption": "מבט בגובה אדם בחניה ובקירות לפי תוכנית הקומה. הרצפה עוקבת בקירוב אחר מפלסי המקור; גובה התקרה 2.70 מ׳ הוא הנחה. פתחי האוורור לפי מיקומי המקור; עומק התריסים וצורתם מוצעים. חומרי הגמר, התאורה והמערכות להמחשה. גבולות חתוכים לצורך תצוגת האזור. סימון נתיבי נסיעה להמחשה לפי המעברים בתוכנית; מיקום הצבע והחצים הוא הצעה ואינו תוכנית תנועה מאושרת.",
+          "kind": "detail",
+          "plan": "./assets/plans/B01-south-parking-source.png",
+          "sourceCropWorldXY": [
+            7,
+            -35,
+            28,
+            -24
+          ],
+          "cameraBasis": "Registered source walls and floor-grade illustration; disclosed design assumptions",
+          "mode": "B01-south-parking",
+          "view": 0,
+          "render": "./assets/renders/B01-south-parking.png"
+        }
+      ],
+      "shortLabel": "B01"
+    },
+    {
+      "id": "lower-ground",
+      "label": "קרקע תחתונה",
+      "group": "קרקע",
+      "base": 0,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            24,
+            1.2,
+            10
+          ],
+          "position": [
+            58,
+            54,
+            58
+          ],
+          "status": "model",
+          "caption": "קרקע תחתונה — חתך משולב עם קירות, מסחר, שירות, מעליות ומדרגות. הריהוט והגמרים מוצעים. החיבור למפלס הקרקע העליון והרחבת החלל הגבוה מאחור טרם הוכרעו במקור ולכן אינם מושלמים במודל.",
+          "kind": "detail",
+          "cameraBasis": "Registered source cutaway; disclosed proposed furnishings",
+          "mode": "lower-ground-full",
+          "view": 0
+        },
+        {
+          "id": "entrance",
+          "label": "הכניסה והגגון",
+          "target": [
+            29,
+            2,
+            -0.5
+          ],
+          "position": [
+            47,
+            10,
+            -29
+          ],
+          "status": "partial",
+          "caption": "רחבת הלובי והמסחר בקרקע התחתונה, על בסיס מעטפת המקור. משטח האספלט במפלסים משתנים, השלמת בסיס החזית, תאורה וריהוט הם הצעת הדמיה. הפתחים ומעבר הכניסה עדיין חלקיים.",
+          "kind": "detail",
+          "cameraBasis": "Human-eye view in existing source shell; proposed bounded paving and retail fitout; opaque context removed for visibility",
+          "mode": "lower-arrival",
+          "view": 2,
+          "render": "./assets/renders/lower-arrival-entrance.png",
+          "plan": "./assets/plans/lower-lobby-source-grid.png"
+        },
+        {
+          "id": "refuse",
+          "label": "חדר האשפה ורחבת הכניסה",
+          "target": [
+            8.5,
+            -0.3,
+            9
+          ],
+          "position": [
+            -7,
+            30,
+            27
+          ],
+          "status": "model",
+          "caption": "מבט קרוב על חדר האשפה (41.31 מ״ר במקור), אזור אצירת הפחים ומעבר השירות שלצדו, ועל רחבת הכניסה / הלובי הראשי שמצפון להם. רחבת הכניסה היא חלל נפרד ואינה חדר האשפה. הייעודים והרום 40.25 (כ־0.50− במודל) מתוכנית קרקע תחתונה 100-05-A; גמרים, פחים וריהוט להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "High-angle solid cutaway focused on registered refuse room, bin storage and separate entrance court; source XY approximately2..15,-18..0, Three.js coordinates[X,Z,-Y]",
+          "mode": "lower-ground-full",
+          "view": 2,
+          "revealDefault": "solid"
+        },
+        {
+          "id": "lobby",
+          "label": "לובי ראשי",
+          "target": [
+            25,
+            1.5,
+            7
+          ],
+          "position": [
+            36,
+            11,
+            -9
+          ],
+          "status": "partial",
+          "caption": "רחבת הלובי והמסחר בקרקע התחתונה, על בסיס מעטפת המקור. משטח האספלט במפלסים משתנים, השלמת בסיס החזית, תאורה וריהוט הם הצעת הדמיה. הפתחים ומעבר הכניסה עדיין חלקיים.",
+          "kind": "detail",
+          "cameraBasis": "Human-eye view in existing source shell; proposed bounded paving and retail fitout; opaque context removed for visibility",
+          "mode": "lower-arrival",
+          "view": 0,
+          "render": "./assets/renders/lower-arrival-lobby.png",
+          "plan": "./assets/plans/lower-lobby-source-grid.png"
+        },
+        {
+          "id": "retail",
+          "label": "חלל מסחרי",
+          "target": [
+            37,
+            1.4,
+            14
+          ],
+          "position": [
+            50,
+            12,
+            33
+          ],
+          "status": "partial",
+          "caption": "מבט מתוך חלל המסחר המערבי בקרקע התחתונה. מעטפת ומחיצה מתוך המקורות; גבול החדר זמני, וריהוט, גמרים ותאורה מוצעים. תאי השירות ויתר המסחר טרם הושלמו.",
+          "kind": "detail",
+          "cameraBasis": "Human-eye view in existing source shell; proposed bounded paving and retail fitout; opaque context removed for visibility",
+          "mode": "lower-arrival",
+          "view": 1,
+          "render": "./assets/renders/lower-arrival-retail.png",
+          "plan": "./assets/plans/lower-west-retail-source-grid.png"
+        },
+        {
+          "id": "elevators",
+          "label": "אזור המעליות",
+          "target": [
+            20.2,
+            1.4,
+            12.5
+          ],
+          "position": [
+            28,
+            12,
+            25
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. זהו חלל נפרד מהמסדרונות שטרם הושלמו.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "lower-ground-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/lower-ground_lift_lobby_source.png",
+          "render": "./assets/renders/lower-ground_lift_lobby.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            1.4,
+            13
+          ],
+          "position": [
+            7,
+            11,
+            27
+          ],
+          "status": "partial",
+          "caption": "מדרגות מערביות: 11 ו־11 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים. בפרט הקרקע מופיע רוחב275ס״מ לעומת265ס״מ במעטפת הרשומה; נעשה שימוש במעטפת, וההבדל טרם הוכרע.",
+          "kind": "detail",
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-west-lower-ground",
+          "view": 0,
+          "plan": "./assets/plans/lower-stair-west-lower-ground-source.png",
+          "render": "./assets/renders/lower-stair-west-lower-ground.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            1.4,
+            9.8
+          ],
+          "position": [
+            39,
+            11,
+            19
+          ],
+          "status": "model",
+          "caption": "מדרגות מזרחיות: 11 ו־11 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-east-lower-ground",
+          "view": 0,
+          "plan": "./assets/plans/lower-stair-east-lower-ground-source.png"
+        }
+      ]
+    },
+    {
+      "id": "upper-ground",
+      "label": "קרקע עליונה",
+      "group": "קרקע",
+      "base": 3.74,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            4.4,
+            18
+          ],
+          "position": [
+            55,
+            50,
+            62
+          ],
+          "status": "model",
+          "caption": "קרקע עליונה — חתך משולב עם קירות, מסחר, שירות, מעליות ומדרגות. הריהוט והגמרים מוצעים. החיבור למפלס הקרקע העליון והרחבת החלל הגבוה מאחור טרם הוכרעו במקור ולכן אינם מושלמים במודל.",
+          "kind": "detail",
+          "cameraBasis": "Registered source cutaway; disclosed proposed furnishings",
+          "mode": "upper-ground-full",
+          "view": 0
+        },
+        {
+          "id": "west-shop",
+          "label": "מסחר מערבי",
+          "target": [
+            4,
+            4.6,
+            22.3
+          ],
+          "position": [
+            -10,
+            17,
+            40
+          ],
+          "status": "partial",
+          "caption": "המחשת עיצוב בתוך תחום מסחר זמני לפי המקור, במפלס3.26+. העמודים מהתוכנית; מחיצות, ויטרינות, תאורה וריהוט מוצעים. גבולות התחום עדיין דורשים השלמה.",
+          "kind": "detail",
+          "cameraBasis": "Dedicated source-room eye-level camera with explicitly proposed surface treatment",
+          "mode": "upper-west-shop",
+          "view": 0,
+          "render": "./assets/renders/upper-west-shop.png",
+          "plan": "./assets/plans/upper-west-shop_source.png"
+        },
+        {
+          "id": "east-shop",
+          "label": "מסחר מזרחי",
+          "target": [
+            29,
+            4.5,
+            22.3
+          ],
+          "position": [
+            53,
+            18,
+            38
+          ],
+          "status": "partial",
+          "caption": "המחשת עיצוב בתוך תחום מסחר זמני לפי המקור, במפלס3.15+. העמודים מהתוכנית; מחיצות, ויטרינות, תאורה וריהוט מוצעים. גבולות התחום עדיין דורשים השלמה.",
+          "kind": "detail",
+          "cameraBasis": "Dedicated source-room eye-level camera with explicitly proposed surface treatment",
+          "mode": "upper-east-shop",
+          "view": 0,
+          "render": "./assets/renders/upper-east-shop.png",
+          "plan": "./assets/plans/upper-east-shop_source.png"
+        },
+        {
+          "id": "elevators",
+          "label": "מבואת המעליות",
+          "target": [
+            21.9,
+            5.2,
+            14
+          ],
+          "position": [
+            25,
+            16,
+            28
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. זהו חלל נפרד מהמסדרונות שטרם הושלמו.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "upper-ground-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/upper-ground_lift_lobby_source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            5.2,
+            13
+          ],
+          "position": [
+            7,
+            15,
+            27
+          ],
+          "status": "model",
+          "caption": "מדרגות מערביות: 11 ו־10 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-west-upper-ground",
+          "view": 0,
+          "plan": "./assets/plans/lower-stair-west-upper-ground-source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            5.2,
+            9.8
+          ],
+          "position": [
+            39,
+            15,
+            19
+          ],
+          "status": "model",
+          "caption": "מדרגות מזרחיות: 11 ו־10 רומים של17ס״מ, שלח28ס״מ, לפי חתך המקור. גמרים, מעקות ודלתות מוצעים. המבט הוא בחלל נפרד; מפלסי החניה והמבואות עשויים להיות שונים.",
+          "kind": "detail",
+          "cameraBasis": "Floor-specific source section risers and landing levels; registered stair well; disclosed conflicts",
+          "mode": "lower-stair-east-upper-ground",
+          "view": 0,
+          "plan": "./assets/plans/lower-stair-east-upper-ground-source.png"
+        }
+      ]
+    },
+    {
+      "id": "office-1",
+      "label": "משרדים 01",
+      "group": "משרדים",
+      "base": 7.31,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            7.31,
+            8
+          ],
+          "position": [
+            53.54,
+            61.910000000000004,
+            54.02
+          ],
+          "status": "model",
+          "caption": "סטודיו פתוח וצוותי עבודה: 31 עמדות עבודה פתוחות ושלושה חדרים מוצעים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "mode": "office-floor-01",
+          "view": 0,
+          "eyeLevel": true
+        },
+        {
+          "id": "curved-front",
+          "label": "משרדים בחזית המעוקלת",
+          "target": [
+            37,
+            8.66,
+            1
+          ],
+          "position": [
+            26,
+            8.959999999999999,
+            5.5
+          ],
+          "status": "model",
+          "caption": "סטודיו פתוח וצוותי עבודה: 31 עמדות עבודה פתוחות ושלושה חדרים מוצעים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-01",
+          "view": 1
+        },
+        {
+          "id": "west-wing",
+          "label": "האגף המערבי",
+          "target": [
+            6,
+            8.76,
+            19.8
+          ],
+          "position": [
+            11,
+            8.959999999999999,
+            4.2
+          ],
+          "status": "model",
+          "caption": "האגף המערבי כולל מרחב משותף לישיבה, שיתוף או קריאה בהתאם לאופי הקומה. ריהוט וחלוקה מוצעים בתוך מעטפת המקור.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-01",
+          "view": 2
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            21.9,
+            8.709999999999999,
+            14
+          ],
+          "position": [
+            24,
+            20.31,
+            27
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. המבואה מחוברת למסדרונות הקומה ולכניסות המשרדים.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "office-1-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/office-1_lift_lobby_source.png",
+          "render": "./assets/renders/office-1_lift_lobby.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            8.709999999999999,
+            13
+          ],
+          "position": [
+            7,
+            18.31,
+            27
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המערבי · מקטע קומות 01–02. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "mode": "office-stair-west-01",
+          "view": 0,
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "render": "./assets/renders/western_stair_01.png",
+          "plan": "./assets/plans/office-01_west_stair_source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            8.709999999999999,
+            9.8
+          ],
+          "position": [
+            39,
+            18.31,
+            19
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המזרחי · מקטע קומות 01–02. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-east-01",
+          "view": 0,
+          "render": "./assets/renders/office-stair-east-01.png",
+          "plan": "./assets/plans/office-01_east_stair_source.png"
+        },
+        {
+          "id": "north-balcony",
+          "label": "מרפסת צפונית",
+          "target": [
+            11.5,
+            7.81,
+            -10.6
+          ],
+          "position": [
+            15,
+            18.31,
+            -25
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "south-balcony",
+          "label": "מרפסת דרומית",
+          "target": [
+            23,
+            7.81,
+            24.8
+          ],
+          "position": [
+            27,
+            18.31,
+            42
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "services",
+          "label": "שירותים וחדרי שירות",
+          "kind": "detail",
+          "mode": "office-floor-01",
+          "view": 3,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "שירותים, חדרי שירות וארכיב בתוך גרעין הקומה לפי התוכנית. האבזור וחומרי הגמר מוצעים להמחשה."
+        },
+        {
+          "id": "meeting-full",
+          "label": "חדרי ישיבות",
+          "kind": "detail",
+          "mode": "office-floor-01",
+          "view": 4,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "חדר הישיבות בגרעין הקומה, עם שולחן ומקומות ישיבה מוצעים. לחללי העבודה הנוספים בחרו במבט כל הקומה."
+        },
+        {
+          "id": "core-full",
+          "label": "הגרעין המלא",
+          "kind": "detail",
+          "mode": "office-floor-01",
+          "view": 5,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "גרעין הקומה: מעליות, שני חדרי מדרגות, שירותים ומסדרונות; שלוש כניסות למשרדים בפתחי התוכנית. חומרי גמר ודלתות מוצעים להמחשה."
+        }
+      ],
+      "shortLabel": "01"
+    },
+    {
+      "id": "office-2",
+      "label": "משרדים 02",
+      "group": "משרדים",
+      "base": 11.39,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            11.39,
+            8
+          ],
+          "position": [
+            53.54,
+            65.99000000000001,
+            54.02
+          ],
+          "status": "model",
+          "caption": "חדרי צוות ומרחב עבודה משותף: 20 עמדות פתוחות ו־16 עמדות בחדרי צוות. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "mode": "office-floor-02",
+          "view": 0,
+          "eyeLevel": true
+        },
+        {
+          "id": "curved-front",
+          "label": "משרדים בחזית המעוקלת",
+          "target": [
+            37,
+            12.74,
+            1
+          ],
+          "position": [
+            26,
+            13.040000000000001,
+            5.5
+          ],
+          "status": "model",
+          "caption": "חדרי צוות ומרחב עבודה משותף: 20 עמדות פתוחות ו־16 עמדות בחדרי צוות. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-02",
+          "view": 1
+        },
+        {
+          "id": "west-wing",
+          "label": "האגף המערבי",
+          "target": [
+            6,
+            12.84,
+            19.8
+          ],
+          "position": [
+            11,
+            13.040000000000001,
+            4.2
+          ],
+          "status": "model",
+          "caption": "האגף המערבי כולל מרחב משותף לישיבה, שיתוף או קריאה בהתאם לאופי הקומה. ריהוט וחלוקה מוצעים בתוך מעטפת המקור.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-02",
+          "view": 2
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            21.9,
+            12.790000000000001,
+            14
+          ],
+          "position": [
+            24,
+            24.39,
+            27
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. המבואה מחוברת למסדרונות הקומה ולכניסות המשרדים. פרטי הגרעין מהתוכנית הטיפוסית.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "office-2-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/office-2_lift_lobby_source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            12.790000000000001,
+            13
+          ],
+          "position": [
+            7,
+            22.39,
+            27
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המערבי · מקטע קומות 02–03. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "mode": "office-stair-west-02",
+          "view": 0,
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "plan": "./assets/plans/office-typical_west_stair_source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            12.790000000000001,
+            9.8
+          ],
+          "position": [
+            39,
+            22.39,
+            19
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המזרחי · מקטע קומות 02–03. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-east-02",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_east_stair_source.png"
+        },
+        {
+          "id": "north-balcony",
+          "label": "מרפסת צפונית",
+          "target": [
+            11.5,
+            11.89,
+            -10.6
+          ],
+          "position": [
+            15,
+            22.39,
+            -25
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "south-balcony",
+          "label": "מרפסת דרומית",
+          "target": [
+            23,
+            11.89,
+            24.8
+          ],
+          "position": [
+            27,
+            22.39,
+            42
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "services",
+          "label": "שירותים וחדרי שירות",
+          "kind": "detail",
+          "mode": "office-floor-02",
+          "view": 3,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "שירותים, חדרי שירות וארכיב בתוך גרעין הקומה לפי התוכנית. האבזור וחומרי הגמר מוצעים להמחשה."
+        },
+        {
+          "id": "meeting-full",
+          "label": "חדרי ישיבות",
+          "kind": "detail",
+          "mode": "office-floor-02",
+          "view": 4,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "חדר הישיבות בגרעין הקומה, עם שולחן ומקומות ישיבה מוצעים. לחללי העבודה הנוספים בחרו במבט כל הקומה."
+        },
+        {
+          "id": "core-full",
+          "label": "הגרעין המלא",
+          "kind": "detail",
+          "mode": "office-floor-02",
+          "view": 5,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "גרעין הקומה: מעליות, שני חדרי מדרגות, שירותים ומסדרונות; שלוש כניסות למשרדים בפתחי התוכנית. חומרי גמר ודלתות מוצעים להמחשה."
+        }
+      ],
+      "shortLabel": "02"
+    },
+    {
+      "id": "office-3",
+      "label": "משרדים 03",
+      "group": "משרדים",
+      "base": 15.47,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            15.47,
+            8
+          ],
+          "position": [
+            53.54,
+            70.07000000000001,
+            54.02
+          ],
+          "status": "model",
+          "caption": "למידה, סדנאות ושיתוף פעולה: 16 עמדות עבודה וחדר הדרכה ל־12 משתתפים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "mode": "office-floor-03",
+          "view": 0,
+          "eyeLevel": true
+        },
+        {
+          "id": "curved-front",
+          "label": "משרדים בחזית המעוקלת",
+          "target": [
+            37,
+            16.82,
+            1
+          ],
+          "position": [
+            26,
+            17.12,
+            5.5
+          ],
+          "status": "model",
+          "caption": "למידה, סדנאות ושיתוף פעולה: 16 עמדות עבודה וחדר הדרכה ל־12 משתתפים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-03",
+          "view": 1
+        },
+        {
+          "id": "west-wing",
+          "label": "האגף המערבי",
+          "target": [
+            6,
+            16.92,
+            19.8
+          ],
+          "position": [
+            11,
+            17.12,
+            4.2
+          ],
+          "status": "model",
+          "caption": "האגף המערבי כולל מרחב משותף לישיבה, שיתוף או קריאה בהתאם לאופי הקומה. ריהוט וחלוקה מוצעים בתוך מעטפת המקור.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-03",
+          "view": 2
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            21.9,
+            16.87,
+            14
+          ],
+          "position": [
+            24,
+            28.47,
+            27
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. המבואה מחוברת למסדרונות הקומה ולכניסות המשרדים. פרטי הגרעין מהתוכנית הטיפוסית.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "office-3-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/office-3_lift_lobby_source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            16.87,
+            13
+          ],
+          "position": [
+            7,
+            26.47,
+            27
+          ],
+          "status": "partial",
+          "caption": "מבט מתוך חדר המדרגות המערבי · מקטע קומות 03–04. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות. במקור המערבי מופיע19.57+ לעומת19.55+ במודל; ההפרש טרם הוכרע.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-west-03",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_west_stair_source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            16.87,
+            9.8
+          ],
+          "position": [
+            39,
+            26.47,
+            19
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המזרחי · מקטע קומות 03–04. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-east-03",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_east_stair_source.png"
+        },
+        {
+          "id": "north-balcony",
+          "label": "מרפסת צפונית",
+          "target": [
+            11.5,
+            15.97,
+            -10.6
+          ],
+          "position": [
+            15,
+            26.47,
+            -25
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "south-balcony",
+          "label": "מרפסת דרומית",
+          "target": [
+            23,
+            15.97,
+            24.8
+          ],
+          "position": [
+            27,
+            26.47,
+            42
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "services",
+          "label": "שירותים וחדרי שירות",
+          "kind": "detail",
+          "mode": "office-floor-03",
+          "view": 3,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "שירותים, חדרי שירות וארכיב בתוך גרעין הקומה לפי התוכנית. האבזור וחומרי הגמר מוצעים להמחשה."
+        },
+        {
+          "id": "meeting-full",
+          "label": "חדרי ישיבות",
+          "kind": "detail",
+          "mode": "office-floor-03",
+          "view": 4,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "חדר הישיבות בגרעין הקומה, עם שולחן ומקומות ישיבה מוצעים. לחללי העבודה הנוספים בחרו במבט כל הקומה."
+        },
+        {
+          "id": "core-full",
+          "label": "הגרעין המלא",
+          "kind": "detail",
+          "mode": "office-floor-03",
+          "view": 5,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "גרעין הקומה: מעליות, שני חדרי מדרגות, שירותים ומסדרונות; שלוש כניסות למשרדים בפתחי התוכנית. חומרי גמר ודלתות מוצעים להמחשה."
+        }
+      ],
+      "shortLabel": "03"
+    },
+    {
+      "id": "office-4",
+      "label": "משרדים 04",
+      "group": "משרדים",
+      "base": 19.55,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            19.55,
+            8
+          ],
+          "position": [
+            53.54,
+            74.15,
+            54.02
+          ],
+          "status": "model",
+          "caption": "סטודיו פתוח וצוותי עבודה: 29 עמדות עבודה פתוחות ושלושה חדרים מוצעים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "mode": "office-floor-04",
+          "view": 0,
+          "eyeLevel": true
+        },
+        {
+          "id": "curved-front",
+          "label": "משרדים בחזית המעוקלת",
+          "target": [
+            37,
+            20.900000000000002,
+            1
+          ],
+          "position": [
+            26,
+            21.2,
+            5.5
+          ],
+          "status": "model",
+          "caption": "סטודיו פתוח וצוותי עבודה: 29 עמדות עבודה פתוחות ושלושה חדרים מוצעים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-04",
+          "view": 1
+        },
+        {
+          "id": "west-wing",
+          "label": "האגף המערבי",
+          "target": [
+            6,
+            21.0,
+            19.8
+          ],
+          "position": [
+            11,
+            21.2,
+            4.2
+          ],
+          "status": "model",
+          "caption": "האגף המערבי כולל מרחב משותף לישיבה, שיתוף או קריאה בהתאם לאופי הקומה. ריהוט וחלוקה מוצעים בתוך מעטפת המקור.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-04",
+          "view": 2
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            21.9,
+            20.95,
+            14
+          ],
+          "position": [
+            24,
+            32.55,
+            27
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. המבואה מחוברת למסדרונות הקומה ולכניסות המשרדים. פרטי הגרעין מהתוכנית הטיפוסית.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "office-4-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/office-4_lift_lobby_source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            20.95,
+            13
+          ],
+          "position": [
+            7,
+            30.55,
+            27
+          ],
+          "status": "partial",
+          "caption": "מבט מתוך חדר המדרגות המערבי · מקטע קומות 04–05. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות. במקור המערבי מופיע19.57+ לעומת19.55+ במודל; ההפרש טרם הוכרע.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-west-04",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_west_stair_source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            20.95,
+            9.8
+          ],
+          "position": [
+            39,
+            30.55,
+            19
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המזרחי · מקטע קומות 04–05. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-east-04",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_east_stair_source.png"
+        },
+        {
+          "id": "north-balcony",
+          "label": "מרפסת צפונית",
+          "target": [
+            11.5,
+            20.05,
+            -10.6
+          ],
+          "position": [
+            15,
+            30.55,
+            -25
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "south-balcony",
+          "label": "מרפסת דרומית",
+          "target": [
+            23,
+            20.05,
+            24.8
+          ],
+          "position": [
+            27,
+            30.55,
+            42
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "services",
+          "label": "שירותים וחדרי שירות",
+          "kind": "detail",
+          "mode": "office-floor-04",
+          "view": 3,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "שירותים, חדרי שירות וארכיב בתוך גרעין הקומה לפי התוכנית. האבזור וחומרי הגמר מוצעים להמחשה."
+        },
+        {
+          "id": "meeting-full",
+          "label": "חדרי ישיבות",
+          "kind": "detail",
+          "mode": "office-floor-04",
+          "view": 4,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "חדר הישיבות בגרעין הקומה, עם שולחן ומקומות ישיבה מוצעים. לחללי העבודה הנוספים בחרו במבט כל הקומה."
+        },
+        {
+          "id": "core-full",
+          "label": "הגרעין המלא",
+          "kind": "detail",
+          "mode": "office-floor-04",
+          "view": 5,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "גרעין הקומה: מעליות, שני חדרי מדרגות, שירותים ומסדרונות; שלוש כניסות למשרדים בפתחי התוכנית. חומרי גמר ודלתות מוצעים להמחשה."
+        }
+      ],
+      "shortLabel": "04"
+    },
+    {
+      "id": "office-5",
+      "label": "משרדים 05",
+      "group": "משרדים",
+      "base": 23.63,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            23.63,
+            8
+          ],
+          "position": [
+            53.54,
+            78.23,
+            54.02
+          ],
+          "status": "model",
+          "caption": "חדרי צוות ומרחב עבודה משותף: 20 עמדות פתוחות ו־16 עמדות בחדרי צוות. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "mode": "office-floor-05",
+          "view": 0,
+          "eyeLevel": true
+        },
+        {
+          "id": "curved-front",
+          "label": "משרדים בחזית המעוקלת",
+          "target": [
+            37,
+            24.98,
+            1
+          ],
+          "position": [
+            26,
+            25.279999999999998,
+            5.5
+          ],
+          "status": "model",
+          "caption": "חדרי צוות ומרחב עבודה משותף: 20 עמדות פתוחות ו־16 עמדות בחדרי צוות. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-05",
+          "view": 1
+        },
+        {
+          "id": "west-wing",
+          "label": "האגף המערבי",
+          "target": [
+            6,
+            25.08,
+            19.8
+          ],
+          "position": [
+            11,
+            25.279999999999998,
+            4.2
+          ],
+          "status": "model",
+          "caption": "האגף המערבי כולל מרחב משותף לישיבה, שיתוף או קריאה בהתאם לאופי הקומה. ריהוט וחלוקה מוצעים בתוך מעטפת המקור.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-05",
+          "view": 2
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            21.9,
+            25.029999999999998,
+            14
+          ],
+          "position": [
+            24,
+            36.629999999999995,
+            27
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. המבואה מחוברת למסדרונות הקומה ולכניסות המשרדים. פרטי הגרעין מהתוכנית הטיפוסית.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "office-5-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/office-5_lift_lobby_source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            25.029999999999998,
+            13
+          ],
+          "position": [
+            7,
+            34.629999999999995,
+            27
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המערבי · מקטע קומות 05–06. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-west-05",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_west_stair_source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            25.029999999999998,
+            9.8
+          ],
+          "position": [
+            39,
+            34.629999999999995,
+            19
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המזרחי · מקטע קומות 05–06. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-east-05",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_east_stair_source.png"
+        },
+        {
+          "id": "north-balcony",
+          "label": "מרפסת צפונית",
+          "target": [
+            11.5,
+            24.13,
+            -10.6
+          ],
+          "position": [
+            15,
+            34.629999999999995,
+            -25
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "south-balcony",
+          "label": "מרפסת דרומית",
+          "target": [
+            23,
+            24.13,
+            24.8
+          ],
+          "position": [
+            27,
+            34.629999999999995,
+            42
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "services",
+          "label": "שירותים וחדרי שירות",
+          "kind": "detail",
+          "mode": "office-floor-05",
+          "view": 3,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "שירותים, חדרי שירות וארכיב בתוך גרעין הקומה לפי התוכנית. האבזור וחומרי הגמר מוצעים להמחשה."
+        },
+        {
+          "id": "meeting-full",
+          "label": "חדרי ישיבות",
+          "kind": "detail",
+          "mode": "office-floor-05",
+          "view": 4,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "חדר הישיבות בגרעין הקומה, עם שולחן ומקומות ישיבה מוצעים. לחללי העבודה הנוספים בחרו במבט כל הקומה."
+        },
+        {
+          "id": "core-full",
+          "label": "הגרעין המלא",
+          "kind": "detail",
+          "mode": "office-floor-05",
+          "view": 5,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "גרעין הקומה: מעליות, שני חדרי מדרגות, שירותים ומסדרונות; שלוש כניסות למשרדים בפתחי התוכנית. חומרי גמר ודלתות מוצעים להמחשה."
+        }
+      ],
+      "shortLabel": "05"
+    },
+    {
+      "id": "office-6",
+      "label": "משרדים 06",
+      "group": "משרדים",
+      "base": 27.71,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            27.71,
+            8
+          ],
+          "position": [
+            53.54,
+            82.31,
+            54.02
+          ],
+          "status": "model",
+          "caption": "למידה, סדנאות ושיתוף פעולה: 16 עמדות עבודה וחדר הדרכה ל־12 משתתפים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "mode": "office-floor-06",
+          "view": 0,
+          "eyeLevel": true
+        },
+        {
+          "id": "curved-front",
+          "label": "משרדים בחזית המעוקלת",
+          "target": [
+            37,
+            29.060000000000002,
+            1
+          ],
+          "position": [
+            26,
+            29.36,
+            5.5
+          ],
+          "status": "model",
+          "caption": "למידה, סדנאות ושיתוף פעולה: 16 עמדות עבודה וחדר הדרכה ל־12 משתתפים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-06",
+          "view": 1
+        },
+        {
+          "id": "west-wing",
+          "label": "האגף המערבי",
+          "target": [
+            6,
+            29.16,
+            19.8
+          ],
+          "position": [
+            11,
+            29.36,
+            4.2
+          ],
+          "status": "model",
+          "caption": "האגף המערבי כולל מרחב משותף לישיבה, שיתוף או קריאה בהתאם לאופי הקומה. ריהוט וחלוקה מוצעים בתוך מעטפת המקור.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-06",
+          "view": 2
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            21.9,
+            29.11,
+            14
+          ],
+          "position": [
+            24,
+            40.71,
+            27
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. המבואה מחוברת למסדרונות הקומה ולכניסות המשרדים. פרטי הגרעין מהתוכנית הטיפוסית.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "office-6-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/office-6_lift_lobby_source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            29.11,
+            13
+          ],
+          "position": [
+            7,
+            38.71,
+            27
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המערבי · מקטע קומות 06–07. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-west-06",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_west_stair_source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            29.11,
+            9.8
+          ],
+          "position": [
+            39,
+            38.71,
+            19
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המזרחי · מקטע קומות 06–07. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-east-06",
+          "view": 0,
+          "plan": "./assets/plans/office-typical_east_stair_source.png"
+        },
+        {
+          "id": "north-balcony",
+          "label": "מרפסת צפונית",
+          "target": [
+            11.5,
+            28.21,
+            -10.6
+          ],
+          "position": [
+            15,
+            38.71,
+            -25
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "south-balcony",
+          "label": "מרפסת דרומית",
+          "target": [
+            23,
+            28.21,
+            24.8
+          ],
+          "position": [
+            27,
+            38.71,
+            42
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "services",
+          "label": "שירותים וחדרי שירות",
+          "kind": "detail",
+          "mode": "office-floor-06",
+          "view": 3,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "שירותים, חדרי שירות וארכיב בתוך גרעין הקומה לפי התוכנית. האבזור וחומרי הגמר מוצעים להמחשה."
+        },
+        {
+          "id": "meeting-full",
+          "label": "חדרי ישיבות",
+          "kind": "detail",
+          "mode": "office-floor-06",
+          "view": 4,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "חדר הישיבות בגרעין הקומה, עם שולחן ומקומות ישיבה מוצעים. לחללי העבודה הנוספים בחרו במבט כל הקומה."
+        },
+        {
+          "id": "core-full",
+          "label": "הגרעין המלא",
+          "kind": "detail",
+          "mode": "office-floor-06",
+          "view": 5,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "גרעין הקומה: מעליות, שני חדרי מדרגות, שירותים ומסדרונות; שלוש כניסות למשרדים בפתחי התוכנית. חומרי גמר ודלתות מוצעים להמחשה."
+        }
+      ],
+      "shortLabel": "06"
+    },
+    {
+      "id": "office-7",
+      "label": "משרדים 07",
+      "group": "משרדים",
+      "base": 31.79,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הקומה",
+          "target": [
+            20,
+            31.79,
+            8
+          ],
+          "position": [
+            53.54,
+            86.39,
+            54.02
+          ],
+          "status": "model",
+          "caption": "משרדים אישיים וישיבות: 11 עמדות פתוחות וארבעה משרדים אישיים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "mode": "office-floor-07",
+          "view": 0,
+          "eyeLevel": true
+        },
+        {
+          "id": "curved-front",
+          "label": "משרדים בחזית המעוקלת",
+          "target": [
+            37,
+            33.14,
+            1
+          ],
+          "position": [
+            26,
+            33.44,
+            5.5
+          ],
+          "status": "model",
+          "caption": "משרדים אישיים וישיבות: 11 עמדות פתוחות וארבעה משרדים אישיים. הגרעין ושלוש הכניסות מהמסדרונות לפי התוכנית; חלוקת השוכרים, הריהוט והגמרים מוצעים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-07",
+          "view": 1
+        },
+        {
+          "id": "west-wing",
+          "label": "האגף המערבי",
+          "target": [
+            6,
+            33.24,
+            19.8
+          ],
+          "position": [
+            11,
+            33.44,
+            4.2
+          ],
+          "status": "model",
+          "caption": "האגף המערבי כולל מרחב משותף לישיבה, שיתוף או קריאה בהתאם לאופי הקומה. ריהוט וחלוקה מוצעים בתוך מעטפת המקור.",
+          "kind": "detail",
+          "cameraBasis": "Registered whole floor and service core with proposed tenant furniture",
+          "fov": 56,
+          "eyeLevel": true,
+          "mode": "office-floor-07",
+          "view": 2
+        },
+        {
+          "id": "elevators",
+          "label": "מעליות ומבואה",
+          "target": [
+            21.9,
+            33.19,
+            14
+          ],
+          "position": [
+            24,
+            44.79,
+            27
+          ],
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. המבואה מחוברת למסדרונות הקומה ולכניסות המשרדים. פרטי הגרעין מהתוכנית הטיפוסית.",
+          "kind": "detail",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "mode": "office-7-lift-lobby",
+          "view": 0,
+          "plan": "./assets/plans/office-7_lift_lobby_source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "מדרגות מערביות",
+          "target": [
+            15.9,
+            33.19,
+            13
+          ],
+          "position": [
+            7,
+            42.79,
+            27
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המערבי · מקטע קומות 06–07. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-west-06",
+          "view": 1,
+          "plan": "./assets/plans/office-typical_west_stair_source.png"
+        },
+        {
+          "id": "east-stair",
+          "label": "מדרגות מזרחיות",
+          "target": [
+            27.7,
+            33.19,
+            9.8
+          ],
+          "position": [
+            39,
+            42.79,
+            19
+          ],
+          "status": "model",
+          "caption": "מבט מתוך חדר המדרגות המזרחי · מקטע קומות 06–07. מהלך טיפוסי לפי המקור; חומרים, מעקות ודלתות מוצעים. אין חיבור הליכה בין הקומות.",
+          "kind": "detail",
+          "cameraBasis": "Registered typical stair module, adapted to selected office floor; disclosed source level discrepancy",
+          "mode": "office-stair-east-06",
+          "view": 1,
+          "plan": "./assets/plans/office-typical_east_stair_source.png"
+        },
+        {
+          "id": "north-balcony",
+          "label": "מרפסת צפונית",
+          "target": [
+            11.5,
+            32.29,
+            -10.6
+          ],
+          "position": [
+            15,
+            42.79,
+            -25
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "south-balcony",
+          "label": "מרפסת דרומית",
+          "target": [
+            23,
+            32.29,
+            24.8
+          ],
+          "position": [
+            27,
+            42.79,
+            42
+          ],
+          "status": "model",
+          "caption": "מרפסת מתוך מעטפת המקור. חומרי גמר להמחשה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "services",
+          "label": "שירותים וחדרי שירות",
+          "kind": "detail",
+          "mode": "office-floor-07",
+          "view": 3,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "שירותים, חדרי שירות וארכיב בתוך גרעין הקומה לפי התוכנית. האבזור וחומרי הגמר מוצעים להמחשה."
+        },
+        {
+          "id": "meeting-full",
+          "label": "חדרי ישיבות",
+          "kind": "detail",
+          "mode": "office-floor-07",
+          "view": 4,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "חדר הישיבות בגרעין הקומה, עם שולחן ומקומות ישיבה מוצעים. לחללי העבודה הנוספים בחרו במבט כל הקומה."
+        },
+        {
+          "id": "core-full",
+          "label": "הגרעין המלא",
+          "kind": "detail",
+          "mode": "office-floor-07",
+          "view": 5,
+          "eyeLevel": true,
+          "status": "model",
+          "caption": "גרעין הקומה: מעליות, שני חדרי מדרגות, שירותים ומסדרונות; שלוש כניסות למשרדים בפתחי התוכנית. חומרי גמר ודלתות מוצעים להמחשה."
+        }
+      ],
+      "shortLabel": "07"
+    },
+    {
+      "id": "roof",
+      "label": "גג ומפלסי הגג",
+      "group": "גג",
+      "base": 36.79,
+      "regions": [
+        {
+          "id": "overview",
+          "label": "כל הגג",
+          "target": [
+            20,
+            37.6,
+            7
+          ],
+          "position": [
+            64,
+            90,
+            64
+          ],
+          "status": "model",
+          "caption": "כל הגג — חדרי שירות, מדרגות ומעליות, משאבות ומאגר, מערכות ודק ישיבה. פרטי הציוד, הצנרת והריהוט להמחשה; מפלס המים אינו תכנון הידראולי. חתך זה מסיר את תקרות החדרים ואת הכתר העליון. במדרגות הגג המזרחיות קיימים סימוני רומים סותרים במקור; המודל נשען על המפלסים המפורשים ועל מיקום הבור הרשום.",
+          "kind": "detail",
+          "cameraBasis": "Registered source cutaway; disclosed proposed furnishings",
+          "mode": "roof-full",
+          "view": 0
+        },
+        {
+          "id": "deck",
+          "label": "הדק האחורי",
+          "target": [
+            15,
+            38,
+            18
+          ],
+          "position": [
+            24,
+            45,
+            33
+          ],
+          "status": "model",
+          "caption": "כל הגג — חדרי שירות, מדרגות ומעליות, משאבות ומאגר, מערכות ודק ישיבה. פרטי הציוד, הצנרת והריהוט להמחשה; מפלס המים אינו תכנון הידראולי. חתך זה מסיר את תקרות החדרים ואת הכתר העליון. במדרגות הגג המזרחיות קיימים סימוני רומים סותרים במקור; המודל נשען על המפלסים המפורשים ועל מיקום הבור הרשום.",
+          "kind": "detail",
+          "cameraBasis": "Registered source cutaway; disclosed proposed furnishings",
+          "mode": "roof-full",
+          "view": 3
+        },
+        {
+          "id": "kitchen",
+          "label": "אזור המטבח",
+          "target": [
+            2.5,
+            38.5,
+            16.8
+          ],
+          "position": [
+            -8,
+            48,
+            27
+          ],
+          "status": "model",
+          "caption": "חלל המטבחון לפי פרט500-04-A: מידות ארונות, רצפה37.40+, משטח38.30+ ותקרה39.84+. צבעים, מרקמי חומרים ופרטי מכשירים להמחשה.",
+          "kind": "detail",
+          "cameraBasis": "Dedicated source-room eye-level camera with explicitly proposed surface treatment",
+          "mode": "roof-kitchen",
+          "view": 0,
+          "render": "./assets/renders/roof-kitchen.png",
+          "plan": "./assets/plans/kitchen-detail-source.png"
+        },
+        {
+          "id": "pump-room",
+          "label": "חדר משאבות",
+          "target": [
+            24.7,
+            38.5,
+            13.8
+          ],
+          "position": [
+            37,
+            51,
+            25
+          ],
+          "status": "partial",
+          "caption": "חדר משאבות בגג: גבולות2.10×4.70מ׳ ומפלס37.40+ לפי תוכנית המקור. גובה2.70מ׳, גמרים, משאבות וצנרת להמחשה. הציוד אינו תכנון הנדסי מאושר.",
+          "kind": "detail",
+          "cameraBasis": "Source registered room bounds, eye-level view; ceiling and equipment proposed",
+          "mode": "roof-pump-room",
+          "view": 0,
+          "render": "./assets/renders/roof-pump-room.png",
+          "plan": "./assets/plans/roof-pump-source.png"
+        },
+        {
+          "id": "west-stair",
+          "label": "יציאת מדרגות מערביות",
+          "target": [
+            15.9,
+            36.8,
+            13
+          ],
+          "position": [
+            3,
+            49,
+            25
+          ],
+          "status": "partial",
+          "caption": "יציאת המדרגות לגג: מהלכים של 12 ו־15 רומים אל מפלס 36.38, ומשם שש מדרגות למפלס 37.40. רוחב המעבר 1.80 מ׳ בתוכנית הגג לעומת 2.00 מ׳ בפרט; התוכנית הראשית שימשה להדמיה. גמרים, דלתות ומעקות מוצעים.",
+          "kind": "detail",
+          "cameraBasis": "Registered roof corridor and source-specific stair elevations; dimension conflict retained",
+          "mode": "roof-west-stair",
+          "view": 0,
+          "render": "./assets/renders/roof-west-stair.png",
+          "plan": "./assets/plans/roof-stair-registered-source.png"
+        },
+        {
+          "id": "upper-core",
+          "label": "גגות הגרעינים",
+          "target": [
+            24,
+            41,
+            11
+          ],
+          "position": [
+            43,
+            62,
+            28
+          ],
+          "status": "partial",
+          "caption": "מפלסי הגרעינים העליונים והמעקות מתוך המודל.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "crown",
+          "label": "כתר המבנה והחזית",
+          "target": [
+            24,
+            39,
+            0
+          ],
+          "position": [
+            54,
+            53,
+            -28
+          ],
+          "status": "model",
+          "caption": "הכתר והחיבור לחזית מתוך המודל; פרטי החיבור כוללים השלמות הדמיה.",
+          "kind": "3d",
+          "cameraBasis": "Model-local spatial framing; not a surveyed camera"
+        },
+        {
+          "id": "elevators",
+          "label": "מבואת המעליות",
+          "kind": "detail",
+          "mode": "roof-lift-lobby",
+          "view": 0,
+          "status": "model",
+          "caption": "מבואת המעליות מתוך תוכנית המקור: קירות ופתחים רשומים. דלתות, גמרים, תקרה ותאורה להמחשה. זהו חלל נפרד מהמסדרונות שטרם הושלמו.",
+          "cameraBasis": "Registered source walls and elevator openings, with disclosed interior design assumptions",
+          "plan": "./assets/plans/roof_lift_lobby_source.png",
+          "render": "./assets/renders/roof_lift_lobby.png"
+        },
+        {
+          "id": "systems-full",
+          "label": "מערכות ומאגר",
+          "kind": "detail",
+          "mode": "roof-full",
+          "view": 2,
+          "status": "model",
+          "caption": "כל הגג — חדרי שירות, מדרגות ומעליות, משאבות ומאגר, מערכות ודק ישיבה. פרטי הציוד, הצנרת והריהוט להמחשה; מפלס המים אינו תכנון הידראולי. חתך זה מסיר את תקרות החדרים ואת הכתר העליון. במדרגות הגג המזרחיות קיימים סימוני רומים סותרים במקור; המודל נשען על המפלסים המפורשים ועל מיקום הבור הרשום.",
+          "position": [
+            23,
+            47,
+            -10
+          ],
+          "target": [
+            18,
+            38,
+            0
+          ],
+          "cameraBasis": "Registered source cutaway; disclosed proposed furnishings"
+        }
+      ],
+      "shortLabel": "גג"
+    }
+  ]
+}
