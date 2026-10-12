@@ -1,0 +1,2 @@
+document.getElementById('reload').onclick=()=>location.reload();
+import('./app.js?v=20261012-revision3').catch(error=>{document.getElementById('loading').hidden=true;document.getElementById('viewer-error').hidden=false;document.getElementById('error-message').textContent=location.protocol==='file:'?'להפעלת המודל לחצו על Start_Local_Viewer.cmd ופתחו את הכתובת המקומית. הגלריה והמודל זמינים דרך הכתובת המקומית.':'לא הצלחנו לטעון את התצוגה. ההדמיות השמורות זמינות בגלריה. '+String(error.message||error);});

@@ -1,0 +1,11 @@
+.site-sources-dialog{width:min(960px,94vw);padding:28px;color:var(--ink)}
+.site-source-header{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.site-source-header h2{font-size:28px;font-weight:400;margin:0}.site-source-header button{flex:none}
+.site-source-body>p{font-size:16px;line-height:1.85;max-width:760px;color:var(--muted)}
+.site-source-body figure{margin:24px 0;background:#e4e9df}.site-source-body figure img{width:100%;max-height:50vh;object-fit:contain}.site-source-body figcaption{padding:12px 16px;font-size:12px;line-height:1.7}
+.site-source-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:28px 0}.site-source-grid h3{font-size:16px;font-weight:500;margin:0 0 10px}.site-source-grid p{font-size:13px;line-height:1.9;margin:0;color:var(--muted)}
+.site-source-links{display:flex;gap:12px;flex-wrap:wrap}.site-source-links a{font-size:13px;border:1px solid var(--line);padding:12px 15px;border-radius:4px;text-decoration:none}.site-source-links a:hover{background:#e9eee4}
+#site-sources{font-size:12px;width:100%;text-align:right;margin-top:10px;background:transparent}
+.site-compass{position:absolute;top:28px;left:30px;width:52px;height:68px;z-index:2;pointer-events:none;text-align:center;color:#254f45;filter:drop-shadow(0 1px 4px #ffffffb0)}.site-compass>span:first-child{font-size:10px;display:block;line-height:18px}.site-compass-arrow{display:block;position:absolute;top:22px;left:8px;width:36px;height:36px;border:1px solid #759087aa;border-radius:50%;transform-origin:center}.site-compass-arrow:before{content:'';position:absolute;top:5px;left:13px;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:14px solid #254f45}.site-compass-arrow:after{content:'';position:absolute;top:19px;left:13px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:11px solid #92a69d}
+@media(max-width:760px){.site-compass{top:14px;left:10px;transform:scale(.85);transform-origin:top left}.stage-heading{padding-left:46px}}
+@media(max-width:620px){.site-sources-dialog{padding:18px}.site-source-header h2{font-size:23px}.site-source-grid{grid-template-columns:1fr;gap:20px}.site-source-body>p{font-size:14px}}

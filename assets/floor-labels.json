@@ -1,0 +1,1528 @@
+{
+  "version": 3,
+  "coordinateSystem": "Three.js world metres [BlenderX,BlenderZ,-BlenderY]",
+  "notes": [
+    "Purpose labels are source uses; furniture and finishes remain proposed.",
+    "Labels are placed on the floor plane, slightly offset to avoid depth flicker."
+  ],
+  "models": {
+    "lower-ground-full": [
+      {
+        "id": "entrance-court",
+        "text": "רחבת כניסה / לובי ראשי",
+        "position": [
+          8.1,
+          -0.3212,
+          4.1
+        ],
+        "width": 5,
+        "rotation": 0,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Source lobby boundary; slope interpolation and light paving proposed",
+        "polygonXY": [
+          [
+            2.5195,
+            -10.4006
+          ],
+          [
+            10.9862,
+            -10.5008
+          ],
+          [
+            10.9284,
+            -8.9895
+          ],
+          [
+            16.6307,
+            -9.0149
+          ],
+          [
+            18.9237,
+            -3.1687
+          ],
+          [
+            12.7804,
+            -1.1811
+          ],
+          [
+            9.2055,
+            1.9442
+          ],
+          [
+            2.5195,
+            -0.7
+          ]
+        ],
+        "slopeZ": -0.0125
+      },
+      {
+        "id": "refuse-room",
+        "text": "חדר אשפה",
+        "position": [
+          6.2,
+          -0.447,
+          13.6
+        ],
+        "width": 3.4,
+        "rotation": 0,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Room label and finished level40.25 visible in100-05-A; polygon traced to inner wall faces",
+        "polygonXY": [
+          [
+            3.32,
+            -10.47
+          ],
+          [
+            9.06,
+            -10.47
+          ],
+          [
+            9.06,
+            -18.2
+          ],
+          [
+            8.16,
+            -18.2
+          ],
+          [
+            4.85,
+            -17.25
+          ],
+          [
+            3.4,
+            -15.8
+          ],
+          [
+            2.25,
+            -13.8
+          ],
+          [
+            2.22,
+            -12.6
+          ]
+        ],
+        "slopeZ": 0.005
+      },
+      {
+        "id": "refuse-bin-storage",
+        "text": "אזור אצירת פחים",
+        "position": [
+          10.5,
+          -0.44,
+          15
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Eight bin symbols in source; same40.25 finished level. No electrical-room designation",
+        "polygonXY": [
+          [
+            9.26,
+            -10.47
+          ],
+          [
+            12.33,
+            -10.47
+          ],
+          [
+            12.33,
+            -18.2
+          ],
+          [
+            9.26,
+            -18.2
+          ]
+        ],
+        "slopeZ": 0.005
+      },
+      {
+        "id": "service-ramp",
+        "text": "מעבר שירות / רמפה",
+        "position": [
+          13.25,
+          -0.0855,
+          15.7
+        ],
+        "width": 1.5,
+        "rotation": 1.5707963267948966,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Modeled from source 14.9m2 room and7.8%slope, north40.20 to south40.75. Ramp-to-landing division approximately registered.",
+        "polygonXY": [
+          [
+            12.53,
+            -10.45
+          ],
+          [
+            14.33,
+            -10.45
+          ],
+          [
+            14.33,
+            -18.2
+          ],
+          [
+            12.53,
+            -18.2
+          ]
+        ],
+        "slopeZ": 0.078
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          0.055,
+          12.6
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Source lobby clear width3m",
+        "polygonXY": [
+          [
+            20.33,
+            -8.65
+          ],
+          [
+            23.33,
+            -8.65
+          ],
+          [
+            23.33,
+            -16.15
+          ],
+          [
+            20.33,
+            -16.15
+          ]
+        ]
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          0.075,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Source room31.9m2; +0.02 finished floor, furnishings proposed",
+        "polygonXY": [
+          [
+            23.58,
+            -11.5
+          ],
+          [
+            30.45,
+            -11.5
+          ],
+          [
+            30.45,
+            -16.15
+          ],
+          [
+            23.58,
+            -16.15
+          ]
+        ]
+      },
+      {
+        "id": "west-retail",
+        "text": "מסחר",
+        "position": [
+          16.5,
+          0.055,
+          0.2
+        ],
+        "width": 3.2,
+        "rotation": 0,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Source retail region; furniture proposed",
+        "polygonXY": [
+          [
+            9.2055,
+            1.9442
+          ],
+          [
+            13.6353,
+            5.7918
+          ],
+          [
+            15.7544,
+            6.2514
+          ],
+          [
+            17.3387,
+            6.3133
+          ],
+          [
+            19.1006,
+            5.9701
+          ],
+          [
+            21.2165,
+            5.1564
+          ],
+          [
+            23.155063747168974,
+            4.390972964447565
+          ],
+          [
+            19.89374210125654,
+            -3.4825469032047085
+          ],
+          [
+            12.780399999999998,
+            -1.181099999999998
+          ]
+        ]
+      }
+    ],
+    "lower-arrival": [
+      {
+        "id": "entrance-court",
+        "text": "רחבת כניסה / לובי ראשי",
+        "position": [
+          8.1,
+          -0.3212,
+          4.1
+        ],
+        "width": 5,
+        "rotation": 0,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Source lobby boundary; slope interpolation and light paving proposed",
+        "polygonXY": [
+          [
+            2.5195,
+            -10.4006
+          ],
+          [
+            10.9862,
+            -10.5008
+          ],
+          [
+            10.9284,
+            -8.9895
+          ],
+          [
+            16.6307,
+            -9.0149
+          ],
+          [
+            18.9237,
+            -3.1687
+          ],
+          [
+            12.7804,
+            -1.1811
+          ],
+          [
+            9.2055,
+            1.9442
+          ],
+          [
+            2.5195,
+            -0.7
+          ]
+        ],
+        "slopeZ": -0.0125
+      },
+      {
+        "id": "west-retail",
+        "text": "מסחר",
+        "position": [
+          16.5,
+          0.055,
+          0.2
+        ],
+        "width": 3.2,
+        "rotation": 0,
+        "source": "קומת קרקע תחתונה - 100-05-A.pdf",
+        "basis": "Source retail region; furniture proposed",
+        "polygonXY": [
+          [
+            9.2055,
+            1.9442
+          ],
+          [
+            13.6353,
+            5.7918
+          ],
+          [
+            15.7544,
+            6.2514
+          ],
+          [
+            17.3387,
+            6.3133
+          ],
+          [
+            19.1006,
+            5.9701
+          ],
+          [
+            21.2165,
+            5.1564
+          ],
+          [
+            23.155063747168974,
+            4.390972964447565
+          ],
+          [
+            19.89374210125654,
+            -3.4825469032047085
+          ],
+          [
+            12.780399999999998,
+            -1.181099999999998
+          ]
+        ]
+      }
+    ],
+    "upper-ground-full": [
+      {
+        "id": "west-retail",
+        "text": "מסחר",
+        "position": [
+          8.4,
+          3.315,
+          24.6
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "100-06-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "east-retail",
+        "text": "מסחר",
+        "position": [
+          31.34,
+          3.205,
+          22.6
+        ],
+        "width": 4,
+        "rotation": 1.5707963267948966,
+        "source": "100-06-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          3.795,
+          12.5
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "100-06-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          3.815,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "100-06-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "office-floor-01": [
+      {
+        "id": "offices",
+        "text": "משרדים",
+        "position": [
+          18.1,
+          7.365,
+          24.8
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "101-07-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          7.365,
+          12.4
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "101-07-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          7.385,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "101-07-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "toilets",
+        "text": "שירותים",
+        "position": [
+          10.35,
+          7.387,
+          14.8
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "101-07-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "archive",
+        "text": "ארכיב / מחסן",
+        "position": [
+          7.42,
+          7.365,
+          14.9
+        ],
+        "width": 2.7,
+        "rotation": 1.5707963267948966,
+        "source": "101-07-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "office-floor-02": [
+      {
+        "id": "offices",
+        "text": "משרדים",
+        "position": [
+          18.1,
+          11.445,
+          24.8
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          11.445,
+          12.4
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          11.465,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "toilets",
+        "text": "שירותים",
+        "position": [
+          10.35,
+          11.467,
+          14.8
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "archive",
+        "text": "ארכיב / מחסן",
+        "position": [
+          7.42,
+          11.445,
+          14.9
+        ],
+        "width": 2.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "office-floor-03": [
+      {
+        "id": "offices",
+        "text": "משרדים",
+        "position": [
+          18.1,
+          15.525,
+          24.8
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          15.525,
+          12.4
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          15.545,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "toilets",
+        "text": "שירותים",
+        "position": [
+          10.35,
+          15.547,
+          14.8
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "archive",
+        "text": "ארכיב / מחסן",
+        "position": [
+          7.42,
+          15.525,
+          14.9
+        ],
+        "width": 2.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "office-floor-04": [
+      {
+        "id": "offices",
+        "text": "משרדים",
+        "position": [
+          18.1,
+          19.605,
+          24.8
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          19.605,
+          12.4
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          19.625,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "toilets",
+        "text": "שירותים",
+        "position": [
+          10.35,
+          19.627,
+          14.8
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "archive",
+        "text": "ארכיב / מחסן",
+        "position": [
+          7.42,
+          19.605,
+          14.9
+        ],
+        "width": 2.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "office-floor-05": [
+      {
+        "id": "offices",
+        "text": "משרדים",
+        "position": [
+          18.1,
+          23.685,
+          24.8
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          23.685,
+          12.4
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          23.705,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "toilets",
+        "text": "שירותים",
+        "position": [
+          10.35,
+          23.707,
+          14.8
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "archive",
+        "text": "ארכיב / מחסן",
+        "position": [
+          7.42,
+          23.685,
+          14.9
+        ],
+        "width": 2.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "office-floor-06": [
+      {
+        "id": "offices",
+        "text": "משרדים",
+        "position": [
+          18.1,
+          27.765,
+          24.8
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          27.765,
+          12.4
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          27.785,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "toilets",
+        "text": "שירותים",
+        "position": [
+          10.35,
+          27.787,
+          14.8
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "archive",
+        "text": "ארכיב / מחסן",
+        "position": [
+          7.42,
+          27.765,
+          14.9
+        ],
+        "width": 2.7,
+        "rotation": 1.5707963267948966,
+        "source": "102-08-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "office-floor-07": [
+      {
+        "id": "offices",
+        "text": "משרדים",
+        "position": [
+          18.1,
+          31.845,
+          24.8
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "107-09-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          31.845,
+          12.4
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "107-09-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "shelter",
+        "text": "ממ״מ",
+        "position": [
+          29,
+          31.865,
+          13.5
+        ],
+        "width": 1.7,
+        "rotation": 1.5707963267948966,
+        "source": "107-09-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "toilets",
+        "text": "שירותים",
+        "position": [
+          10.35,
+          31.867,
+          14.8
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "107-09-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "archive",
+        "text": "ארכיב / מחסן",
+        "position": [
+          7.42,
+          31.845,
+          14.9
+        ],
+        "width": 2.7,
+        "rotation": 1.5707963267948966,
+        "source": "107-09-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "roof-full": [
+      {
+        "id": "lift-lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.85,
+          37.455,
+          14.1
+        ],
+        "width": 2.4,
+        "rotation": 1.5707963267948966,
+        "source": "108-10-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "pump-room",
+        "text": "חדר משאבות",
+        "position": [
+          24.84,
+          37.455,
+          14.6
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "108-10-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "reservoir",
+        "text": "מאגר מים",
+        "position": [
+          27.1,
+          38.405,
+          14.6
+        ],
+        "width": 2.5,
+        "rotation": 1.5707963267948966,
+        "source": "108-10-A",
+        "basis": "Room use from plan; label above illustrative water cutaway surface",
+        "polygonXY": null
+      },
+      {
+        "id": "kitchen",
+        "text": "מטבח",
+        "position": [
+          2.15,
+          37.455,
+          17
+        ],
+        "width": 2.7,
+        "rotation": 0,
+        "source": "108-10-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "deck",
+        "text": "דק הגג",
+        "position": [
+          18.3,
+          37.435,
+          23
+        ],
+        "width": 4,
+        "rotation": 0,
+        "source": "108-10-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "mechanical",
+        "text": "מערכות הגג",
+        "position": [
+          15.36,
+          36.845,
+          2.0
+        ],
+        "width": 4,
+        "rotation": 1.5707963267948966,
+        "source": "108-10-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "B01-overview": [
+      {
+        "id": "lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          -4.345,
+          13.3
+        ],
+        "width": 2.4,
+        "rotation": 0,
+        "source": "קומת חניון 01 - B01-04-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            17.4,
+            -8.1
+          ],
+          [
+            23.6,
+            -8.1
+          ],
+          [
+            23.6,
+            -18.1
+          ],
+          [
+            17.4,
+            -18.1
+          ],
+          [
+            17.4,
+            -10.2
+          ]
+        ]
+      },
+      {
+        "id": "low-voltage-room",
+        "text": "חדר מתח נמוך",
+        "position": [
+          25.15,
+          -3.315,
+          14.5
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 01 - B01-04-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            23.6,
+            -18.1
+          ],
+          [
+            23.6,
+            -10.9
+          ],
+          [
+            26.7,
+            -10.9
+          ],
+          [
+            26.7,
+            -18.1
+          ]
+        ]
+      },
+      {
+        "id": "transformer-room",
+        "text": "חדר שנאים",
+        "position": [
+          31.900000000000002,
+          -3.495,
+          14.02907
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 01 - B01-04-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            30.6,
+            -17.61163
+          ],
+          [
+            30.6,
+            -10.9
+          ],
+          [
+            33.2,
+            -10.9
+          ],
+          [
+            33.2,
+            -16.70465
+          ]
+        ]
+      },
+      {
+        "id": "electrical-room",
+        "text": "חשמל קומתי",
+        "position": [
+          25.15,
+          -4.345,
+          8.66
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 01 - B01-04-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            26.7,
+            -8.1
+          ],
+          [
+            26.7,
+            -10.9
+          ],
+          [
+            23.6,
+            -10.9
+          ],
+          [
+            23.6,
+            -8.1
+          ]
+        ]
+      }
+    ],
+    "B02-overview": [
+      {
+        "id": "lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          -7.445,
+          13.3
+        ],
+        "width": 2.4,
+        "rotation": 0,
+        "source": "קומת חניון 02 - B02-03-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            17.4,
+            -8.1
+          ],
+          [
+            23.6,
+            -8.1
+          ],
+          [
+            23.6,
+            -18.1
+          ],
+          [
+            17.4,
+            -18.1
+          ],
+          [
+            17.4,
+            -10.2
+          ]
+        ]
+      },
+      {
+        "id": "public-services",
+        "text": "שירות ציבורי",
+        "position": [
+          25.15,
+          -5.945,
+          14.5
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 02 - B02-03-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            23.6,
+            -18.1
+          ],
+          [
+            23.6,
+            -10.9
+          ],
+          [
+            26.7,
+            -10.9
+          ],
+          [
+            26.7,
+            -18.1
+          ]
+        ]
+      },
+      {
+        "id": "private-services",
+        "text": "שירות פרטי",
+        "position": [
+          28.76,
+          -6.145,
+          15.122326000000001
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 02 - B02-03-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            29.2,
+            -18.1
+          ],
+          [
+            26.7,
+            -18.1
+          ],
+          [
+            26.7,
+            -10.9
+          ],
+          [
+            30.6,
+            -10.9
+          ],
+          [
+            30.6,
+            -17.61163
+          ]
+        ]
+      },
+      {
+        "id": "store-west",
+        "text": "מחסן",
+        "position": [
+          31.900000000000002,
+          -6.355,
+          14.02907
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 02 - B02-03-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            30.6,
+            -17.61163
+          ],
+          [
+            30.6,
+            -10.9
+          ],
+          [
+            33.2,
+            -10.9
+          ],
+          [
+            33.2,
+            -16.70465
+          ]
+        ]
+      },
+      {
+        "id": "store-east",
+        "text": "מחסן",
+        "position": [
+          34.8574,
+          -6.455,
+          13.6841
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 02 - B02-03-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            36.5,
+            -12.5
+          ],
+          [
+            35.8,
+            -14.5
+          ],
+          [
+            33.5,
+            -16.6
+          ],
+          [
+            33.2,
+            -16.70465
+          ],
+          [
+            33.2,
+            -10.9
+          ],
+          [
+            36.22414,
+            -10.9
+          ]
+        ]
+      },
+      {
+        "id": "electrical-room",
+        "text": "חשמל קומתי",
+        "position": [
+          25.15,
+          -7.445,
+          8.66
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 02 - B02-03-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            26.7,
+            -8.1
+          ],
+          [
+            26.7,
+            -10.9
+          ],
+          [
+            23.6,
+            -10.9
+          ],
+          [
+            23.6,
+            -8.1
+          ]
+        ]
+      }
+    ],
+    "B03-overview": [
+      {
+        "id": "lobby",
+        "text": "מבואת מעליות",
+        "position": [
+          21.8,
+          -10.445,
+          13.3
+        ],
+        "width": 2.4,
+        "rotation": 0,
+        "source": "קומת חניון 03 - B03-02-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            17.4,
+            -8.1
+          ],
+          [
+            23.6,
+            -8.1
+          ],
+          [
+            23.6,
+            -18.1
+          ],
+          [
+            17.4,
+            -18.1
+          ],
+          [
+            17.4,
+            -10.2
+          ]
+        ]
+      },
+      {
+        "id": "electrical-room",
+        "text": "חשמל קומתי",
+        "position": [
+          25.15,
+          -10.445,
+          8.66
+        ],
+        "width": 2.1,
+        "rotation": 0,
+        "source": "קומת חניון 03 - B03-02-A.pdf",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": [
+          [
+            26.7,
+            -8.1
+          ],
+          [
+            26.7,
+            -10.9
+          ],
+          [
+            23.6,
+            -10.9
+          ],
+          [
+            23.6,
+            -8.1
+          ]
+        ]
+      }
+    ],
+    "B04-overview": [
+      {
+        "id": "storage",
+        "text": "מחסנים",
+        "position": [
+          18.24,
+          -11.515,
+          28.24
+        ],
+        "width": 2.4,
+        "rotation": 0,
+        "source": "B04-01-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "pumps",
+        "text": "חדר משאבות",
+        "position": [
+          25.6,
+          -12.015,
+          17.2
+        ],
+        "width": 2.6,
+        "rotation": 0,
+        "source": "B04-01-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      },
+      {
+        "id": "reservoir",
+        "text": "מאגרי מים",
+        "position": [
+          26,
+          -7.805,
+          14
+        ],
+        "width": 3.6,
+        "rotation": 0,
+        "source": "B04-01-A",
+        "basis": "Label above source water surface; reservoir floor is below water",
+        "polygonXY": null
+      }
+    ],
+    "B04-storage": [
+      {
+        "id": "storage",
+        "text": "מחסנים",
+        "position": [
+          18.24,
+          -11.515,
+          28.24
+        ],
+        "width": 2.4,
+        "rotation": 0,
+        "source": "B04-01-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "B04-pump-room": [
+      {
+        "id": "pumps",
+        "text": "חדר משאבות",
+        "position": [
+          25.6,
+          -12.015,
+          17.2
+        ],
+        "width": 2.6,
+        "rotation": 0,
+        "source": "B04-01-A",
+        "basis": "Room use and registered position from architectural plan",
+        "polygonXY": null
+      }
+    ],
+    "B04-reservoirs": [
+      {
+        "id": "reservoir",
+        "text": "מאגרי מים",
+        "position": [
+          26,
+          -7.805,
+          14
+        ],
+        "width": 3.6,
+        "rotation": 0,
+        "source": "B04-01-A",
+        "basis": "Label above source water surface; reservoir floor is below water",
+        "polygonXY": null
+      }
+    ]
+  }
+}

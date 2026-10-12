@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בית הלר · הסביבה והקומות החדשות</title>
+  <style>
+    @font-face {
+      font-family: LocalHebrew;
+      src: local("Arial");
+      font-display: swap;
+    }
+
+    :root {
+      font-family: LocalHebrew, Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-synthesis: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+
+      /* App Palette: Warm white & Forest Green */
+      --ink: #23393d;
+      --ink-dark: #162427;
+      --muted: #687875;
+      --muted-light: #83928f;
+      --line: #d9e0da;
+      --line-subtle: #e6ece7;
+      --green: #255b56;
+      --green-dark: #1b433f;
+      --green-deep: #143330;
+      --green-tint: #eaf1ed;
+      --paper: #f8faf6;
+      --paper-white: #ffffff;
+      --bg: #e9ede9;
+      --amber: #b47c33;
+      --amber-dark: #8a5a1f;
+      --amber-tint: #fcf6ed;
+      --amber-line: #ebd6b7;
+
+      --shadow-sm: 0 1px 3px rgba(35, 57, 61, 0.05);
+      --shadow-md: 0 4px 14px rgba(35, 57, 61, 0.07);
+      --shadow-lg: 0 12px 30px rgba(35, 57, 61, 0.10);
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 15px;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Accessibility Focus States */
+    button:focus-visible,
+    input:focus-visible,
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--amber);
+      outline-offset: 3px;
+    }
+
+    /* Header / Top Navigation Bar */
+    .topbar {
+      background-color: var(--paper);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .identity-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: var(--green-tint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      flex-shrink: 0;
+      border: 1px solid var(--line);
+    }
+
+    .identity-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--green);
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .identity-text strong {
+      display: block;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--green-deep);
+    }
+
+    .identity-text small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    .topbar-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Badges & Tags */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .badge-draft {
+      background-color: var(--amber-tint);
+      color: var(--amber-dark);
+      border: 1px solid var(--amber-line);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .badge-draft::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--amber);
+    }
+
+    .badge-neutral {
+      background-color: var(--paper-white);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+
+    /* Page Container */
+    .page-wrapper {
+      max-width: 1180px;
+      margin: 28px auto 48px;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Draft Notice Banner */
+    .draft-banner {
+      background-color: var(--amber-tint);
+      border: 1px solid var(--amber-line);
+      border-right: 4px solid var(--amber);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .draft-banner-content h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--amber-dark);
+      margin-bottom: 4px;
+    }
+
+    .draft-banner-content p {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .draft-banner-meta {
+      font-size: 11px;
+      color: var(--amber-dark);
+      white-space: nowrap;
+      text-align: left;
+      direction: ltr;
+      font-family: monospace;
+    }
+
+    /* Hero Section */
+    .hero-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 36px 36px 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-header {
+      margin-bottom: 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--green-deep);
+      line-height: 1.25;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 860px;
+    }
+
+    /* Architectural Disclaimer Box */
+    .hero-disclaimer {
+      margin-top: 20px;
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--muted);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .disclaimer-tag {
+      font-weight: 600;
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    .hero-figure {
+      margin-top: 28px;
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .hero-image-container {
+      position: relative;
+      background: #dfede5;
+      min-height: 380px;
+      max-height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      max-height: 520px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .figure-caption {
+      padding: 14px 20px;
+      background: var(--paper);
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .caption-note {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .caption-path {
+      font-family: monospace;
+      font-size: 11px;
+      direction: ltr;
+      color: var(--muted-light);
+    }
+
+    /* Content Section Cards */
+    .section-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-head {
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .section-head-title-group h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--green-deep);
+      line-height: 1.3;
+    }
+
+    .section-head-title-group p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .section-head-badge {
+      font-size: 11px;
+      color: var(--muted);
+      direction: ltr;
+      font-family: monospace;
+    }
+
+    /* Fact Callouts Grid */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .fact-card {
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    .fact-card-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .fact-card-value {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* Before / After Comparison Slider */
+    .comparison-container {
+      margin: 24px 0 16px;
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .comparison-toolbar {
+      padding: 12px 18px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .comparison-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .comparison-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .comp-btn {
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      font-size: 12px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .comp-btn:hover {
+      background: var(--green-tint);
+      border-color: var(--green);
+      color: var(--green-deep);
+    }
+
+    .comp-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Comparison Stage (LTR isolated for flawless pixel matching) */
+    .comparison-stage {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      direction: ltr; /* Coordinate stability */
+      overflow: hidden;
+      background: #e2e8e3;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+    }
+
+    .comp-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .comp-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .comp-layer-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      clip-path: polygon(0 0, var(--slider-pos, 50%) 0, var(--slider-pos, 50%) 100%, 0 100%);
+      transition: clip-path 0.05s linear;
+    }
+
+    .comp-layer-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Visual Divider Bar */
+    .comp-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--slider-pos, 50%);
+      width: 2px;
+      background: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 5;
+      transition: left 0.05s linear;
+    }
+
+    .comp-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--green-deep);
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+    }
+
+    .comp-handle svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    /* Layer Floating Labels */
+    .comp-label {
+      position: absolute;
+      top: 16px;
+      padding: 6px 14px;
+      background: rgba(35, 57, 61, 0.82);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: var(--radius-pill);
+      pointer-events: none;
+      z-index: 4;
+      direction: rtl;
+    }
+
+    .comp-label-before {
+      right: 16px;
+    }
+
+    .comp-label-after {
+      left: 16px;
+    }
+
+    /* Range Input for Keyboard & Touch Accessibility */
+    .comp-range-input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: ew-resize;
+      z-index: 10;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    /* Secondary Figures Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .figure-card {
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .figure-image-wrapper {
+      position: relative;
+      background: #e4ebe5;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .figure-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .figure-meta-content {
+      padding: 16px 18px;
+      background: var(--paper);
+      border-top: 1px solid var(--line);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .figure-meta-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .figure-meta-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .figure-meta-footer {
+      font-size: 11px;
+      font-family: monospace;
+      direction: ltr;
+      color: var(--muted-light);
+      padding-top: 6px;
+      border-top: 1px dashed var(--line);
+    }
+
+    /* Evidence & Source Matrix Table */
+    .table-container {
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      margin: 18px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: right;
+    }
+
+    thead th {
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 600;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line-subtle);
+      color: var(--ink);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background-color: var(--paper);
+    }
+
+    .cell-id {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    .cell-status {
+      white-space: nowrap;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--muted);
+    }
+
+    .status-pill-active {
+      background: var(--green-tint);
+      color: var(--green-dark);
+      border-color: #bed5c5;
+    }
+
+    .status-pill-draft {
+      background: var(--amber-tint);
+      color: var(--amber-dark);
+      border-color: var(--amber-line);
+    }
+
+    /* Structured QA Checklist */
+    .qa-checklist {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .qa-item {
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .qa-item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qa-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .qa-item-detail {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* Footer / Protocol Outcomes Card */
+    .protocol-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--green);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .protocol-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--green-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 16px;
+    }
+
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .protocol-field {
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .protocol-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .protocol-value {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .protocol-placeholder {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Final Metadata Footer */
+    .site-footer {
+      margin-top: 16px;
+      padding: 20px 0 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .site-footer p {
+      margin-bottom: 4px;
+    }
+
+    /* Responsive Rules */
+    @media (max-width: 860px) {
+      .page-wrapper {
+        margin: 18px auto 32px;
+        padding: 0 16px;
+        gap: 20px;
+      }
+
+      .hero-card,
+      .section-card,
+      .protocol-card {
+        padding: 24px 20px;
+      }
+
+      .hero-title {
+        font-size: 26px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .protocol-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-stage {
+        height: 340px;
+      }
+
+      .hero-image-container,
+      .hero-image {
+        min-height: 260px;
+        max-height: 340px;
+      }
+
+      .hero-disclaimer {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+  </style>
+<style>
+.hero-image-container,.hero-image{height:auto!important;min-height:0!important;max-height:none!important}.hero-image{display:block;width:100%;object-fit:contain}.r3-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.r3-actions a,.r3-actions button{background:#1c4842;color:white;border:0;padding:11px 18px;border-radius:6px;text-decoration:none;font:inherit;cursor:pointer}.r3-actions button[aria-pressed="false"]{background:#e4e8df;color:#244841}.r3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:22px}.r3-grid figure{margin:0;border:1px solid #deded3;border-radius:12px;overflow:hidden;background:white}.r3-grid img{width:100%;height:auto;display:block}.r3-grid figcaption{padding:16px;line-height:1.7}.r3-grid h3{font-size:18px;margin:0 0 6px}.r3-wide{width:100%;height:auto;display:block;border-radius:10px}.r3-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}.r3-legend span{border-inline-start:5px solid var(--swatch);padding-inline-start:8px}.r3-proof{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}.r3-proof div{padding:16px;background:#e8ede5;border-radius:8px}.r3-proof strong{display:block;font-size:30px;color:#244841}.r3-links{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px}.r3-links a{color:#244841}.r3-muted{color:#626b65;font-size:14px;line-height:1.8}p{line-height:1.8}.r3-photo{margin-top:24px}a:focus-visible,button:focus-visible{outline:3px solid #b47932;outline-offset:3px}@media(max-width:650px){.r3-grid{grid-template-columns:1fr}.r3-proof{grid-template-columns:repeat(2,1fr)}.hero-title{font-size:28px}.topbar-meta{display:none}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head>
+<body>
+<header class="topbar"><div class="topbar-inner"><div class="identity-text"><strong>בית הלר</strong><small>הסביבה והקומות החדשות · מהדורה 3</small></div><a href="index.html">פתיחת הבניין ←</a></div></header>
+<main class="page-wrapper">
+<article class="hero-card"><header class="hero-header"><div class="hero-eyebrow">רחובות · פארק המדע</div><h1 class="hero-title">הבניין, בתוך המקום שלו.</h1><p class="hero-subtitle">סביבה שנבנתה ממקורות, שבע קומות עם אופי שונה, וכניסות מחברות מהמסדרונות למשרדים.</p></header>
+<div class="r3-actions" role="group" aria-label="השוואת המודל וההמחשה"><button data-image="assets/concepts/revision3-site-aerial-ai.png" aria-pressed="true">המחשת גמרים ב־AI</button><button data-image="assets/renders/context-r3-final-overview.png" aria-pressed="false">המודל שעליו היא מבוססת</button></div>
+<figure class="hero-figure"><div class="hero-image-container"><img id="r3-comparison" class="hero-image" src="assets/concepts/revision3-site-aerial-ai.png" alt="הבניין בין הכיכר, החניונים ומסילות הרכבת"></div><figcaption class="figure-caption" id="r3-comparison-caption">המחשת AI של המבנה המוגמר. תקרות חדרי הגג הוסרו בתמונה להצגת הפנים; גמרים וצמחייה מוצעים.</figcaption></figure>
+<div class="r3-actions"><a href="index.html">לסובב ולחקור את הבניין ←</a><a href="gallery.html">לכל ההדמיות ←</a></div></article>
+
+<section class="section-card"><header class="section-head"><div><h2>הסביבה קיבלה מקום ממשי</h2><p>הכיכר, הכבישים, החניונים, שבעה מבנים שכנים וארבע מסילות הוצבו לפי המפה ותצלום האוויר. הפיתוח במגרש והירידה לחניון נשענים על תוכניות הפרויקט.</p></div></header>
+<div class="r3-grid"><figure><img src="assets/concepts/revision3-site-street-ai.png" alt="החזית המעוקלת מעל הכיכר" loading="lazy"><figcaption><h3>מהרחוב אל החזית</h3>זכוכית, מרפסות וצמחייה בתוך הסביבה הממופה. המחשת AI.</figcaption></figure><figure><img src="assets/concepts/revision3-site-ramp-ai.png" alt="הירידה המעוקלת אל פתח החניון" loading="lazy"><figcaption><h3>ירידה רציפה לחניון</h3>תוואי הרמפה, קירות הליווי והמפגש עם הרחוב. המחשת AI; פרופיל ההצבה אינו תכנון תנועה מאושר.</figcaption></figure></div>
+<details class="r3-photo"><summary>לראות איך הסביבה נבדקה מול תצלום האוויר</summary><p>תצלום <bdi>Esri / Vantor</bdi> מ־<bdi>26.02.2025</bdi> מציג את המגרש בזמן חפירה. עליו נבדקה ההתאמה למפה ולתכסית הבניין המתוכנן. הפיתוח העתידי במגרש נלקח מתוכניות <bdi>SITE-016 / SITE-019</bdi> משנת 2026.</p><img class="r3-wide" src="assets/renders/revision3-registered-site.png" alt="תצלום אוויר עם תכסית בית הלר באדום, בניינים בתכלת, דרכים בצהוב ומסילות בוורוד" loading="lazy"><div class="r3-legend"><span style="--swatch:#ed4747">המבנה המתוכנן</span><span style="--swatch:#16bcd0">תכסיות שכנים</span><span style="--swatch:#d5b300">דרכים וחניונים</span><span style="--swatch:#de7cd3">מסילות</span></div><p class="r3-muted">מקורות: Esri World Imagery / Vantor; נתוני מפה © OpenStreetMap contributors. גובה וגמרי השכנים, צמחייה וריהוט רחוב הם השלמה חזותית. הרישום מיועד להמחשה ואינו מדידה סקרית.</p></details>
+<nav class="r3-links" aria-label="מקורות הסביבה"><a href="https://apps.land.gov.il/IturTabotData/takanonim/merkaz/4053784.pdf" target="_blank" rel="noopener">מסמך התכנון הממשלתי ↗</a><a href="https://itzhaki-info.co.il/class-a/" target="_blank" rel="noopener">הפרויקט באתר היזם ↗</a><a href="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noopener">מקור תצלום האוויר ↗</a><a href="https://www.openstreetmap.org/?mlat=31.91076&amp;mlon=34.80872#map=18/31.91076/34.80872" target="_blank" rel="noopener">מפת הסביבה ↗</a></nav></section>
+
+<section class="section-card"><header class="section-head"><div><h2>ארבעה סגנונות, שבע קומות</h2><p>הגרעין, המעטפת ופתחי הכניסה נשמרים לפי התוכניות. בתוך המסגרת הזו, חלוקות השוכרים מציעות דרכי עבודה שונות. התמונות הן המחשות AI; כל פריסה קיימת גם במודל שאפשר לסובב.</p></div></header><div class="r3-grid">
+<figure><img src="assets/concepts/revision3-office-studio-ai.png" alt="חתך קומת סטודיו עם עמדות פתוחות" loading="lazy"><figcaption><h3>01 / 04 · סטודיו פתוח</h3>עמדות עבודה, חדרי ישיבות ופינות שיתוף. 31 ו־29 עמדות בהתאמה.</figcaption></figure>
+<figure><img src="assets/concepts/revision3-office-teams-ai.png" alt="חתך קומה עם חדרי צוות מזוגגים" loading="lazy"><figcaption><h3>02 / 05 · חדרי צוות</h3>36 עמדות בקומה: 20 במרחב הפתוח ו־16 בחדרי צוות.</figcaption></figure>
+<figure><img src="assets/concepts/revision3-office-workshop-ai.png" alt="חתך קומה עם חדר הדרכה ואזורי שיתוף" loading="lazy"><figcaption><h3>03 / 06 · למידה וסדנאות</h3>16 עמדות עבודה, חדר הדרכה ל־12 ואזורי למידה משותפת.</figcaption></figure>
+<figure><img src="assets/concepts/revision3-office-executive-ai.png" alt="חתך קומה עם משרדים אישיים וספרייה" loading="lazy"><figcaption><h3>07 · משרדים אישיים</h3>ארבעה משרדים אישיים, 11 עמדות פתוחות, ספרייה ופינות ישיבה.</figcaption></figure>
+</div></section>
+
+<section class="section-card"><header class="section-head"><div><h2>גם החיבור בין החללים טופל</h2><p>נוספו שלוש כניסות מהמסדרונות בכל קומת משרדים, עם פתחים ממשיים, משקופים, כנפיים וידיות. בחתכי קומה ברירת המחדל היא קירות מלאים; במדרגות, מעליות וחדרי מכונות החשיפה משתנה עם הסיבוב.</p></div></header><div class="r3-grid"><figure><img src="assets/renders/office-floor-02-r3-corridor-door.png" alt="מבט מהמסדרון דרך פתח ודלת אל חדר צוות" loading="lazy"><figcaption><h3>הכניסה מתוך המודל</h3>פתח התוכנית נשאר נקי למעבר. פירוט הדלת והגמר מוצע.</figcaption></figure><figure><img src="assets/concepts/revision3-site-arrival-ai.png" alt="הכניסה והמרפסות עם פנים הבניין המרוהט" loading="lazy"><figcaption><h3>בניין מלא כבר במבט החוץ</h3>שבע הקומות, הגג והמרפסות כלולים במודל השלם. המחשת AI.</figcaption></figure></div>
+<div class="r3-proof"><div><strong>21</strong>כניסות מהמסדרונות</div><div><strong>72</strong>כיתובי רצפה שנבדקו</div><div><strong>7</strong>פריסות קומות שונות</div><div><strong>8</strong>המחשות AI חדשות</div></div><p class="r3-muted" id="acceptance-state">הגרסה המשולבת עברה ביקורת מסירה עצמאית, בדיקות גאומטריה ובדיקת דפדפן במחשב ובמסך צר. מקורות הבניין והתוכניות המקוריים נשמרו.</p></section>
+<footer class="site-footer"><p>בית הלר · מהדורה 3 · המבנה המתוכנן וסביבתו</p><p>להתחיל ממבט הבניין, לעבור בין הקומות, ואז לפתוח את הגלריה.</p></footer>
+</main><script>
+document.querySelectorAll('[data-image]').forEach(button=>button.addEventListener('click',()=>{document.querySelector('#r3-comparison').src=button.dataset.image;document.querySelectorAll('[data-image]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.querySelector('#r3-comparison-caption').textContent=button.dataset.image.includes('concepts')?'המחשת AI של המבנה המוגמר. תקרות חדרי הגג הוסרו בתמונה להצגת הפנים; גמרים וצמחייה מוצעים.':'רינדור המודל המשולב; תקרות חדרי הגג הוסרו להצגת הפנים. התוואים ותכסיות השכנים ממופים.';}));
+</script></body></html>

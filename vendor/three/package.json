@@ -1,0 +1,10 @@
+{
+  "name": "three",
+  "version": "0.180.0",
+  "type": "module",
+  "exports": {
+    ".": "./build/three.module.js"
+  },
+  "private": true,
+  "description": "Local module metadata for offline semantic GLB validation; source files retained from official r180."
+}

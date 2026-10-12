@@ -1,0 +1,20 @@
+{
+  "materials": [
+    {
+      "name": "BH_Material_001",
+      "role": "ARCHITECT_SELECTED_PORCELAIN_80CM"
+    },
+    {
+      "name": "BH_Material_002",
+      "role": "BAMBOO_DECK"
+    },
+    {
+      "name": "BH_Material_003",
+      "role": "PORCELAIN_GRESPANIA_MOMA_GRIS_R10"
+    },
+    {
+      "name": "BH_Material_004",
+      "role": "PAVING_HALF_BOND"
+    }
+  ]
+}

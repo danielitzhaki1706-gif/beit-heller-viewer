@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>בית הלר · סיור הליכה 03</title><link rel="stylesheet" href="./style.css"><script type="importmap">{"imports":{"three":"../vendor/three/build/three.module.js","three/addons/":"../vendor/three/examples/jsm/"}}</script><script src="./boot.js" defer></script></head>
+<body>
+<main id="viewport" aria-label="סיור תלת ממדי בגובה אדם; גררו כדי להביט והשתמשו בחצים כדי ללכת" tabindex="0"></main>
+<header><div class="brand"><small>רחובות / סיור אדריכלי</small><h1>בית הלר <span>ברגל</span></h1></div><nav aria-label="בחירת אזור"><button id="ground-mode" aria-pressed="true">חוץ וכניסה</button></nav><button id="help-button" aria-label="הוראות והיקף הסיור">?</button></header>
+<section id="scope"><span class="dot"></span><span id="zone-label">בחוץ · ליד הכניסה</span><small id="scope-note">מסלול מוגבל · חלק מהבניין פתוח לסיור</small></section>
+<aside id="map-card" aria-label="מיקום בסיור"><div class="map-title"><span>אתם כאן</span><small>גבולות הסיור</small></div><canvas id="minimap" aria-hidden="true"></canvas><small id="location-detail">גובה עיניים 1.65 מ׳</small><small class="map-credit">© OpenStreetMap contributors · ODbL</small></aside>
+<div id="crosshair" aria-hidden="true">+</div><div id="notice" role="status" aria-live="polite"></div>
+<section id="door-prompt" hidden><button id="door-button">פתיחת דלת · E</button><small>תנועת הכנפיים להמחשה</small></section>
+<footer><a class="overview-link" href="../index.html">מבט על המבנה</a><button id="exterior-tour" aria-pressed="false">הקפה חיצונית</button><button id="guided" aria-pressed="false">מסלול כניסה מודרך</button><button id="reset">חזרה להתחלה</button><button id="look-lock">מבט חופשי בעכבר</button><button id="quality">תצוגה: מפורטת</button><span class="desktop-hint">WASD / חצים — הליכה · גרירה — מבט · Esc — עצירה</span></footer>
+<div id="touch-move" aria-label="משטח תנועה במגע"><span id="stick"></span></div><div id="touch-caption" aria-hidden="true">תנועה משמאל · מבט בגרירה</div>
+<section id="loading" role="status"><div class="spinner"></div><h2>מכינים את הסיור</h2><p id="load-text">טוענים את המודל המקומי</p></section>
+<section id="error" hidden role="alert"><h2>הסיור לא נטען</h2><p id="error-text"></p><button id="reload">ניסיון נוסף</button></section>
+<dialog id="help"><p>גרסת בדיקה: הסיור משלב את פיתוח הקרקע האחרון. פנים המבנה זמין רק באזור המסחרי המסומן; אין עדיין מעבר רציף בין קומות. הקרקע והצמחייה כוללות הנחות המחשה.</p><h2>להיכנס פנימה, בגובה העיניים</h2>
+<p>הולכים מהחוץ דרך דלת הזזה לתוך החלל המסחרי בקומת הקרקע התחתונה. התקרבו לדלת ולחצו על הכפתור או על E. זו אינה כניסת הלובי הראשי של המשרדים.</p>
+<p>במחשב: WASD או חצים לתנועה, גרירה למבט. אפשר להפעיל מבט חופשי בעכבר; Esc משחרר אותו. במגע: משטח התנועה משמאל וגרירה על התמונה למבט.</p>
+<p>״מסלול כניסה מודרך״ מחזיר להתחלה, פותח את הדלת והולך פנימה וחזרה. לחיצה, תנועה ידנית, Esc או מעבר לחלון אחר עוצרים אותו. המפה מציגה את אזור הסיור הזמין.</p>
+
+<p>רק המסלול והחללים שנבדקו פתוחים להליכה. אין קפיצה או תעופה. הקרקע הניטרלית מחוץ לפיתוח הקיים אינה תכנית פיתוח. אם התנועה איטית, בחרו ״תצוגה: קלה״.</p>
+<p>מקורות לסביבה: © OpenStreetMap contributors, רישיון ODbL; נכסי Poly Haven ברישיון CC0. הרישום למגרש וגובה המבנים הסמוכים מקורבים.</p><button id="close-help">אפשר להתחיל</button></dialog>
+</body></html>

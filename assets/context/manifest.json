@@ -1,0 +1,28 @@
+{
+  "schema": "beit-heller-context-v1",
+  "accepted": true,
+  "nearfield": "./assets/context/nearfield.glb",
+  "replacesNodes": [
+    "Building_part_0754",
+    "Building_part_0735"
+  ],
+  "hideDefaultGround": true,
+  "surfaceMaterials": [
+    {
+      "name": "BH_Material_004",
+      "role": "PAVING_HALF_BOND"
+    }
+  ],
+  "nearfieldSha256": "a16eac59634ee2849c2b76fe361298c612709311b43e0dd491db8aead2c122fd",
+  "backgroundGeometry": "Baked into context GLB; roads represented by texture on the same ground surface.",
+  "acceptance": "Exterior visualization checkpoint; native pilot reviewed. Browser visual QA remains pending.",
+  "attribution": [
+    "OpenStreetMap contributors, ODbL 1.0",
+    "Poly Haven assets, CC0"
+  ],
+  "limitations": [
+    "Context registration and neighboring massing heights are approximate.",
+    "Plant species, maturity, grade interpolation and finishes include visualization assumptions.",
+    "Interiors and basements are partial; no engineering approval."
+  ]
+}
