@@ -1,2 +1,2 @@
 document.getElementById('reload').onclick=()=>location.reload();
-import('./app.js?v=20261013-r4-final').catch(error=>{document.getElementById('loading').hidden=true;document.getElementById('error').hidden=false;document.getElementById('error-text').textContent=location.protocol==='file:'?'להפעלת הסיור הפעילו את Start_Local_Viewer.cmd ופתחו את הכתובת שמופיעה בחלון ההפעלה במחשב זה.':String(error.message||error);});
+import('./app.js?v=20261013-r4-release').catch(error=>{document.getElementById('loading').hidden=true;document.getElementById('error').hidden=false;document.getElementById('error-text').textContent=location.protocol==='file:'?'להפעלת הסיור הפעילו את Start_Local_Viewer.cmd ופתחו את הכתובת שמופיעה בחלון ההפעלה במחשב זה.':String(error.message||error);});

@@ -41,7 +41,7 @@ async function load(which){
  const viewerConfig=which==='ground'?await (await fetch('../assets/viewer.json')).json():null;
  const modelUrl=which==='ground'?'../'+viewerConfig.exterior.model.replace(/^\.\//,''):'../assets/models/interior.glb';
  const gltf=await loader.loadAsync(modelUrl,e=>{
- if(e.total)$('load-text').textContent='טוענים את המודל · '+Math.round(100*e.loaded/e.total)+'%';
+ if(e.total)$('load-text').textContent=e.loaded>e.total?'טוענים את המודל ומכינים לתצוגה…':'טוענים את המודל · '+Math.round(100*e.loaded/e.total)+'%';
  });
  if(which==='ground')await applySurfaceFinish(gltf.scene,THREE);
  applyFurnitureRefinement(gltf.scene,THREE);
