@@ -1,0 +1,80 @@
+import * as THREE from 'three';
+import {FullScreenQuad} from 'three/addons/postprocessing/Pass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+const vertex='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
+const reconstruct=`uniform sampler2D tDepth;uniform mat4 inverseProjection;
+ vec3 viewPosition(vec2 uv){float d=texture2D(tDepth,uv).x;vec4 p=inverseProjection*vec4(uv*2.-1.,d*2.-1.,1.);return p.xyz/p.w;}`;
+// Metre-bounded contact from the SAME render as colour. No overrideMaterial,
+// hidden-ceiling silhouettes, or full walls replacing the active clipping.
+const contactShader=`varying vec2 vUv;${reconstruct}
+ uniform vec2 resolution;uniform mat4 projection;uniform float radius;uniform float samples;
+ void main(){
+  float depth=texture2D(tDepth,vUv).x;if(depth>=.999999){gl_FragColor=vec4(1.,0.,0.,1.);return;}
+  vec3 p=viewPosition(vUv);vec2 texel=1./resolution;
+  vec3 pr=viewPosition(vUv+vec2(texel.x,0.))-p,pl=p-viewPosition(vUv-vec2(texel.x,0.));
+  vec3 pu=viewPosition(vUv+vec2(0.,texel.y))-p,pd=p-viewPosition(vUv-vec2(0.,texel.y));
+  vec3 n=normalize(cross(abs(pr.z)<abs(pl.z)?pr:pl,abs(pu.z)<abs(pd.z)?pu:pd));if(dot(n,-p)<0.)n=-n;
+  float pixelRadius=clamp(radius*projection[1][1]*resolution.y/(2.*max(.1,-p.z)),2.,54.);
+  float angle=fract(sin(dot(floor(gl_FragCoord.xy),vec2(12.9898,78.233)))*43758.5453)*6.2831853;
+  float sum=0.,valid=0.;
+  for(int i=0;i<12;i++){
+   if(float(i)>=samples)break;float f=(float(i)+.5)/samples;float a=angle+float(i)*2.3999632;
+   vec2 uv=vUv+vec2(cos(a),sin(a))*sqrt(f)*pixelRadius*texel;
+   if(any(lessThan(uv,vec2(0.)))||any(greaterThan(uv,vec2(1.)))||texture2D(tDepth,uv).x>=.999999)continue;
+   vec3 delta=viewPosition(uv)-p;float distance=length(delta);
+   float horizon=max((dot(n,delta)-max(.012,radius*.055))/max(distance,.0001)-.10,0.);
+   float attenuation=1.-smoothstep(radius*.25,radius,distance);sum+=horizon*attenuation;valid+=1.;
+  }
+  gl_FragColor=vec4(clamp(1.-2.7*sum/max(valid,1.),0.,1.),-p.z,0.,1.);
+ }`;
+const compositeShader=`varying vec2 vUv;${reconstruct}
+ uniform sampler2D tDiffuse;uniform sampler2D tContact;uniform vec2 contactResolution;uniform float strength;uniform float radius;
+ void main(){vec4 color=texture2D(tDiffuse,vUv);float depth=texture2D(tDepth,vUv).x;
+  if(depth>=.999999){gl_FragColor=color;return;}
+  float z=-viewPosition(vUv).z,ao=0.,weights=0.;
+  for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){
+   vec2 sampleUv=vUv+vec2(float(x),float(y))/contactResolution;vec2 s=texture2D(tContact,sampleUv).rg;
+   float w=exp(-abs(s.y-z)/max(.018,radius*.10))*(x==0&&y==0?2.:1.);ao+=s.x*w;weights+=w;
+  }
+  float contact=weights>0.0001?ao/weights:1.;gl_FragColor=vec4(color.rgb*(1.-strength*(1.-contact)),color.a);
+ }`;
+export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={}){
+ const screenSize=new THREE.Vector2(),inverseProjection=new THREE.Matrix4(),projection=new THREE.Matrix4();
+ const contactMaterial=new THREE.ShaderMaterial({vertexShader:vertex,fragmentShader:contactShader,depthTest:false,depthWrite:false,toneMapped:false,uniforms:{tDepth:{value:null},inverseProjection:{value:inverseProjection},projection:{value:projection},resolution:{value:new THREE.Vector2()},radius:{value:.24},samples:{value:12}}});
+ const compositeMaterial=new THREE.ShaderMaterial({vertexShader:vertex,fragmentShader:compositeShader,depthTest:false,depthWrite:false,toneMapped:false,uniforms:{tDepth:{value:null},inverseProjection:{value:inverseProjection},tDiffuse:{value:null},tContact:{value:null},contactResolution:{value:new THREE.Vector2()},radius:{value:.24},strength:{value:.32}}});
+ const quad=new FullScreenQuad(contactMaterial),output=new OutputPass();output.renderToScreen=true;
+ // Match direct-render background semantics: Scene.background is unlit and
+ // must not be film-tonemapped by a global output pass. No extra geometry pass.
+ output.uniforms.tSceneDepth={value:null};
+ output.material.fragmentShader=output.material.fragmentShader.replace('uniform sampler2D tDiffuse;','uniform sampler2D tDiffuse;\n uniform sampler2D tSceneDepth;').replace('// tone mapping','// tone mapping\n if(texture2D(tSceneDepth,vUv).x<.999999){').replace('// color space','}\n // color space');
+ let sceneTarget=null,contactTarget=null,compositeTarget=null,mode='exterior',requested='auto',effective='balanced',width=1,height=1,disposed=false,failure=null,frames=0;
+ const supported=renderer.capabilities.isWebGL2&&renderer.extensions.has('EXT_color_buffer_float');
+ function selectQuality(value){if(value!=='auto')return value;const coarse=typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches,memory=typeof navigator!=='undefined'?navigator.deviceMemory:undefined;return coarse||(memory&&memory<=4)?'low':'balanced';}
+ function releaseTargets(){for(const t of [sceneTarget,contactTarget,compositeTarget])t?.dispose();sceneTarget=contactTarget=compositeTarget=null;}
+ function allocate(){
+  releaseTargets();if(effective==='low'||!supported||failure)return;
+  const ratio=Math.min(renderer.getPixelRatio(),1.5),budget=effective==='high'?2600000:1800000;
+  const scale=Math.min(ratio,Math.sqrt(budget/(width*height))),w=Math.max(1,Math.round(width*scale)),h=Math.max(1,Math.round(height*scale));
+  sceneTarget=new THREE.WebGLRenderTarget(w,h,{type:THREE.HalfFloatType,depthBuffer:true,stencilBuffer:false,samples:Math.min(renderer.capabilities.maxSamples,4)});
+  sceneTarget.depthTexture=new THREE.DepthTexture(w,h,THREE.UnsignedIntType);sceneTarget.resolveDepthBuffer=true;output.uniforms.tSceneDepth.value=sceneTarget.depthTexture;
+  contactTarget=new THREE.WebGLRenderTarget(Math.ceil(w*.5),Math.ceil(h*.5),{type:THREE.HalfFloatType,depthBuffer:false,stencilBuffer:false});
+  compositeTarget=new THREE.WebGLRenderTarget(w,h,{type:THREE.HalfFloatType,depthBuffer:false,stencilBuffer:false});
+  contactMaterial.uniforms.tDepth.value=sceneTarget.depthTexture;contactMaterial.uniforms.resolution.value.set(w,h);contactMaterial.uniforms.samples.value=effective==='high'?12:8;
+  compositeMaterial.uniforms.tDepth.value=sceneTarget.depthTexture;compositeMaterial.uniforms.tDiffuse.value=sceneTarget.texture;compositeMaterial.uniforms.tContact.value=contactTarget.texture;compositeMaterial.uniforms.contactResolution.value.set(contactTarget.width,contactTarget.height);
+ }
+ function resize(w,h){width=Math.max(1,Math.round(w));height=Math.max(1,Math.round(h));allocate();}
+ function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown visual quality: '+value);requested=value;effective=selectQuality(value);allocate();return sceneTarget?effective:'low';}
+ function setMode(value){mode=value;const radius=value==='exterior'?.65:value==='enclosed'?.22:.28;contactMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.strength.value=value==='exterior'?.24:.32;}
+ function render(){
+  if(disposed)return;if(!sceneTarget){renderer.render(scene,camera);frames++;return;}
+  const previous=renderer.getRenderTarget(),autoClear=renderer.autoClear;
+  try{inverseProjection.copy(camera.projectionMatrixInverse);projection.copy(camera.projectionMatrix);renderer.autoClear=true;
+   renderer.setRenderTarget(sceneTarget);renderer.render(scene,camera);quad.material=contactMaterial;renderer.setRenderTarget(contactTarget);quad.render(renderer);
+   quad.material=compositeMaterial;renderer.setRenderTarget(compositeTarget);quad.render(renderer);output.render(renderer,null,compositeTarget);frames++;
+  }catch(error){failure=String(error?.message||error);releaseTargets();onFallback(error);renderer.setRenderTarget(previous);renderer.render(scene,camera);}
+  finally{renderer.setRenderTarget(previous);renderer.autoClear=autoClear;}
+ }
+ function dispose(){if(disposed)return;disposed=true;releaseTargets();quad.dispose();contactMaterial.dispose();compositeMaterial.dispose();output.dispose();}
+ function snapshot(){return{revision:THREE.REVISION,mode,requestedQuality:requested,effectiveQuality:sceneTarget?effective:'low',supported,contactEnabled:!!sceneTarget,renderSize:sceneTarget?[sceneTarget.width,sceneTarget.height]:null,samples:sceneTarget?.samples||0,maximumContactDarkening:sceneTarget?compositeMaterial.uniforms.strength.value:0,frames,failure};}
+ renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,dispose,snapshot};
+}

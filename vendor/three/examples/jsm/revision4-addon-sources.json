@@ -1,0 +1,20 @@
+{
+  "version": "0.180.0",
+  "files": [
+    {
+      "path": "postprocessing/Pass.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/postprocessing/Pass.js",
+      "sha256": "444b409c235ead986893c472e720da1b779a56985c7d10b279c7944b52bd61c5"
+    },
+    {
+      "path": "postprocessing/OutputPass.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/postprocessing/OutputPass.js",
+      "sha256": "f5b81c96e76b6b28b4b3ba8c41c4aeb982b1e03f3d82883242d951b2ab082fa2"
+    },
+    {
+      "path": "shaders/OutputShader.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/shaders/OutputShader.js",
+      "sha256": "353479f77a8d7e2629d49ccac9fc2f5dbfdda5442e0adf867b00377a2fcb0cb2"
+    }
+  ]
+}

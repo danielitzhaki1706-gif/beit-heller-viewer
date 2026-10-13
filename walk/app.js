@@ -1,11 +1,14 @@
 import * as THREE from 'three';
 import {createWalkingPhysics} from './physics.js';
 import {applySurfaceFinish} from '../surface-finish.js';
+import {applyMaterialDetail} from '../material-detail.js?v=20261013-r4-final';
+import {applyFurnitureRefinement} from '../furniture-refinement.js?v=20261013-r4-final';
 import {createContextLayer} from '../context-layer.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {navigators,doorSegments} from './route.js';
 import {batchStatic} from './batching.js';
-import {daylight,finishModel} from './rendering.js';
+import {createLighting} from '../lighting.js?v=20261013-r4-final';
+import {createVisualPipeline} from '../visual-pipeline.js?v=20261013-r4-final';
 import {createMap,routePoints,exteriorRoute,zone} from './wayfinding.js';
 const $=id=>document.getElementById(id),viewport=$('viewport');
 const response=await fetch('./assets/navigation.json');
@@ -15,9 +18,14 @@ const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-per
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
 renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;
 viewport.append(renderer.domElement);
-const scene=new THREE.Scene(),lighting=daylight(renderer,scene);
+let visualRevision=0;
+const scene=new THREE.Scene(),lighting=createLighting(renderer,scene,{onReady:()=>visualRevision++});
 const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.05,500);
 camera.rotation.order='YXZ';
+const visual=createVisualPipeline(renderer,scene,camera),shadowTarget=new THREE.Vector3(),lookDirection=new THREE.Vector3();
+lighting.setQuality(visual.snapshot().effectiveQuality);
+renderer.localClippingEnabled=true;
+function finishModel(root){root.traverse(o=>{if(!o.isMesh)return;const materials=Array.isArray(o.material)?o.material:[o.material];o.castShadow=materials.every(m=>!(m.transmission>.05||m.opacity<.95));o.receiveShadow=true;});}
 const loader=new GLTFLoader(),models={},meshes={},physics={},doorParts=[];
 let siteContext=null,visualContext=null;
 const map=createMap(data,$('minimap')),path=routePoints(data);
@@ -36,6 +44,8 @@ async function load(which){
  if(e.total)$('load-text').textContent='טוענים את המודל · '+Math.round(100*e.loaded/e.total)+'%';
  });
  if(which==='ground')await applySurfaceFinish(gltf.scene,THREE);
+ applyFurnitureRefinement(gltf.scene,THREE);
+ await applyMaterialDetail(gltf.scene,THREE,{kind:which==='ground'?'building':'interior'});
  finishModel(gltf.scene);
  const replacements=new Set();
  let context=null;
@@ -46,6 +56,8 @@ async function load(which){
   if(manifest.accepted!==true||manifest.nearfield!=='./assets/context/nearfield.glb')throw Error('Unaccepted site context');
   context=(await loader.loadAsync('../assets/context/nearfield.glb')).scene;
   await applySurfaceFinish(context,THREE,manifest.surfaceMaterials);
+  applyFurnitureRefinement(context,THREE);
+  await applyMaterialDetail(context,THREE,{kind:'context'});
   for(const name of manifest.replacesNodes){
    const node=gltf.scene.getObjectByName(name);if(!node)throw Error('Missing site replacement');
    node.visible=false;node.traverse(o=>{if(o.isMesh)replacements.add(o);});
@@ -74,8 +86,8 @@ async function load(which){
   // experiences do not show different streets or stale neighbour buildings.
   visualContext=createContextLayer(THREE,scene,{loadAsync:path=>loader.loadAsync('../'+path.replace(/^\.\//,''))},new THREE.Object3D(),{
    fetcher:path=>fetch('../'+path.replace(/^\.\//,'')),
-   prepareNearfield:async(object,manifest)=>{if(manifest.surfaceMaterials?.length)await applySurfaceFinish(object,THREE,manifest.surfaceMaterials);batchStatic(object);},
-   onChange:status=>{if(siteContext)siteContext.visible=mode==='ground'&&!status.ready;renderer.shadowMap.needsUpdate=true;}
+   prepareNearfield:async(object,manifest)=>{if(manifest.surfaceMaterials?.length)await applySurfaceFinish(object,THREE,manifest.surfaceMaterials);applyFurnitureRefinement(object,THREE);await applyMaterialDetail(object,THREE,{kind:'context'});finishModel(object);batchStatic(object);},
+   onChange:status=>{visualRevision++;if(siteContext)siteContext.visible=mode==='ground'&&!status.ready;renderer.shadowMap.needsUpdate=true;}
   });
   visualContext.setBuilding(gltf.scene);await visualContext.load();
  }
@@ -95,7 +107,7 @@ async function switchMode(which){
  try{
  await load(which);mode=which;
  for(const [key,obj]of Object.entries(models))obj.visible=key===mode;
- if(siteContext)siteContext.visible=mode==='ground'&&!visualContext?.getState().ready;visualContext?.setMode(mode==='ground'?'exterior':'floor');lighting.setMode(mode);reset();
+ if(siteContext)siteContext.visible=mode==='ground'&&!visualContext?.getState().ready;visualContext?.setMode(mode==='ground'?'exterior':'floor');lighting.setMode(mode==='ground'?'exterior':'interior');visual.setMode(mode==='ground'?'exterior':'interior');visualRevision++;reset();
  $('ground-mode').setAttribute('aria-pressed',mode==='ground');
 
  $('scope-note').textContent=mode==='ground'?'מסלול מוגבל · חלק מהבניין פתוח לסיור':'עיצוב פנים מוצע · אינו תכנית מאושרת';
@@ -177,16 +189,17 @@ $('close-help').onclick=()=>$('help').close();
 $('help').addEventListener('close',()=>viewport.focus());
 $('look-lock').onclick=async()=>{try{stopTour();await viewport.requestPointerLock();viewport.focus();}catch{notice('אפשר לגרור את המבט עם העכבר');}};
 document.addEventListener('pointerlockerror',()=>notice('אפשר לגרור את המבט עם העכבר'));
-let highQuality=true;
-$('quality').onclick=()=>{highQuality=!highQuality;lighting.setQuality(highQuality);$('quality').textContent=highQuality?'תצוגה: מפורטת':'תצוגה: קלה';renderer.shadowMap.needsUpdate=true;viewport.focus();};
-window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+let highQuality=visual.snapshot().effectiveQuality!=='low';
+$('quality').textContent=highQuality?'תצוגה: מפורטת':'תצוגה: קלה';
+$('quality').onclick=()=>{highQuality=!highQuality;renderer.setPixelRatio(Math.min(devicePixelRatio||1,highQuality?1.5:1));renderer.setSize(innerWidth,innerHeight);const effective=visual.setQuality(highQuality?'balanced':'low');visual.resize(innerWidth,innerHeight);lighting.setQuality(effective);visualRevision++;$('quality').textContent=highQuality?'תצוגה: מפורטת':'תצוגה: קלה';renderer.shadowMap.needsUpdate=true;viewport.focus();};
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);visual.resize(innerWidth,innerHeight);visualRevision++;});
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();ready=false;clearInput();$('error').hidden=false;$('error-text').textContent='התצוגה נעצרה. יש לטעון מחדש.';});
 renderer.shadowMap.autoUpdate=false;
-let last=performance.now(),blockedAt=0,frameCount=0,fpsAt=last;
+let last=performance.now(),blockedAt=0,frameCount=0,fpsAt=last,lastRenderState='';
 renderer.setAnimationLoop(now=>{
- const dt=Math.min(.05,(now-last)/1000);last=now;if(!ready)return;
+ const dt=Math.min(.05,(now-last)/1000);last=now;if(!ready||document.hidden)return;
  animateDoor(dt);
- frameCount++;if(now-fpsAt>1000){viewport.dataset.fps=(1000*frameCount/(now-fpsAt)).toFixed(1);frameCount=0;fpsAt=now;}
+ if(now-fpsAt>1000){viewport.dataset.fps=(1000*frameCount/(now-fpsAt)).toFixed(1);frameCount=0;fpsAt=now;}
  if(!$('help').open){
  let delta=[0,0];
  if(tour&&(tour.kind==='outside'||doorProgress>=.999)){
@@ -225,6 +238,12 @@ renderer.setAnimationLoop(now=>{
  viewport.dataset.feet=feet.toFixed(3);viewport.dataset.mode=mode;viewport.dataset.door=doorProgress.toFixed(3);
  viewport.dataset.tour=tour?tour.phase:'off';
  }
- renderer.render(scene,camera);
+ // Continue physics/input at animation cadence, but leave the GPU idle when
+ // the camera, doors, scene, quality and HDR have not changed.
+ const renderState=[mode,...camera.position.toArray(),yaw,pitch,doorProgress,visualRevision].join('|');
+ if(renderState===lastRenderState){viewport.dataset.renderState='idle';return;}
+ lastRenderState=renderState;viewport.dataset.renderState='active';frameCount++;
+ camera.getWorldDirection(lookDirection);shadowTarget.copy(camera.position).addScaledVector(lookDirection,12);shadowTarget.y=feet+1;lighting.update(camera,shadowTarget);
+ visual.render();
 });
 await switchMode('ground');
