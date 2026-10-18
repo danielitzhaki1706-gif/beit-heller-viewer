@@ -75,7 +75,9 @@ export function prepareGalleryCollections(items,options={}){
     if(row&&!selected.includes(row))selected.push(row);
     if(selected.length===10)break;
   }
+  const studio=models.filter(row=>row.studio);
   return {
+    ...(studio.length?{studio:{id:'studio',title:'רינדורי הסטודיו',items:studio,aiCount:0,modelCount:studio.length}}:{}),
     primary:{id:'primary',title:'גלריה ראשית',items:[...concepts,...selected],aiCount:concepts.length,modelCount:selected.length},
     technical:{id:'technical',title:'מבטי מודל טכניים',items:models,aiCount:0,modelCount:models.length}
   };
@@ -86,7 +88,7 @@ export async function mountRenderGallery(root,renders,options={}){
   let metadata=options.metadata||{};
   if(!options.metadata){try{const response=await fetch(options.metadataUrl||'./assets/gallery-metadata.json',{cache:'no-cache'});if(response.ok)metadata=await response.json();}catch{/* The model render library remains available offline. */}}
   const allItems=prepareGalleryItems(renders,metadata),collections=prepareGalleryCollections(allItems,metadata.collections||{});
-  let collection='primary',items=collections.primary.items,categories=CATEGORIES.filter(c=>items.some(r=>r.category===c.id));
+  let collection=collections.studio?'studio':'primary',items=collections[collection].items,categories=CATEGORIES.filter(c=>items.some(r=>r.category===c.id));
   let category='all',group='all',kind='all',visible=[],activeIndex=-1,returnFocus=null;
   root.classList.add('bh-gallery');root.replaceChildren();
   const collectionNav=element('nav','bh-gallery-collections');collectionNav.setAttribute('aria-label','בחירת ספריית תמונות');
@@ -121,7 +123,7 @@ export async function mountRenderGallery(root,renders,options={}){
       const button=element('button','bh-gallery-collection');button.type='button';button.dataset.galleryCollection=entry.id;
       button.setAttribute('aria-pressed',String(collection===entry.id));
       const title=element('strong','',entry.title),counts=element('span','bh-gallery-collection-count');
-      counts.textContent=entry.id==='primary'?isolateInline(`${entry.items.length} תמונות · ${entry.aiCount} AI · ${entry.modelCount} מבטי מודל נבחרים`):`${entry.items.length} מבטי מודל · ספריית הייחוס המלאה`;
+      counts.textContent=entry.id==='studio'?`${entry.items.length} מבטי אדריכלות · מתוך המודל`:entry.id==='primary'?isolateInline(`${entry.items.length} תמונות · ${entry.aiCount} AI · ${entry.modelCount} מבטי מודל נבחרים`):`${entry.items.length} מבטי מודל · ספריית הייחוס המלאה`;
       button.append(title,counts);button.onclick=()=>chooseCollection(entry.id);collectionNav.append(button);
     });
     root.dataset.galleryCollection=collection;root.dataset.galleryTotal=String(items.length);
@@ -150,8 +152,8 @@ export async function mountRenderGallery(root,renders,options={}){
     kindSelect.hidden=!items.some(r=>r.kind==='concept');
     visible=items.filter(r=>(category==='all'||r.category===category)&&(group==='all'||r.group===group)&&(kind==='all'||r.kind===kind));
     const cat=categories.find(c=>c.id===category),entry=collections[collection],heading=element('header','bh-gallery-section-intro');
-    heading.append(element('span','bh-gallery-eyebrow',entry.title),element('h2','',cat?.label||(collection==='primary'?'המחשות של בית הלר':'מבטי מודל טכניים')));
-    const collectionSummary=collection==='primary'
+    heading.append(element('span','bh-gallery-eyebrow',entry.title),element('h2','',cat?.label||(collection==='studio'?'המבנה. באור חדש.':collection==='primary'?'המחשות של בית הלר':'מבטי מודל טכניים')));
+    const collectionSummary=collection==='studio'?'רינדורים חדשים מהגאומטריה התלת־ממדית של הפרויקט. חומרים, שמיים ותאורה מעוצבים להמחשה; סביבת הבניין מקורבת.':collection==='primary'
       ?`${entry.aiCount} מתוך ${entry.items.length} התמונות בגלריה הראשית הן המחשות AI. לצדן ${entry.modelCount} מבטי מודל נבחרים. כל ${collections.technical.items.length} מבטי המודל זמינים בספרייה הטכנית הנפרדת.`
       :`${entry.items.length} מבטי מודל מלאים להשוואה ולבחינת המבנה, הקומות והפרטים.`;
     heading.append(element('p','',isolateInline(collectionSummary)));

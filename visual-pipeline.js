@@ -43,10 +43,10 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  const contactMaterial=new THREE.ShaderMaterial({vertexShader:vertex,fragmentShader:contactShader,depthTest:false,depthWrite:false,toneMapped:false,uniforms:{tDepth:{value:null},inverseProjection:{value:inverseProjection},projection:{value:projection},resolution:{value:new THREE.Vector2()},radius:{value:.24},samples:{value:12}}});
  const compositeMaterial=new THREE.ShaderMaterial({vertexShader:vertex,fragmentShader:compositeShader,depthTest:false,depthWrite:false,toneMapped:false,uniforms:{tDepth:{value:null},inverseProjection:{value:inverseProjection},tDiffuse:{value:null},tContact:{value:null},contactResolution:{value:new THREE.Vector2()},radius:{value:.24},strength:{value:.32}}});
  const quad=new FullScreenQuad(contactMaterial),output=new OutputPass();output.renderToScreen=true;
- // Match direct-render background semantics: Scene.background is unlit and
- // must not be film-tonemapped by a global output pass. No extra geometry pass.
- output.uniforms.tSceneDepth={value:null};
- output.material.fragmentShader=output.material.fragmentShader.replace('uniform sampler2D tDiffuse;','uniform sampler2D tDiffuse;\n uniform sampler2D tSceneDepth;').replace('// tone mapping','// tone mapping\n if(texture2D(tSceneDepth,vUv).x<.999999){').replace('// color space','}\n // color space');
+ // Exterior HDR sky and fog share tone mapping. The flat interior background
+ // keeps its unlit display colour. No extra geometry pass is required.
+ output.uniforms.tSceneDepth={value:null};output.uniforms.r5Atmosphere={value:1};
+ output.material.fragmentShader=output.material.fragmentShader.replace('uniform sampler2D tDiffuse;','uniform sampler2D tDiffuse;\n uniform sampler2D tSceneDepth; uniform float r5Atmosphere;').replace('// tone mapping','// tone mapping\n if(texture2D(tSceneDepth,vUv).x<.999999||r5Atmosphere>.5){').replace('// color space','}\n // color space');
  let sceneTarget=null,contactTarget=null,compositeTarget=null,mode='exterior',requested='auto',effective='balanced',width=1,height=1,disposed=false,failure=null,frames=0;
  const supported=renderer.capabilities.isWebGL2&&renderer.extensions.has('EXT_color_buffer_float');
  function selectQuality(value){if(value!=='auto')return value;const coarse=typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches,memory=typeof navigator!=='undefined'?navigator.deviceMemory:undefined;return coarse||(memory&&memory<=4)?'low':'balanced';}
@@ -64,7 +64,7 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  }
  function resize(w,h){width=Math.max(1,Math.round(w));height=Math.max(1,Math.round(h));allocate();}
  function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown visual quality: '+value);requested=value;effective=selectQuality(value);allocate();return sceneTarget?effective:'low';}
- function setMode(value){mode=value;const radius=value==='exterior'?.65:value==='enclosed'?.22:.28;contactMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.strength.value=value==='exterior'?.24:.32;}
+ function setMode(value){mode=value;output.uniforms.r5Atmosphere.value=value==='exterior'?1:0;const radius=value==='exterior'?.65:value==='enclosed'?.22:.28;contactMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.strength.value=value==='exterior'?.24:.32;}
  function render(){
   if(disposed)return;if(!sceneTarget){renderer.render(scene,camera);frames++;return;}
   const previous=renderer.getRenderTarget(),autoClear=renderer.autoClear;

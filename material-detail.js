@@ -1,6 +1,7 @@
 // Runtime material refinement. Positions, indices, source UVs and source assets are untouched.
 // Detail textures are deterministic procedural finishes, not measured product scans.
-const VERSION='r4.7';
+import {installFacadeAtmosphere} from './facade-atmosphere.js?v=20261018-r5';
+const VERSION='r5.1';
 const materialCache=new WeakMap(),geometryCache=new WeakMap(),rootCache=new WeakMap(),textureCaches=new WeakMap();
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
 const fract=v=>v-Math.floor(v);
@@ -144,11 +145,14 @@ function refinedMaterial(source,role,THREE,channel=1){
   m.map=null;m.normalMap=null;m.bumpMap=null;m.roughnessMap=null;m.color.setRGB(.31,.335,.31);m.roughness=1;m.metalness=0;
  }else if(role==='facadeGlass'||role==='glass'){
   const c=m.color,luma=.2126*c.r+.7152*c.g+.0722*c.b;
-  if(role==='facadeGlass')c.lerp(new THREE.Color(luma,luma,luma),.68).lerp(new THREE.Color(1,1,1),.10);
+  // A soft mineral-blue pane reflects the real sky while retaining a view
+  // through the furnished building. Clear interior partitions stay neutral.
+  if(role==='facadeGlass')c.lerp(new THREE.Color(luma,luma,luma),.68).lerp(new THREE.Color(.54,.65,.70),.42);
   else c.lerp(new THREE.Color(1,1,1),.58);
-  m.metalness=0;m.roughness=role==='facadeGlass'?.072:.016;m.transmission=role==='facadeGlass'?.94:.985;
+  m.metalness=0;m.roughness=role==='facadeGlass'?.065:.016;m.transmission=role==='facadeGlass'?.74:.985;
   m.ior=1.5;m.thickness=0;m.opacity=1;m.transparent=false;m.depthWrite=true;m.depthTest=true;m.forceSinglePass=true;
-  m.clearcoat=0;m.specularIntensity=1;m.envMapIntensity=role==='facadeGlass'?1.08:1;
+  m.clearcoat=0;m.specularIntensity=1;m.envMapIntensity=role==='facadeGlass'?1.30:1;
+  if(role==='facadeGlass')installFacadeAtmosphere(m,THREE);
   if(role==='glass')installClearPaneDetail(m,THREE);
  }else if(role==='proxyGlass'){
   // These proxy neighbour/car panes have no modeled interiors behind them.

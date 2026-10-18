@@ -336,6 +336,45 @@
       "cover": true,
       "order": -23,
       "sha256": "165466cd0d4df62755d6bf8fb37e6d75cfbbe9d7d4190eaa535fc38f2279b257"
+    },
+    {
+      "id": "r5-golden-hero",
+      "src": "./assets/atelier/golden-hero.jpg",
+      "fullSrc": "./assets/atelier/golden-hero.jpg",
+      "title": "החזית בשעת זהב",
+      "caption": "אור שמש חם על הזכוכית והחזית המעוקלת. רינדור Blender מתוך המודל; לא תמונת AI.",
+      "summary": "אור שמש חם על הזכוכית והחזית המעוקלת.",
+      "kind": "model",
+      "category": "exterior",
+      "group": "exterior",
+      "studio": true,
+      "order": 19
+    },
+    {
+      "id": "r5-twilight-hero",
+      "src": "./assets/atelier/twilight-hero.jpg",
+      "fullSrc": "./assets/atelier/twilight-hero.jpg",
+      "title": "בית הלר בשעת ערב",
+      "caption": "תאורת פנים חמה מול שמיים כחולים; תרחיש תאורה מוצע. רינדור Blender מתוך המודל; לא תמונת AI.",
+      "summary": "תאורת פנים חמה מול שמיים כחולים; תרחיש תאורה מוצע.",
+      "kind": "model",
+      "category": "exterior",
+      "group": "exterior",
+      "studio": true,
+      "order": 20
+    },
+    {
+      "id": "r5-terraces",
+      "src": "./assets/atelier/terraces.jpg",
+      "fullSrc": "./assets/atelier/terraces.jpg",
+      "title": "החזית האחורית",
+      "caption": "מבט נוסף על הקומות והמרפסות של המבנה. רינדור Blender מתוך המודל; לא תמונת AI.",
+      "summary": "מבט נוסף על הקומות והמרפסות של המבנה.",
+      "kind": "model",
+      "category": "exterior",
+      "group": "exterior",
+      "studio": true,
+      "order": 21
     }
   ],
   "collections": {
