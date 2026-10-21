@@ -1,0 +1,478 @@
+{
+  "B01": {
+    "href": "./assets/floor-sources/B01-source.png",
+    "sourcePDF": "קומת חניון 01 - B01-04-A.pdf",
+    "sourceSHA256": "527da738e552baa8c431eef4e88e6fc0d216c4f2a77d6b3a785baf24414e5312",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      358.9167175292969,
+      593.4108276367188,
+      2314.822265625,
+      2350.89111328125
+    ],
+    "requestedWorldBoundsXY": [
+      -16,
+      -42,
+      53,
+      20
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        812.4600219726562,
+        1160.3399658203125
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1978,
+    "assetSHA256": "73d3252f324c455e8f28d49ef3ddeb7459841d3b317ecb8d4eed32023f4bc4eb",
+    "bytes": 1139640,
+    "label": "תוכנית מקור מלאה · B01",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "B02": {
+    "href": "./assets/floor-sources/B02-source.png",
+    "sourcePDF": "קומת חניון 02 - B02-03-A.pdf",
+    "sourceSHA256": "0d7a98f5d186a6cb03bd96618c2fcf757ae1ee999dc6424a3c5344690abf1ff5",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      400.7966613769531,
+      414.7308349609375,
+      2356.7021484375,
+      2172.211181640625
+    ],
+    "requestedWorldBoundsXY": [
+      -16,
+      -42,
+      53,
+      20
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        854.3399658203125,
+        981.6599731445312
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1978,
+    "assetSHA256": "ee51c278a97a43614fde4d8824d1c3405626486dc41fb8ddea38e230363312eb",
+    "bytes": 978979,
+    "label": "תוכנית מקור מלאה · B02",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "B03": {
+    "href": "./assets/floor-sources/B03-source.png",
+    "sourcePDF": "קומת חניון 03 - B03-02-A.pdf",
+    "sourceSHA256": "7820ba3b73cd851160901e856369e6c4b8cf1ae541faea12fddf1d4c292065b5",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      367.7966613769531,
+      300.1308288574219,
+      2323.7021484375,
+      2057.611083984375
+    ],
+    "requestedWorldBoundsXY": [
+      -16,
+      -42,
+      53,
+      20
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        821.3399658203125,
+        867.0599670410156
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1978,
+    "assetSHA256": "b966437dfc1555bbcf05cba403718277289e8c8eca9eccc929b5ab21a092707a",
+    "bytes": 1193667,
+    "label": "תוכנית מקור מלאה · B03",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "B04": {
+    "href": "./assets/floor-sources/B04-source.png",
+    "sourcePDF": "קומת חניון 04 - B04-01-A.pdf",
+    "sourceSHA256": "f76a245102b57fcd2c9ebff932bc03132c544ca9692e87883da990e04b3b3529",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      467.8766784667969,
+      374.05084228515625,
+      2423.7822265625,
+      2131.53125
+    ],
+    "requestedWorldBoundsXY": [
+      -16,
+      -42,
+      53,
+      20
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        921.4199829101562,
+        940.97998046875
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1978,
+    "assetSHA256": "481e4645e6d360ca86999a22596e0fe9234e41bc49db7df5751fa0c6ee1ba609",
+    "bytes": 609936,
+    "label": "תוכנית מקור מלאה · B04",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "lower-ground": {
+    "href": "./assets/floor-sources/lower-ground-source.png",
+    "sourcePDF": "קומת קרקע תחתונה - 100-05-A.pdf",
+    "sourceSHA256": "4d7e7d7d243e588ef29d33b4d4184c1b968bbcc1529eca87e99dbd33d472d825",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      871.7295532226562,
+      496.5972900390625,
+      2770.942138671875,
+      2140.69189453125
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        1268.579956,
+        1035.179962
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1905,
+    "assetSHA256": "2c4b155db1b5e2fdd9744f2ae96d34cf76366364d662be050718018c95b01e87",
+    "bytes": 1472605,
+    "label": "תוכנית מקור מלאה · קרקע תחתונה",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "upper-ground": {
+    "href": "./assets/floor-sources/upper-ground-source.png",
+    "sourcePDF": "קומת קרקע עליונה - 100-06-A.pdf",
+    "sourceSHA256": "14d08ef3895770b684160baabd6b6554985f0ebe1922928b1fe23015f4c0652d",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      571.3695678710938,
+      696.9972534179688,
+      2470.582275390625,
+      2341.091796875
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        968.219971,
+        1235.579956
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1905,
+    "assetSHA256": "fa38d0604ac33182f54c9fa5b09ccc2bac92aed03dd8191a14d8a188e4e9fae1",
+    "bytes": 1694154,
+    "label": "תוכנית מקור מלאה · קרקע עליונה",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "office-1": {
+    "href": "./assets/floor-sources/office-01-source.png",
+    "sourcePDF": "קומה א - 101-07-A.pdf",
+    "sourceSHA256": "1ff36f1f92165b42f211b37151c32750f78d7107805217c92becace4e41e5a38",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      509.569580078125,
+      428.31732177734375,
+      2408.7822265625,
+      2072.411865234375
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        906.4199829101562,
+        966.8999938964844
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1905,
+    "assetSHA256": "8ae2a38eeedb3a2991374ed4ee33b6313fc26b62b24ac0ab58623dbb8728f0f7",
+    "bytes": 553762,
+    "label": "תוכנית מקור מלאה · משרדים 01",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "office-2": {
+    "href": "./assets/floor-sources/office-typical-source.png",
+    "sourcePDF": "תכנית קומה טיפוסית - 102-08-A.pdf",
+    "sourceSHA256": "3f53c5b0582addf78e86555cac348a4d82d943fa1666da00afcb975f7148e253",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      502.24957275390625,
+      594.5172729492188,
+      2401.462158203125,
+      2238.61181640625
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        899.0999755859375,
+        1133.0999755859375
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1906,
+    "assetSHA256": "e684d4eaf04f013a1f091d41be2b5c295bec8d3d6420fcee6f716ac13a4f31a5",
+    "bytes": 527145,
+    "label": "תוכנית קומה טיפוסית · מקור לקומות 02–06",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית טיפוסית 102-08-A; אותו מקור אדריכלי לקומות 02–06. חלוקת השוכר והאבזור במודל מוצעים בנפרד.",
+    "sourceKind": "typical"
+  },
+  "office-3": {
+    "href": "./assets/floor-sources/office-typical-source.png",
+    "sourcePDF": "תכנית קומה טיפוסית - 102-08-A.pdf",
+    "sourceSHA256": "3f53c5b0582addf78e86555cac348a4d82d943fa1666da00afcb975f7148e253",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      502.24957275390625,
+      594.5172729492188,
+      2401.462158203125,
+      2238.61181640625
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        899.0999755859375,
+        1133.0999755859375
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1906,
+    "assetSHA256": "e684d4eaf04f013a1f091d41be2b5c295bec8d3d6420fcee6f716ac13a4f31a5",
+    "bytes": 527145,
+    "label": "תוכנית קומה טיפוסית · מקור לקומות 02–06",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית טיפוסית 102-08-A; אותו מקור אדריכלי לקומות 02–06. חלוקת השוכר והאבזור במודל מוצעים בנפרד.",
+    "sourceKind": "typical"
+  },
+  "office-4": {
+    "href": "./assets/floor-sources/office-typical-source.png",
+    "sourcePDF": "תכנית קומה טיפוסית - 102-08-A.pdf",
+    "sourceSHA256": "3f53c5b0582addf78e86555cac348a4d82d943fa1666da00afcb975f7148e253",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      502.24957275390625,
+      594.5172729492188,
+      2401.462158203125,
+      2238.61181640625
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        899.0999755859375,
+        1133.0999755859375
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1906,
+    "assetSHA256": "e684d4eaf04f013a1f091d41be2b5c295bec8d3d6420fcee6f716ac13a4f31a5",
+    "bytes": 527145,
+    "label": "תוכנית קומה טיפוסית · מקור לקומות 02–06",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית טיפוסית 102-08-A; אותו מקור אדריכלי לקומות 02–06. חלוקת השוכר והאבזור במודל מוצעים בנפרד.",
+    "sourceKind": "typical"
+  },
+  "office-5": {
+    "href": "./assets/floor-sources/office-typical-source.png",
+    "sourcePDF": "תכנית קומה טיפוסית - 102-08-A.pdf",
+    "sourceSHA256": "3f53c5b0582addf78e86555cac348a4d82d943fa1666da00afcb975f7148e253",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      502.24957275390625,
+      594.5172729492188,
+      2401.462158203125,
+      2238.61181640625
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        899.0999755859375,
+        1133.0999755859375
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1906,
+    "assetSHA256": "e684d4eaf04f013a1f091d41be2b5c295bec8d3d6420fcee6f716ac13a4f31a5",
+    "bytes": 527145,
+    "label": "תוכנית קומה טיפוסית · מקור לקומות 02–06",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית טיפוסית 102-08-A; אותו מקור אדריכלי לקומות 02–06. חלוקת השוכר והאבזור במודל מוצעים בנפרד.",
+    "sourceKind": "typical"
+  },
+  "office-6": {
+    "href": "./assets/floor-sources/office-typical-source.png",
+    "sourcePDF": "תכנית קומה טיפוסית - 102-08-A.pdf",
+    "sourceSHA256": "3f53c5b0582addf78e86555cac348a4d82d943fa1666da00afcb975f7148e253",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      502.24957275390625,
+      594.5172729492188,
+      2401.462158203125,
+      2238.61181640625
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        899.0999755859375,
+        1133.0999755859375
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1906,
+    "assetSHA256": "e684d4eaf04f013a1f091d41be2b5c295bec8d3d6420fcee6f716ac13a4f31a5",
+    "bytes": 527145,
+    "label": "תוכנית קומה טיפוסית · מקור לקומות 02–06",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית טיפוסית 102-08-A; אותו מקור אדריכלי לקומות 02–06. חלוקת השוכר והאבזור במודל מוצעים בנפרד.",
+    "sourceKind": "typical"
+  },
+  "office-7": {
+    "href": "./assets/floor-sources/office-07-source.png",
+    "sourcePDF": "תכנית קומה 7 - 107-09-A.pdf",
+    "sourceSHA256": "5abfde631cb2a32a3bdbe69e155822ab234e0f7f58876ce68ebb8b4c5ebcfbf7",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      485.8095703125,
+      550.5972900390625,
+      2385.022216796875,
+      2194.69189453125
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        882.6599731445312,
+        1089.1799926757812
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1906,
+    "assetSHA256": "6ac741e27bd2d9ede8541add8abae0f5d5bffe8233b2186ce0d6cd34a7d5ae9d",
+    "bytes": 533084,
+    "label": "תוכנית מקור מלאה · משרדים 07",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  },
+  "roof": {
+    "href": "./assets/floor-sources/roof-source.png",
+    "sourcePDF": "תכנית קומת גג - 108-10-A.pdf",
+    "sourceSHA256": "510e627416c556308edf72678481bd149bb85d5fe7a4ff3d4941feb599dfb51b",
+    "page": 1,
+    "pdfRotation": 90,
+    "cropDisplayPoints": [
+      532.4895629882812,
+      686.917236328125,
+      2431.7021484375,
+      2331.01171875
+    ],
+    "requestedWorldBoundsXY": [
+      -14,
+      -39,
+      53,
+      19
+    ],
+    "registration": {
+      "originDisplayPoints": [
+        929.339966,
+        1225.499939
+      ],
+      "metersPerDisplayPoint": 0.035277777777777776
+    },
+    "width": 2201,
+    "height": 1906,
+    "assetSHA256": "3b8e1c8c4ce237005b510f1fcbb6968d73fe3559dff64dbfa1b77e120225a7ee",
+    "bytes": 720512,
+    "label": "תוכנית מקור מלאה · גג",
+    "scope": "registered-whole-floor-plan",
+    "basis": "תוכנית אדריכלית מקורית רשומה לרשת המודל; תקריב כולל של הקומה. חומרי הגמר, הריהוט והשלמות המודל אינם מופיעים בהכרח במקור.",
+    "sourceKind": "floor-specific"
+  }
+}

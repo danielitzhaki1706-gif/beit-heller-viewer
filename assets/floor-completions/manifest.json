@@ -1,0 +1,228 @@
+{
+  "schema": "beit-heller-floor-completions/v1",
+  "coordinateSystem": "Native Blender X,Y,Z metres; GLB/Three X,Z,-Y",
+  "id": "B04-connectors",
+  "asset": "./assets/floor-completions/B04-connectors.glb",
+  "sha256": "d72ee5d85c724aeed65cfd5367e6ae5ef84ec77c7c60b45d0ec295d213a7e41f",
+  "bytes": 45396,
+  "newObjectCount": 30,
+  "sourceFiles": [
+    {
+      "name": "קומת חניון 04 - B04-01-A.pdf",
+      "sha256": "f76a245102b57fcd2c9ebff932bc03132c544ca9692e87883da990e04b3b3529"
+    },
+    {
+      "name": "פרוט מדרגות 1 מערבי - 500-01-A.pdf",
+      "sha256": "7453e3c9684c32b9064f090cef5026532aff59309c20dd22c148ebcb98e32464"
+    },
+    {
+      "name": "תכניות גרעין גליון 1 - 400-01-A.pdf",
+      "sha256": "f039818f80572d69eb8b02c06422c08f8c7bd86fd30bdabcd10ede8fed3fc9f5"
+    }
+  ],
+  "features": [
+    {
+      "id": "B04-02",
+      "kind": "room-floor",
+      "polygonXY": [
+        [
+          14.531,
+          -18.205
+        ],
+        [
+          20.479,
+          -18.205
+        ],
+        [
+          20.479,
+          -16.402
+        ],
+        [
+          14.531,
+          -16.402
+        ]
+      ],
+      "areaM2": 10.724243999999981,
+      "z": -11.39,
+      "levelBasis": "500-01-A explicit finished -11.39; source conflict with400-01-A29.19=-11.56",
+      "sourceWallPaths": [
+        11,
+        12,
+        15,
+        18,
+        31,
+        51
+      ]
+    },
+    {
+      "id": "B04-exterior-approach",
+      "kind": "graded-landing",
+      "polygonXY": [
+        [
+          14.328,
+          -20.8597
+        ],
+        [
+          17.3249,
+          -20.8597
+        ],
+        [
+          17.3249,
+          -18.9547
+        ],
+        [
+          16.131,
+          -18.9547
+        ],
+        [
+          16.131,
+          -18.4044
+        ],
+        [
+          14.328,
+          -18.4044
+        ]
+      ],
+      "endZ": [
+        -11.4,
+        -11.39
+      ],
+      "source": "400-01-A elevation29.35/29.36",
+      "interpolation": "visual linear; source endpoints"
+    },
+    {
+      "id": "B04-service-ramp",
+      "kind": "ramp",
+      "polygonXY": [
+        [
+          17.3249,
+          -20.8597
+        ],
+        [
+          17.3249,
+          -18.9547
+        ],
+        [
+          17.3292,
+          -18.6034
+        ],
+        [
+          18.379,
+          -18.6034
+        ],
+        [
+          18.379,
+          -18.4044
+        ],
+        [
+          19.3358,
+          -18.4044
+        ],
+        [
+          19.3358,
+          -20.8597
+        ]
+      ],
+      "startZ": -11.4,
+      "endZ": -11.56,
+      "lengthM": 2.0108999999999995,
+      "actualGradePercent": 7.956636331990653,
+      "sourceAnnotationPercent": 8,
+      "sourcePath": 67
+    },
+    {
+      "id": "B04-plant-access",
+      "kind": "landing",
+      "polygonXY": [
+        [
+          19.3358,
+          -20.8597
+        ],
+        [
+          19.3358,
+          -18.4044
+        ],
+        [
+          20.4787,
+          -18.4044
+        ],
+        [
+          20.4745,
+          -18.8828
+        ],
+        [
+          20.4745,
+          -18.9209
+        ],
+        [
+          20.4787,
+          -18.9209
+        ],
+        [
+          20.4745,
+          -20.5422
+        ],
+        [
+          20.4745,
+          -20.5804
+        ],
+        [
+          20.4787,
+          -20.5804
+        ],
+        [
+          20.4787,
+          -20.7116
+        ],
+        [
+          20.4703,
+          -20.7116
+        ],
+        [
+          20.4703,
+          -20.7497
+        ],
+        [
+          20.4787,
+          -20.7497
+        ],
+        [
+          20.4787,
+          -20.8597
+        ]
+      ],
+      "z": -11.56,
+      "sourcePath": 65
+    }
+  ],
+  "recommendedModes": [
+    "B04-overview",
+    "B04-storage"
+  ],
+  "cameraThree": {
+    "position": [
+      10,
+      2,
+      30
+    ],
+    "target": [
+      17.5,
+      -10.2,
+      18.1
+    ],
+    "fov": 44
+  },
+  "levelsConflict": {
+    "chosen": "500-01-A finished stair lobby-11.39 matching current west stair module",
+    "alternative": "400-01-A lobby29.19=-11.56 and stair finished-11.66; source conflict unresolved",
+    "differenceLobbyM": 0.17,
+    "resolution": "Not adjudicated; no claim of continuous walking through old components"
+  },
+  "limitations": [
+    "Source footprint and door locations retained. Wall cut height2.60m, slab thickness18cm, materials/doors/grout/light are visualization choices.",
+    "Old parking and storage grades remain approximate; contacts are not certified continuous.",
+    "No connector fills the hatched nonparking region of B04.",
+    "East room access remains at different level; no invented ramp inside lobby.",
+    "GLB is additive only; original models are byte-preserved. Shared north stair wall and east pump wall come from the original assembly."
+  ]
+}

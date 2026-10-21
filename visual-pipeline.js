@@ -47,7 +47,7 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  // keeps its unlit display colour. No extra geometry pass is required.
  output.uniforms.tSceneDepth={value:null};output.uniforms.r5Atmosphere={value:1};
  output.material.fragmentShader=output.material.fragmentShader.replace('uniform sampler2D tDiffuse;','uniform sampler2D tDiffuse;\n uniform sampler2D tSceneDepth; uniform float r5Atmosphere;').replace('// tone mapping','// tone mapping\n if(texture2D(tSceneDepth,vUv).x<.999999||r5Atmosphere>.5){').replace('// color space','}\n // color space');
- let sceneTarget=null,contactTarget=null,compositeTarget=null,mode='exterior',requested='auto',effective='balanced',width=1,height=1,disposed=false,failure=null,frames=0;
+ let sceneTarget=null,contactTarget=null,compositeTarget=null,mode='exterior',requested='auto',effective='balanced',width=1,height=1,disposed=false,failure=null,frames=0,sceneCalls=0,sceneTriangles=0,renderMs=0;
  const supported=renderer.capabilities.isWebGL2&&renderer.extensions.has('EXT_color_buffer_float');
  function selectQuality(value){if(value!=='auto')return value;const coarse=typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches,memory=typeof navigator!=='undefined'?navigator.deviceMemory:undefined;return coarse||(memory&&memory<=4)?'low':'balanced';}
  function releaseTargets(){for(const t of [sceneTarget,contactTarget,compositeTarget])t?.dispose();sceneTarget=contactTarget=compositeTarget=null;}
@@ -66,15 +66,15 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown visual quality: '+value);requested=value;effective=selectQuality(value);allocate();return sceneTarget?effective:'low';}
  function setMode(value){mode=value;output.uniforms.r5Atmosphere.value=value==='exterior'?1:0;const radius=value==='exterior'?.65:value==='enclosed'?.22:.28;contactMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.radius.value=radius;compositeMaterial.uniforms.strength.value=value==='exterior'?.24:.32;}
  function render(){
-  if(disposed)return;if(!sceneTarget){renderer.render(scene,camera);frames++;return;}
+  if(disposed)return;const started=performance.now();if(!sceneTarget){renderer.render(scene,camera);sceneCalls=renderer.info.render.calls;sceneTriangles=renderer.info.render.triangles;renderMs=performance.now()-started;frames++;return;}
   const previous=renderer.getRenderTarget(),autoClear=renderer.autoClear;
   try{inverseProjection.copy(camera.projectionMatrixInverse);projection.copy(camera.projectionMatrix);renderer.autoClear=true;
-   renderer.setRenderTarget(sceneTarget);renderer.render(scene,camera);quad.material=contactMaterial;renderer.setRenderTarget(contactTarget);quad.render(renderer);
+   renderer.setRenderTarget(sceneTarget);renderer.render(scene,camera);sceneCalls=renderer.info.render.calls;sceneTriangles=renderer.info.render.triangles;quad.material=contactMaterial;renderer.setRenderTarget(contactTarget);quad.render(renderer);
    quad.material=compositeMaterial;renderer.setRenderTarget(compositeTarget);quad.render(renderer);output.render(renderer,null,compositeTarget);frames++;
   }catch(error){failure=String(error?.message||error);releaseTargets();onFallback(error);renderer.setRenderTarget(previous);renderer.render(scene,camera);}
-  finally{renderer.setRenderTarget(previous);renderer.autoClear=autoClear;}
+  finally{renderer.setRenderTarget(previous);renderer.autoClear=autoClear;renderMs=performance.now()-started;}
  }
  function dispose(){if(disposed)return;disposed=true;releaseTargets();quad.dispose();contactMaterial.dispose();compositeMaterial.dispose();output.dispose();}
- function snapshot(){return{revision:THREE.REVISION,mode,requestedQuality:requested,effectiveQuality:sceneTarget?effective:'low',supported,contactEnabled:!!sceneTarget,renderSize:sceneTarget?[sceneTarget.width,sceneTarget.height]:null,samples:sceneTarget?.samples||0,maximumContactDarkening:sceneTarget?compositeMaterial.uniforms.strength.value:0,frames,failure};}
+ function snapshot(){return{revision:THREE.REVISION,mode,requestedQuality:requested,effectiveQuality:sceneTarget?effective:'low',supported,contactEnabled:!!sceneTarget,renderSize:sceneTarget?[sceneTarget.width,sceneTarget.height]:null,samples:sceneTarget?.samples||0,maximumContactDarkening:sceneTarget?compositeMaterial.uniforms.strength.value:0,frames,sceneCalls,sceneTriangles,renderMs,failure};}
  renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,dispose,snapshot};
 }

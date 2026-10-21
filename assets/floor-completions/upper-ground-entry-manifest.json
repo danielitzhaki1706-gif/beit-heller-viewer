@@ -1,0 +1,212 @@
+{
+  "version": "r6-source-guided-entry-1",
+  "status": "Source-derived visualization; intermediate risers interpolated",
+  "model": "upper-ground-entry-r6.glb",
+  "modelSha256": "6b22b35ea2f2495cf1da5ca0b10f5d575ddfbae5d6e5c34ccb24ea79946c523d",
+  "bytes": 9248,
+  "source": {
+    "file": "קומת קרקע עליונה - 100-06-A.pdf",
+    "code": "100-06-A",
+    "page": 1,
+    "sha256": "14d08ef3895770b684160baabd6b6554985f0ebe1922928b1fe23015f4c0652d",
+    "revision": "9 / 17.09.26"
+  },
+  "registration": {
+    "originDisplayPt": [
+      968.219971,
+      1235.579956
+    ],
+    "metresPerPoint": 0.035277777777777776,
+    "pdfRotation": 90,
+    "worldAxes": "[displayX-originX, elevation, displayY-originY]"
+  },
+  "endpointLevels": [
+    3.23,
+    3.72
+  ],
+  "riserCount": 3,
+  "interpolatedRiserHeight": 0.1633333333333334,
+  "parts": [
+    {
+      "name": "R6 SOURCE PLAN | upper entrance landing +3.72",
+      "sourcePaths": [
+        532,
+        524
+      ],
+      "displayRects": [
+        [
+          1324.32,
+          1759.56,
+          1432.32,
+          1806.84
+        ],
+        [
+          1324.32,
+          1806.84,
+          1370.64,
+          1815.36
+        ]
+      ],
+      "finishedLevel": 3.72,
+      "levelBasis": "100-06-A printed +3.72; path524 tread footprint removed from overlapping landing paint",
+      "bounds": {
+        "min": [
+          12.562417984008789,
+          3.619999885559082,
+          18.484851837158203
+        ],
+        "max": [
+          16.372417449951172,
+          3.7200000286102295,
+          20.453351974487305
+        ]
+      },
+      "triangles": 24
+    },
+    {
+      "name": "R6 SOURCE PLAN | lower entrance landing +3.23",
+      "sourcePaths": [
+        558
+      ],
+      "displayRects": [
+        [
+          1371.72,
+          1832.4,
+          1432.32,
+          1983.24
+        ]
+      ],
+      "finishedLevel": 3.23,
+      "levelBasis": "100-06-A printed +3.23 / structural +3.13",
+      "bounds": {
+        "min": [
+          14.23458480834961,
+          3.130000114440918,
+          21.054485321044922
+        ],
+        "max": [
+          16.372417449951172,
+          3.2300000190734863,
+          26.37578582763672
+        ]
+      },
+      "triangles": 12
+    },
+    {
+      "name": "R6 SOURCE PLAN | entrance tread 3",
+      "sourcePaths": [
+        524
+      ],
+      "displayRects": [
+        [
+          1370.64,
+          1806.84,
+          1432.32,
+          1815.36
+        ]
+      ],
+      "finishedLevel": 3.72,
+      "levelBasis": "Upper landing edge at printed +3.72",
+      "bounds": {
+        "min": [
+          14.196484565734863,
+          3.619999885559082,
+          20.15278434753418
+        ],
+        "max": [
+          16.372417449951172,
+          3.7200000286102295,
+          20.453351974487305
+        ]
+      },
+      "triangles": 12
+    },
+    {
+      "name": "R6 SOURCE PLAN | entrance tread 2",
+      "sourcePaths": [
+        523
+      ],
+      "displayRects": [
+        [
+          1371.72,
+          1815.36,
+          1432.32,
+          1823.88
+        ]
+      ],
+      "finishedLevel": 3.5566666666666666,
+      "levelBasis": "Equal interpolation between printed +3.23 and +3.72; not a measured riser schedule",
+      "bounds": {
+        "min": [
+          14.23458480834961,
+          3.4566667079925537,
+          20.453351974487305
+        ],
+        "max": [
+          16.372417449951172,
+          3.556666612625122,
+          20.753917694091797
+        ]
+      },
+      "triangles": 12
+    },
+    {
+      "name": "R6 SOURCE PLAN | entrance tread 1",
+      "sourcePaths": [
+        522
+      ],
+      "displayRects": [
+        [
+          1371.72,
+          1823.88,
+          1432.32,
+          1832.4
+        ]
+      ],
+      "finishedLevel": 3.3933333333333335,
+      "levelBasis": "Equal interpolation between printed +3.23 and +3.72; not a measured riser schedule",
+      "bounds": {
+        "min": [
+          14.23458480834961,
+          3.2933332920074463,
+          20.753917694091797
+        ],
+        "max": [
+          16.372417449951172,
+          3.3933334350585938,
+          21.054485321044922
+        ]
+      },
+      "triangles": 12
+    }
+  ],
+  "checks": {
+    "sourceHashPreserved": true,
+    "gltfRoundtrip": true,
+    "meshCount": 5,
+    "triangles": 72
+  },
+  "integration": {
+    "attachTo": "upper-ground-full ONLY",
+    "alsoRelevantTo": "upper-ground west/east entrance context if independently reviewed",
+    "originalModelsModified": false,
+    "doNotHideAnyOriginalMesh": true
+  },
+  "limitations": [
+    "Only PDF paths 532,558,522-524 are modeled.",
+    "Path1498 left circulation strip is unresolved and stays open.",
+    "Three risers connect +3.23 and +3.72; intermediate elevations are uniform interpolation, not measured construction detail.",
+    "Landing finish thickness .10 m and neutral mineral finish are illustrative.",
+    "No rear retaining-ring fill, lower high-space floor or new walls added.",
+    "Core +3.74, west shop +3.26 and east shop +3.15 retain their separate existing levels."
+  ],
+  "evidence": [
+    "../ground-evidence/100-06-A-step-detail.png",
+    "../ground-evidence/100-06-A-central-transition.png"
+  ],
+  "asset": "./assets/floor-completions/upper-ground-entry-r6.glb",
+  "id": "upper-ground-entry-r6",
+  "recommendedModes": [
+    "upper-ground-full"
+  ]
+}

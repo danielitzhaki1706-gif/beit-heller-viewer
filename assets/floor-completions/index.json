@@ -1,0 +1,17 @@
+[
+  {
+    "id": "B04-connectors",
+    "asset": "./assets/floor-completions/B04-connectors.glb",
+    "recommendedModes": [
+      "B04-overview",
+      "B04-storage"
+    ]
+  },
+  {
+    "id": "upper-ground-entry-r6",
+    "asset": "./assets/floor-completions/upper-ground-entry-r6.glb",
+    "recommendedModes": [
+      "upper-ground-full"
+    ]
+  }
+]

@@ -85,6 +85,9 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
  const hemi=new THREE.HemisphereLight(0xc3d9f0,0x9c9383,.20);scene.add(hemi);
  const sun=new THREE.DirectionalLight(0xfff4e8,3);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-.00006;sun.shadow.normalBias=.025;sun.shadow.radius=2;scene.add(sun,sun.target);
  const fill=new THREE.DirectionalLight(0xc3d9f0,.08);fill.position.set(60,45,70);scene.add(fill);
+ // Dedicated soft studio bounce for floor presentations. Zero intensity in
+ // every existing R5 mode keeps the exterior and original rooms unchanged.
+ const floorRim=new THREE.DirectionalLight(0xe4edff,0);floorRim.position.set(-35,38,55);scene.add(floorRim);
  let currentMode='exterior',currentLook='daylight',quality='balanced',photoSky=null,photoEnvironment=null,disposed=false,lastExtent=0,facadeRoot=null;
  let facadeState={look:'daylight',materials:0,facadeMeshes:0,glow:0,illustrative:true};
  function updateShadowBias(extent){
@@ -95,13 +98,13 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
  }
  function placeSun(extent){sun.target.position.copy(focus);sun.position.copy(focus).addScaledVector(dir,130);Object.assign(sun.shadow.camera,{left:-extent,right:extent,top:extent,bottom:-extent,near:.5,far:300});sun.shadow.camera.updateProjectionMatrix();updateShadowBias(extent);}
  function apply(){
-  const outside=currentMode==='exterior',enclosed=currentMode==='enclosed',cutaway=currentMode==='cutaway',effectiveLook=outside?currentLook:'daylight',look=LIGHT_LOOKS[effectiveLook];skyUniforms(effectiveLook);
+  const outside=currentMode==='exterior',enclosed=currentMode==='enclosed',cutaway=currentMode==='cutaway',floorOverview=currentMode==='floor-overview',floorInside=currentMode==='floor-inside',floorStudio=floorOverview||floorInside,effectiveLook=outside?currentLook:'daylight',look=LIGHT_LOOKS[effectiveLook];skyUniforms(effectiveLook);
   sun.color.setHex(look.sun);hemi.color.setHex(look.sky);hemi.groundColor.setHex(look.ground);fill.color.setHex(look.sky);
   const photographic=outside&&photoEnvironment&&currentLook==='daylight';
   scene.environment=outside?(photographic?photoEnvironment.texture:environments[currentLook].texture):indoor.texture;
-  scene.environmentIntensity=enclosed?.26:cutaway?.28:outside?look.environment:.40;
+  scene.environmentIntensity=floorInside?.36:floorOverview?.24:enclosed?.26:cutaway?.28:outside?look.environment:.40;
   scene.environmentRotation.set(0,photographic?material.uniforms.photoRotation.value:0,0);
-  const background=outside?(currentLook==='twilight'?'#596479':currentLook==='golden'?'#d2c1ad':'#bdcddf'):enclosed?'#343b3f':cutaway?'#c7d0d0':'#dbe2e2';
+  const background=floorStudio?'#e3e2da':outside?(currentLook==='twilight'?'#596479':currentLook==='golden'?'#d2c1ad':'#bdcddf'):enclosed?'#343b3f':cutaway?'#c7d0d0':'#dbe2e2';
   // The HDR used to be hidden behind a flat background. Display it, aligned
   // with its own reflections. All assets are bundled and work offline.
   scene.background=outside&&currentLook==='daylight'&&photoSky?photoSky:new THREE.Color(background);
@@ -109,6 +112,14 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   sky.visible=outside;
   scene.fog=outside?new THREE.Fog(horizons[currentLook],180,450):null;
   sun.intensity=enclosed?0:outside?look.strength:cutaway?2.25:1.85;hemi.intensity=enclosed?.11:outside?(currentLook==='twilight'?.21:.20):cutaway?.19:.23;fill.intensity=enclosed?.025:outside?(currentLook==='twilight'?.14:.11):cutaway?.07:.09;
+  floorRim.intensity=0;floorRim.visible=floorStudio;
+  if(floorStudio){
+   // This is a neutral presentation rig, not a sun-position prediction.
+   dir.set(-.52,.84,-.38).normalize();sun.color.setHex(0xfff7ee);
+   hemi.color.setHex(0xd7e4f1);hemi.groundColor.setHex(0xc3b6a3);fill.color.setHex(0xe4ecf5);
+   sun.intensity=floorInside?1.15:2.15;hemi.intensity=floorInside?.24:.16;
+   fill.intensity=floorInside?.24:.08;floorRim.intensity=floorInside?.10:.08;
+  }
   // Enclosed/cutaway exposure stays independent of outdoor blue-hour.
   renderer.toneMappingExposure=outside?look.exposure:enclosed?1.10:1.0;
   facadeState=setFacadeAtmosphere(facadeRoot,currentLook,outside);lastExtent=0;placeSun(55);renderer.shadowMap.needsUpdate=true;
@@ -134,6 +145,6 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   for(const key of ['golden','twilight']){skyUniforms(key);const previous=environments[key];environments[key]=generator.fromScene(envScene,.025,.1,1000);previous.dispose();}
   apply();onReady();return{status:'LOCAL_HDRI_READY',look:currentLook,visibleSky:true};
  }catch(error){if(!photoSky)texture?.dispose();if(!disposed){console.warn('Local sky unavailable; procedural fallback retained',error);apply();onReady();}return{status:'PROCEDURAL_FALLBACK'};}finally{generator?.dispose();}})();
- function dispose(){if(disposed)return;disposed=true;for(const o of [sun,sun.target,hemi,fill,sky])scene.remove(o);sun.shadow.map?.dispose();for(const e of Object.values(environments))e.dispose();indoor.dispose();photoEnvironment?.dispose();if(scene.background===photoSky)scene.background=null;photoSky?.dispose();emptyPhoto.dispose();material.dispose();sky.geometry.dispose();scene.environment=null;}
+ function dispose(){if(disposed)return;disposed=true;for(const o of [sun,sun.target,hemi,fill,floorRim,sky])scene.remove(o);sun.shadow.map?.dispose();for(const e of Object.values(environments))e.dispose();indoor.dispose();photoEnvironment?.dispose();if(scene.background===photoSky)scene.background=null;photoSky?.dispose();emptyPhoto.dispose();material.dispose();sky.geometry.dispose();scene.environment=null;}
  return{setMode,setLook,setModel,setQuality,update,dispose,sun,sky,outdoor:environments.daylight,indoor,ready,snapshot:()=>({mode:currentMode,look:currentLook,quality,shadowSize:sun.shadow.mapSize.x,shadowExtent:lastExtent,shadowTexelMetres:2*lastExtent/sun.shadow.mapSize.x,shadowNormalBias:sun.shadow.normalBias,shadowDepthBias:sun.shadow.bias,environmentIntensity:scene.environmentIntensity,exposure:renderer.toneMappingExposure,sky:photoSky?(currentLook==='daylight'?'local-photographic-hdri':'photo-contour-atmosphere'):'procedural-fallback',visibleSky:currentMode==='exterior',facade:facadeState,artisticLighting:true})};
 }

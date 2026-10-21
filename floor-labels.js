@@ -35,5 +35,6 @@ export function createFloorLabels(THREE, data) {
   });canvas.addEventListener('pointerleave',()=>hint.hidden=true);canvas.addEventListener('pointerdown',()=>hint.hidden=true);
  }
  function update(camera,root){const group=[...attached.values()].find(g=>g.parent===root);if(!group)return;for(const mesh of group.children){const angle=mesh.userData.baseRotation;const side=(camera.position.x-mesh.position.x)*Math.sin(angle)+(camera.position.z-mesh.position.z)*Math.cos(angle);mesh.rotation.z=angle+(side<0?Math.PI:0);}}
- return {attach,setVisible,bind,update};
+ function detach(modelId){const group=attached.get(modelId);if(!group)return;group.removeFromParent();for(const mesh of group.children){mesh.geometry.dispose();mesh.material.map?.dispose();mesh.material.dispose();}attached.delete(modelId);}
+ return {attach,setVisible,bind,update,detach};
 }
