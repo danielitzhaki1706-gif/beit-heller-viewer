@@ -5,6 +5,7 @@ import {applyMaterialDetail} from '../material-detail.js?v=20261013-r4-final';
 import {applyFurnitureRefinement} from '../furniture-refinement.js?v=20261013-r4-final';
 import {createContextLayer} from '../context-layer.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {configureModelLoader} from '../model-loader.js?v=20261022-r7';
 import {navigators,doorSegments} from './route.js';
 import {batchStatic} from './batching.js';
 import {createLighting} from '../lighting.js?v=20261013-r4-final';
@@ -26,7 +27,7 @@ const visual=createVisualPipeline(renderer,scene,camera),shadowTarget=new THREE.
 lighting.setQuality(visual.snapshot().effectiveQuality);
 renderer.localClippingEnabled=true;
 function finishModel(root){root.traverse(o=>{if(!o.isMesh)return;const materials=Array.isArray(o.material)?o.material:[o.material];o.castShadow=materials.every(m=>!(m.transmission>.05||m.opacity<.95));o.receiveShadow=true;});}
-const loader=new GLTFLoader(),models={},meshes={},physics={},doorParts=[];
+const loader=configureModelLoader(THREE,new GLTFLoader()),models={},meshes={},physics={},doorParts=[];
 let siteContext=null,visualContext=null;
 const map=createMap(data,$('minimap')),path=routePoints(data);
 let mode='ground',position=[...data.ground.spawn],feet=0,yaw=0,pitch=0,ready=false,loading=false;

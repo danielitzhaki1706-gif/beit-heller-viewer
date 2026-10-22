@@ -1,4 +1,5 @@
 /* Organized render library. Independent of the WebGL viewer. */
+import {thumbImage,displayImage} from './image-derivatives.js?v=20261022-r7';
 const CATEGORIES = [
   {id:'exterior', label:'חוץ וחזיתות', short:'חוץ', description:'המבנה השלם והמפגש עם סביבתו הקרובה.', cover:'revision3-site-aerial-ai.png'},
   {id:'offices', label:'משרדים ועיצוב פנים', short:'משרדים', description:'סביבת עבודה, חללים משותפים, מעליות ומדרגות.', cover:'revision3-office-teams-ai.png'},
@@ -108,7 +109,7 @@ export async function mountRenderGallery(root,renders,options={}){
   function badgeText(row){return row.kind==='concept'?'המחשת AI · עיצוב מוצע':'מתוך המודל';}
   function showImage(index,trigger){
     if(!visible.length)return;activeIndex=(index+visible.length)%visible.length;const row=visible[activeIndex];
-    if(trigger)returnFocus=trigger;dialogTitle.textContent=row.title;large.src=row.fullSrc||row.src;large.alt=row.alt;
+    if(trigger)returnFocus=trigger;dialogTitle.textContent=row.title;large.src=displayImage(row.fullSrc||row.src);large.alt=row.alt;
     badge.textContent=badgeText(row);badge.dataset.kind=row.kind;position.textContent=`${activeIndex+1} / ${visible.length}`;fullLink.href=row.fullSrc||row.src;
     description.textContent=isolateInline(row.summary||row.caption);evidenceText.textContent=isolateInline(row.caption);evidence.hidden=!row.caption||row.caption===row.summary;evidence.open=false;
     previous.hidden=next.hidden=visible.length<2;if(!dialog.open)dialog.showModal();
@@ -137,7 +138,7 @@ export async function mountRenderGallery(root,renders,options={}){
     [['all','כל המפלסים'],...available.map(id=>[id,groupLabel(id)])].forEach(([id,label])=>{const b=element('button','bh-gallery-group-button',label);b.type='button';b.dataset.galleryGroup=id;b.setAttribute('aria-pressed',String(group===id));b.onclick=()=>{group=id;renderGroups();renderContent();};groups.append(b);});
   }
   function renderCard(row){const card=element('button','bh-gallery-card');card.type='button';card.dataset.galleryId=row.id;card.dataset.galleryKind=row.kind;card.setAttribute('aria-label',`הגדלת ${row.title}`);
-    const media=element('span','bh-gallery-card-media'),img=element('img');img.src=row.src;img.alt=row.alt;img.loading='lazy';img.decoding='async';
+    const media=element('span','bh-gallery-card-media'),img=element('img');img.loading='lazy';img.decoding='async';img.alt=row.alt;img.src=thumbImage(row.src); // lazy before src: hidden cards must not fetch
     const enlarge=element('span','bh-gallery-enlarge','הגדלה ↗');media.append(img,enlarge);
     const info=element('span','bh-gallery-card-info'),label=element('span','bh-gallery-badge',badgeText(row));label.dataset.kind=row.kind;
     info.append(label,element('strong','bh-gallery-card-title',row.title),element('span','bh-gallery-card-summary',isolateInline(row.summary)));card.append(media,info);card.onclick=()=>showImage(visible.indexOf(row),card);return card;
@@ -145,7 +146,7 @@ export async function mountRenderGallery(root,renders,options={}){
   function renderHome(){
     const heading=element('header','bh-gallery-intro');heading.append(element('span','bh-gallery-eyebrow',collections[collection].title),element('h2','','מאיפה תרצו להתחיל?'),element('p','','בחרו אזור. בכל אזור ההדמיות מסודרות לפי מפלס, מהמבט הכולל אל החללים הפנימיים.'));content.append(heading);
     const covers=element('div','bh-gallery-covers');categories.forEach(c=>{const rows=items.filter(r=>r.category===c.id),cover=rows.filter(r=>r.cover).sort((a,b)=>a.order-b.order)[0]||rows.find(r=>basename(r.src)===c.cover)||rows[0],button=element('button','bh-gallery-cover');button.type='button';button.dataset.galleryCover=c.id;
-      const img=element('img');img.src=cover.src;img.alt='';img.loading='lazy';const copy=element('span','bh-gallery-cover-copy');copy.append(element('span','bh-gallery-cover-count',viewCount(rows.length)),element('strong','',c.label),element('span','bh-gallery-cover-description',c.description),element('span','bh-gallery-cover-open','לצפייה באזור ←'));button.append(img,copy);button.onclick=()=>chooseCategory(c.id);covers.append(button);
+      const img=element('img');img.loading='lazy';img.decoding='async';img.alt='';img.src=thumbImage(cover.src);const copy=element('span','bh-gallery-cover-copy');copy.append(element('span','bh-gallery-cover-count',viewCount(rows.length)),element('strong','',c.label),element('span','bh-gallery-cover-description',c.description),element('span','bh-gallery-cover-open','לצפייה באזור ←'));button.append(img,copy);button.onclick=()=>chooseCategory(c.id);covers.append(button);
     });content.append(covers);status.textContent=`${items.length} תמונות בספרייה זו · ${categories.length} אזורים`;kindSelect.hidden=true;root.dataset.galleryVisible='0';
   }
   function renderContent(){content.replaceChildren();if(category==='home'){visible=[];renderHome();return;}

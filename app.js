@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {configureModelLoader} from './model-loader.js?v=20261022-r7';
 import {responsiveFov} from './camera-fit.js';
 import {createLighting} from './lighting.js?v=20261021-r6';
 import {createVisualPipeline} from './visual-pipeline.js?v=20261021-r6';
@@ -24,17 +25,20 @@ import {mountFloorCompare} from './floor-compare.js?v=20261021-r6';
 import {mountFloorSource} from './floor-source.js?v=20261021-r6';
 import {floorBounds,regionBounds,composeFloor,createFloorAnchors,projectFloorAnchors} from './floor-camera.js?v=20261021-r6';
 import {createFloorLabels} from './floor-labels.js?v=20261021-r6';
+import {thumbImage,displayImage} from './image-derivatives.js?v=20261022-r7';
 const $=id=>document.getElementById(id);
 mountSiteSources({button:$('site-sources')});
-const response=await fetch('./assets/viewer.json');if(!response.ok)throw Error('Viewer configuration unavailable');
-const config=await response.json();
+// Independent startup data is fetched in parallel; the building model is already preloading (index.html).
+const json=(url,fallback)=>fetch(url).then(r=>{if(r.ok)return r.json();if(fallback!==undefined)return fallback;throw Error('Unavailable: '+url);},error=>{if(fallback!==undefined)return fallback;throw error;});
+const [config,regionCatalogData,floorLabelData,modelIndex,sourceIndex,completionManifests]=await Promise.all([
+ json('./assets/viewer.json'),json('./assets/regions.json?v=20261021-r6'),json('./assets/floor-labels.json'),json('./assets/floor-model-index.json'),
+ json('./assets/floor-sources/floor-source-index.json',{}),json('./assets/floor-completions/index.json',[])
+]);
 config['basement-stack']={title:'מערכת המרתפים',evidence:'ארבע קומות במערכת צירים משותפת; הפרדה אנכית לצפייה בלבד.',lightingPreset:'floor-overview',views:[{label:'מערכת המרתפים',position:[83,64,82],target:[20,3,10],fov:38}]};
-const regionCatalog=await (await fetch('./assets/regions.json?v=20261021-r6')).json();
-const floorLabels=createFloorLabels(THREE,await (await fetch('./assets/floor-labels.json')).json());
+const regionCatalog=regionCatalogData;
+const floorLabels=createFloorLabels(THREE,floorLabelData);
 let regionNav,compass,floorStudio,floorRendering,floorFraming=null,floorAnchors=[],floorRequest=0;
-const floorSource=mountFloorSource(),modelIndex=await (await fetch('./assets/floor-model-index.json')).json();
-const sourceIndex=await fetch('./assets/floor-sources/floor-source-index.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
-const completionManifests=await fetch('./assets/floor-completions/index.json').then(r=>r.ok?r.json():[]);
+const floorSource=mountFloorSource();
 let floorDirection=null,basementStack=null,basementLayout='exploded',basementGap=6,basementFocus=null;
 const floorCompare=mountFloorCompare({host:document.querySelector('.stage'),onClose:()=>{syncRegionControls();resize();}});
 const basementControls=mountBasementControls({host:document.querySelector('.stage'),onLayout:value=>{basementLayout=value;updateBasementLayout();},onGap:value=>{basementGap=value;updateBasementLayout(true);},onFocus:setBasementFocus});
@@ -56,7 +60,7 @@ const guide=[
 ];
 const state={tab:'building',mode:'exterior',floor:4,area:'overview',floorPresentation:'overview',cut:'band',view:'fit',tour:0,playing:false,refFov:38,refAspect:4/3,shift:0,shiftX:0,fit:false,fitDirection:[1,.58,-1.13]};
 const cache=new Map(),pending=new Map();let renderer,scene,camera,controls,lighting,visual,presentation,active,ground,contextLayer,cutaway,sequence=0,tourTimer,failed=false,dirtyFrames=0,motion,experience,currentScene='signature',currentLook='daylight',firstComposition=true;
-const loader=new GLTFLoader(),upperPlane=new THREE.Plane(new THREE.Vector3(0,-1,0),100),lowerPlane=new THREE.Plane(new THREE.Vector3(0,1,0),100);
+const loader=configureModelLoader(THREE,new GLTFLoader()),upperPlane=new THREE.Plane(new THREE.Vector3(0,-1,0),100),lowerPlane=new THREE.Plane(new THREE.Vector3(0,1,0),100);
 const materials=(object,visit)=>object?.traverse(o=>{if(o.isMesh)for(const m of Array.isArray(o.material)?o.material:[o.material])visit(m,o);});
 function invalidate(){dirtyFrames=45;}
 function fail(error){console.error('Viewer load failed',error);$('loading').hidden=true;$('viewer-error').hidden=false;$('error-message').textContent='התצוגה המרחבית לא נטענה. אפשר לפתוח את ההדמיות או לבחור קומה אחרת.';}
@@ -79,7 +83,7 @@ function initialize(){
  experience=mountExperience({onScene:showArchitecturalScene,onLook:setAtmosphere,onPlay:()=>{const playing=motion.setOrbit(!motion.orbit);experience.setPlaying(playing);if(playing){state.fit=false;currentScene=null;experience.setScene(null);stopTour();}},onPanel:()=>experience.setPanel(document.body.dataset.panel!=='open')});
  experience?.setLook(currentLook);experience?.setTab(state.tab);experience?.setPanel(false);
  ground=new THREE.Mesh(new THREE.PlaneGeometry(2000,2000),new THREE.MeshStandardMaterial({color:0xb8bea7,roughness:.93}));ground.rotation.x=-Math.PI/2;ground.position.set(20,-.365,8);ground.receiveShadow=true;scene.add(ground);
- contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});batchExterior(object,[]);},onChange:status=>{$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});contextLayer.load();
+ contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});batchExterior(object,[]);},onChange:status=>{$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});
  new ResizeObserver(resize).observe($('viewport'));
  renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();failed=true;stopTour();fail(Error('התצוגה נעצרה; נסו לטעון מחדש.'));});
  renderer.setAnimationLoop(time=>{if(document.hidden||failed||['gallery','walk'].includes(state.tab)||!$('plan-view').hidden)return;motion?.tick(time);const moving=String(!!motion?.active);if(document.body.dataset.cameraMoving!==moving)document.body.dataset.cameraMoving=moving;controls.update();if(dirtyFrames>0){compass.update(camera,controls.target,true);floorLabels.update(camera,active);updateFloorHotspots();if(cutaway.update())renderer.shadowMap.needsUpdate=true;floorRendering.setCutawayMode?.(cutaway.snapshot().mode);lighting.update(camera,controls.target);visual.render();dirtyFrames--;}});resize();
@@ -110,18 +114,18 @@ async function load(mode){cacheTouched.set(mode,performance.now());if(cache.has(
  floorLabels.attach(mode,object);object.visible=false;scene.add(object);cache.set(mode,object);return object;
  }).finally(()=>pending.delete(mode)));return pending.get(mode);}
 async function showModel(mode,view='fit'){const token=++sequence;$('viewer-error').hidden=true;$('loading').hidden=cache.has(mode);
- try{if(failed)throw Error('יש לטעון מחדש את התצוגה.');initialize();const object=await load(mode);if(token!==sequence){evictFloorModels();return false;}cutaway?.restore();if(active)active.visible=false;active=object;active.visible=true;state.mode=mode;if(state.tab==='floors')floorRendering.prepare(object,{floor:floors[state.floor],mode,region:selectedRegion().region});const lightMode=mode==='exterior'?'exterior':config[mode].lightingPreset||'interior';lighting.setMode(lightMode);visual.setMode(lightMode);contextLayer.setMode(mode);controls.minDistance=mode!=='exterior'?.15:3;controls.maxDistance=mode!=='exterior'?90:300;controls.maxPolarAngle=mode!=='exterior'?Math.PI*.95:Math.PI*.495;
+ try{if(failed)throw Error('יש לטעון מחדש את התצוגה.');initialize();const object=await load(mode);if(token!==sequence){evictFloorModels();return false;}cutaway?.restore();if(active)active.visible=false;active=object;active.visible=true;state.mode=mode;if(state.tab==='floors')floorRendering.prepare(object,{floor:floors[state.floor],mode,region:selectedRegion().region});const lightMode=mode==='exterior'?'exterior':config[mode].lightingPreset||'interior';lighting.setMode(lightMode);visual.setMode(lightMode);contextLayer.setMode(mode);if(mode==='exterior'&&state.tab!=='floors')contextLayer.load(); // surroundings follow the building, never compete with itcontrols.minDistance=mode!=='exterior'?.15:3;controls.maxDistance=mode!=='exterior'?90:300;controls.maxPolarAngle=mode!=='exterior'?Math.PI*.95:Math.PI*.495;
  $('view-kind').textContent=mode==='exterior'?'בית הלר · רחובות':config[mode].title;$('evidence-text').textContent=config[mode].evidence;buildViews();if(state.tab!=='floors'){applyClip();resize();if(view==='fit')fitModel(true,[1,.58,-1.13]);else setView(view);}$('loading').hidden=true;document.body.dataset.viewerReady='true';$('viewport').focus({preventScroll:true});return true;
  }catch(error){if(token===sequence)fail(error);return false;}}
 function buildViews(){const options=[['fit',state.mode==='exterior'?'הבניין השלם':'מבט מרחבי'],...config[state.mode].views.map((v,i)=>[i,v.label])];$('destinations').replaceChildren();$('thumbnail-strip').replaceChildren();
  for(const [i,[id,label]] of options.entries()){const b=document.createElement('button');b.dataset.view=id;const number=document.createElement('span');number.textContent=String(i+1).padStart(2,'0');b.append(number,document.createTextNode(label));b.onclick=()=>{stopTour();id==='fit'?fitModel(true,[1,.58,-1.13]):setView(id);};$('destinations').append(b);}
- const relevant=config.renders.filter(r=>(r.mode||(r.src.includes('interior')?'interior':'exterior'))===state.mode);relevant.forEach((r,i)=>{const viewIndex=r.viewIndex??i;const b=document.createElement('button');b.dataset.view=viewIndex;const img=document.createElement('img');img.src=r.src;img.alt='';const label=document.createElement('span');label.textContent=r.title;b.append(img,label);b.onclick=()=>{stopTour();setView(viewIndex);};$('thumbnail-strip').append(b);});markViews();}
+ const relevant=config.renders.filter(r=>(r.mode||(r.src.includes('interior')?'interior':'exterior'))===state.mode);relevant.forEach((r,i)=>{const viewIndex=r.viewIndex??i;const b=document.createElement('button');b.dataset.view=viewIndex;const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.alt='';img.src=thumbImage(r.src);const label=document.createElement('span');label.textContent=r.title;b.append(img,label);b.onclick=()=>{stopTour();setView(viewIndex);};$('thumbnail-strip').append(b);});markViews();}
 function stopTour(){state.playing=false;clearTimeout(tourTimer);$('tour-play').textContent='ניגון אוטומטי';$('tour-play').setAttribute('aria-pressed','false');$('tour-quick-play').setAttribute('aria-pressed','false');$('tour-quick-play').textContent='ניגון';}
 function setPanels(tab){document.body.dataset.tab=tab;floorStudio?.setVisible(tab==='floors');if(tab!=='floors'){basementControls.setVisible(false);floorRequest++;floorFraming=null;floorAnchors=[];floorSource.close();floorCompare.close();cutaway?.restore();floorRendering?.setVisible(false);}motion?.stop();experience?.setPlaying(false);experience?.setTab(tab);presentation?.setTab(tab);compass?.update(camera,controls.target,!['gallery','walk'].includes(tab));$('plan-view').hidden=true;$('floor-quickbar').hidden=tab!=='floors';document.querySelector('.workspace').classList.toggle('floor-mode',tab==='floors');$('tour-quickbar').hidden=tab!=='tour';document.querySelectorAll('.tabs [data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));for(const id of ['building','floor','tour','gallery','walk'])$(`${id}-panel`).hidden=(id==='floor'?'floors':id)!==tab;
  $('viewport').hidden=['gallery','walk'].includes(tab);$('render-gallery').hidden=tab!=='gallery';$('walk-frame').hidden=tab!=='walk';document.querySelector('.stage').classList.toggle('walking',tab==='walk');$('thumbnail-strip').hidden=tab!=='building';$('stage-footer').hidden=['gallery','walk'].includes(tab);
  const text={building:['כל הבניין. מכל זווית.','סובבו את המבנה, התקרבו לחזית ובחרו את המקום שתרצו להכיר.'],floors:['קומה אחר קומה.','בחרו מפלס ופתחו מבט אל המבנה.'],tour:['חמש תחנות. מבנה אחד.','דרך פשוטה להכיר את המבנה, הסביבה והכניסה.'],gallery:['המבנה באור אחר.','תמונות באיכות גבוהה, מזוויות נבחרות.'],walk:['נכנסים פנימה.','סיור חופשי באזורים שכבר הוכנו להליכה.']}[tab];$('panel-title').textContent=text[0];$('panel-description').textContent=text[1];}
 async function setTab(tab){stopTour();if(state.tab!==tab)experience?.setPanel(false);if(state.tab==='walk'&&tab!=='walk')$('walk-frame').src='about:blank';state.tab=tab;setPanels(tab);
- if(tab==='gallery'){++sequence;$('loading').hidden=true;$('viewer-error').hidden=true;$('view-title').textContent='מבטי הדמיה';$('view-kind').textContent='חוץ ופנים';$('view-subtitle').textContent='בחירת תמונה פותחת את הקובץ המלא';return;}
+ if(tab==='gallery'){++sequence;await galleryReady;if(state.tab!=='gallery')return;$('loading').hidden=true;$('viewer-error').hidden=true;$('view-title').textContent='מבטי הדמיה';$('view-kind').textContent='חוץ ופנים';$('view-subtitle').textContent='בחירת תמונה פותחת את הקובץ המלא';return;}
  if(tab==='walk'){++sequence;$('loading').hidden=true;$('viewer-error').hidden=true;$('walk-frame').src='./walk/index.html';return;}
  if(tab==='tour'){state.tour=0;await showTour();return;}
  if(tab==='floors'){await selectFloor();return;}await showModel('exterior','fit');showArchitecturalScene(SCENES[0],firstComposition);firstComposition=false;}
@@ -192,7 +196,7 @@ async function selectFloor(){
  const floor=floors[state.floor],{floor:catalogFloor,region}=selectedRegion(),area=region.id,presentationMode=state.floorPresentation;
  syncRegionControls();floorStudio?.setSelection(floor.id,region.id,{mode:floorCompare.isOpen?'compare':presentationMode,busy:true,insideAvailable:hasInsideView(region,config[region.mode||'exterior']?.views?.[region.view||0]),sourceAvailable:!!floorSourceInfo(catalogFloor,region).href});
  $('floor-note').textContent=region.caption;$('detail-render').hidden=!region.render;$('detail-source').hidden=!floorSourceInfo(catalogFloor,region).href;$('detail-source').href=floorSourceInfo(catalogFloor,region).href||'#';
- $('detail-render').onclick=()=>{if(!region.render)return;$('large-render').src=region.render;$('large-render').alt=floor.label+' / '+region.label;$('render-caption').textContent=floor.label+' / '+region.label+' · '+region.caption;$('open-full-render').href=region.render;$('render-dialog').showModal();};
+ $('detail-render').onclick=()=>{if(!region.render)return;$('large-render').src=displayImage(region.render);$('large-render').alt=floor.label+' / '+region.label;$('render-caption').textContent=floor.label+' / '+region.label+' · '+region.caption;$('open-full-render').href=region.render;$('render-dialog').showModal();};
  $('plan-view').hidden=true;$('viewport').hidden=false;$('stage-footer').hidden=false;
  const wholeMode=catalogFloor.regions.find(r=>r.id==='overview').mode;
  // Office balconies already exist in the source-aligned complete floor model.
@@ -219,7 +223,8 @@ async function selectFloor(){
 async function showTour(){const step=guide[state.tour];$('tour-count').textContent=`${String(state.tour+1).padStart(2,'0')} / 05`;$('tour-title').textContent=step.title;$('tour-text').textContent=step.text;$('tour-prev').disabled=state.tour===0;$('tour-quick-prev').disabled=state.tour===0;$('tour-quick-next').textContent=state.tour===4?'להתחלה ↻':'למבט הבא ←';$('tour-next').textContent=state.tour===4?'חזרה להתחלה ↻':'למבט הבא ←';return showModel(step.mode,step.view);}
 async function advanceTour(){state.tour=(state.tour+1)%guide.length;const ok=await showTour();if(state.playing&&ok)tourTimer=setTimeout(advanceTour,8000);else if(!ok)stopTour();}
 floors.forEach((f,i)=>{const o=document.createElement('option');o.value=i;o.textContent=f.label;$('floor-select').append(o);$('floor-quick-select').append(o.cloneNode(true));});$('floor-select').value=String(state.floor);$('floor-quick-select').value=String(state.floor);
-await mountRenderGallery($('render-gallery'),config.renders);
+// The hidden library is built without delaying the first model view.
+const galleryReady=mountRenderGallery($('render-gallery'),config.renders).catch(error=>console.warn('Render library unavailable',error));
 document.querySelectorAll('.tabs [data-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));$('home').onclick=()=>{setTab('building');if(matchMedia('(max-width:760px)').matches)document.querySelector('.stage').scrollIntoView({block:'start',behavior:'auto'});};$('fit').onclick=()=>state.tab==='floors'?selectFloor():fitModel();$('walk').onclick=()=>setTab('walk');$('leave-walk').onclick=()=>setTab('building');
 $('context-toggle').onchange=event=>contextLayer?.setEnabled(event.target.checked);
 const onFloorChange=event=>{state.floor=Number(event.target.value);state.area='overview';state.floorPresentation='overview';selectFloor();};$('floor-select').onchange=onFloorChange;$('floor-quick-select').onchange=onFloorChange;
