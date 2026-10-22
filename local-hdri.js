@@ -43,6 +43,8 @@ export async function loadLocalHDRI(THREE,url) {
 // the RGBE asset. Only the sun core is clipped, and the sun is lit separately by
 // the scene's directional light.
 export async function loadEncodedSky(THREE,renderer,url,{maxRadiance=6,horizonRow=.483}={}){
+  // Decoding renders into a half-float target; without that capability use the RGBE asset.
+  if(!renderer.capabilities.isWebGL2||!(renderer.extensions.has('EXT_color_buffer_half_float')||renderer.extensions.has('EXT_color_buffer_float')))throw Error('Half-float render targets unavailable');
   const image=await new THREE.ImageLoader().loadAsync(url);
   const source=new THREE.Texture(image);source.colorSpace=THREE.NoColorSpace;source.generateMipmaps=false;source.minFilter=source.magFilter=THREE.LinearFilter;source.needsUpdate=true;
   const target=new THREE.WebGLRenderTarget(image.width,image.height,{type:THREE.HalfFloatType,depthBuffer:false,stencilBuffer:false,generateMipmaps:false,minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,wrapS:THREE.RepeatWrapping});

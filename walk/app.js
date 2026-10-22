@@ -129,7 +129,8 @@ async function switchMode(which){
  try{
  await load(which);mode=which;
  for(const [key,obj]of Object.entries(models))obj.visible=key===mode;
- if(siteContext)siteContext.visible=mode==='ground'&&!visualContext?.getState().ready;visualContext?.setMode(mode==='ground'?'exterior':'floor');lighting.setMode(mode==='ground'?'exterior':'interior');visual.setMode(mode==='ground'?'exterior':'interior');visualRevision++;reset();
+ if(siteContext)siteContext.visible=mode==='ground'&&!visualContext?.getState().ready;visualContext?.setMode(mode==='ground'?'exterior':'floor');lighting.setMode(mode==='ground'?'exterior':'interior');visual.setMode(mode==='ground'?'exterior':'interior');renderer.transmissionResolutionScale=1; // eye level, right at the glazing
+ visualRevision++;reset();
  $('ground-mode').setAttribute('aria-pressed',mode==='ground');
 
  $('scope-note').textContent=mode==='ground'?'מסלול מוגבל · חלק מהבניין פתוח לסיור':'עיצוב פנים מוצע · אינו תכנית מאושרת';
