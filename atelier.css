@@ -55,3 +55,10 @@ body[data-tab=building][data-look=twilight] .masthead-rule{background:#afc4dc}
 @media(max-width:1050px) and (min-width:761px){.experience-scene:not(:has(img)){width:80px;padding:8px 10px}#experience-dock{gap:12px}#cinematic-play{font-size:11px;padding:8px 11px}}
 @media(max-width:760px){.experience-scene:not(:has(img)){flex:1;width:auto;min-width:65px;min-height:43px;padding:7px 8px}.experience-scene:not(:has(img))>span{font-size:11px}.experience-scene:not(:has(img))>.scene-number{font-size:8px}.experience-divider{display:none}#experience-dock>.experience-lighting{flex:1;min-width:180px}#experience-dock>#cinematic-play{flex:0 0 auto;font-size:10px;padding:6px 9px;gap:5px}#experience-dock>#cinematic-play>span:first-child{font-size:16px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* R7: the walk frame carries its own title, scope note and way back to the building;
+   the floating card covered the walk footer (tours, overview) and the touch pad. */
+body[data-tab=walk] .sidebar{display:none!important}
+@media(max-width:760px){.stage.walking{height:100dvh;min-height:560px}}
+/* Landscape phones: the walk takes the whole screen (its own link returns to the atlas). */
+@media(max-height:500px) and (pointer:coarse){body[data-tab=walk] #walk-frame{position:fixed;inset:0;width:100vw;height:100dvh;z-index:60;border:0;border-radius:0}}

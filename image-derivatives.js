@@ -5,3 +5,4 @@ const lookup=src=>{const path=strip(src);return IMAGE_DERIVATIVES[path]||IMAGE_D
 export const thumbImage=src=>lookup(src)?.thumb||src;
 export const displayImage=src=>lookup(src)?.display||src;
 export const imageSize=src=>{const e=lookup(src);return e?[e.w,e.h]:null;};
+export const imageSrcset=src=>{const e=lookup(src);if(!e)return '';return `${e.thumb} ${Math.min(800,e.w)}w`+(e.display?`, ${e.display} ${e.w}w`:'');};
