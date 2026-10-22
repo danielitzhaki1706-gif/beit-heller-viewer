@@ -1,6 +1,6 @@
 // Runtime material refinement. Positions, indices, source UVs and source assets are untouched.
 // Detail textures are deterministic procedural finishes, not measured product scans.
-import {installFacadeAtmosphere} from './facade-atmosphere.js?v=20261018-r5';
+import {installFacadeAtmosphere} from './facade-atmosphere.js?v=20261022-r7';
 const VERSION='r5.1';
 const materialCache=new WeakMap(),geometryCache=new WeakMap(),rootCache=new WeakMap(),textureCaches=new WeakMap();
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));

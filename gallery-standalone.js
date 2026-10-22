@@ -1,4 +1,4 @@
-import {mountRenderGallery} from './gallery.js?v=20261018-r5';
+import {mountRenderGallery} from './gallery.js?v=20261022-r7';
 const root=document.getElementById('render-gallery');
 try{
   const response=await fetch('./assets/viewer.json',{cache:'no-cache'});

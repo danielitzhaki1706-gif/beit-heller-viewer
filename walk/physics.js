@@ -1,5 +1,5 @@
-import {createFloorIndex} from './floor-index.js';
-import {createCollisionIndex} from './collision-index.js';
+import {createFloorIndex} from './floor-index.js?v=20261022-r7';
+import {createCollisionIndex} from './collision-index.js?v=20261022-r7';
 // Sampled walking collision for visualization, not a certified clearance model.
 // The same implementation is imported by the app and CPU regression checks.
 export function createWalkingPhysics(THREE,{meshes,floorMeshes=meshes,fallbackFloorMeshes=[],dynamicMeshes=[],navigator,radius=.25,maxHeight=Infinity,seamTolerance=0}){
