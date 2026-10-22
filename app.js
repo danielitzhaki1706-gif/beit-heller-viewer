@@ -60,14 +60,20 @@ const guide=[
  {title:'הכניסה והרחבות',text:'המפגש בין החזית, הרחבה והכניסה בקומת הקרקע.',mode:'exterior',view:8}
 ];
 const state={tab:'building',mode:'exterior',floor:4,area:'overview',floorPresentation:'overview',cut:'band',view:'fit',tour:0,playing:false,refFov:38,refAspect:4/3,shift:0,shiftX:0,fit:false,fitDirection:[1,.58,-1.13]};
-const cache=new Map(),pending=new Map();let renderer,scene,camera,controls,lighting,visual,presentation,active,ground,contextLayer,cutaway,sequence=0,tourTimer,failed=false,dirtyFrames=0,motion,experience,currentScene='signature',currentLook='daylight',firstComposition=true;
+const cache=new Map(),pending=new Map();let lastRenderTime=0,lastCameraChange=0,renderer,scene,camera,controls,lighting,visual,presentation,active,ground,contextLayer,cutaway,sequence=0,tourTimer,failed=false,dirtyFrames=0,motion,experience,currentScene='signature',currentLook='daylight',firstComposition=true;
 const loader=configureModelLoader(THREE,new GLTFLoader()),upperPlane=new THREE.Plane(new THREE.Vector3(0,-1,0),100),lowerPlane=new THREE.Plane(new THREE.Vector3(0,1,0),100);
 const materials=(object,visit)=>object?.traverse(o=>{if(o.isMesh)for(const m of Array.isArray(o.material)?o.material:[o.material])visit(m,o);});
-function invalidate(){dirtyFrames=45;}
+// Static frames are identical; a short tail covers damping and late uploads.
+function invalidate(){dirtyFrames=Math.max(dirtyFrames,12);}
+// Full anisotropic filtering keeps roads, paving and floors crisp at grazing angles.
+function sharpenTextures(root){
+ const level=Math.min(renderer.capabilities.getMaxAnisotropy(),matchMedia('(pointer:coarse)').matches?4:16);
+ materials(root,m=>{for(const value of Object.values(m))if(value?.isTexture&&value.anisotropy<level&&value.minFilter!==THREE.LinearFilter&&value.minFilter!==THREE.NearestFilter){value.anisotropy=level;value.needsUpdate=true;}});
+}
 function fail(error){console.error('Viewer load failed',error);$('loading').hidden=true;$('viewer-error').hidden=false;$('error-message').textContent=error?.userMessage||'התצוגה המרחבית לא נטענה. אפשר לפתוח את ההדמיות או לבחור קומה אחרת.';}
 function initialize(){
  if(renderer)return;
- renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;renderer.localClippingEnabled=true;
+ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,matchMedia('(pointer:coarse)').matches?1.5:2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;renderer.localClippingEnabled=true;
  $('viewport').append(renderer.domElement);scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(38,1,.05,1200);
  controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=3;controls.maxDistance=300;controls.maxPolarAngle=Math.PI*.49;
  cutaway=createAdaptiveCutaway(THREE,{camera,controls,invalidate,mergeGeometries,host:document.querySelector('.stage')});
@@ -77,7 +83,7 @@ function initialize(){
  // A touch that turns into a page scroll never moves the camera, so taking over
  // the view (stopping tour, orbit and framing) waits for the first real change.
  let gesture=false;controls.addEventListener('start',()=>{gesture=true;});controls.addEventListener('end',()=>{gesture=false;});
- controls.addEventListener('change',()=>{invalidate();if(!gesture)return;gesture=false;motion?.stop();experience?.setPlaying(false);experience?.setScene(null);currentScene=null;state.fit=false;floorFraming=null;state.view='free';stopTour();if(state.tab!=='floors')$('view-title').textContent='מבט חופשי';markViews();});
+ controls.addEventListener('change',()=>{invalidate();lastCameraChange=performance.now();if(!gesture)return;gesture=false;motion?.stop();experience?.setPlaying(false);experience?.setScene(null);currentScene=null;state.fit=false;floorFraming=null;state.view='free';stopTour();if(state.tab!=='floors')$('view-title').textContent='מבט חופשי';markViews();});
  lighting=createLighting(renderer,scene,{onReady:invalidate});
  visual=createVisualPipeline(renderer,scene,camera,{onFallback:error=>console.warn('Visual quality fallback',error)});
  lighting.setQuality(visual.setQuality('auto'));
@@ -87,11 +93,13 @@ function initialize(){
  experience=mountExperience({onScene:showArchitecturalScene,onLook:setAtmosphere,onPlay:()=>{const playing=motion.setOrbit(!motion.orbit);experience.setPlaying(playing);if(playing){state.fit=false;currentScene=null;experience.setScene(null);stopTour();}},onPanel:()=>experience.setPanel(document.body.dataset.panel!=='open')});
  experience?.setLook(currentLook);experience?.setTab(state.tab);experience?.setPanel(false);
  ground=new THREE.Mesh(new THREE.PlaneGeometry(2000,2000),new THREE.MeshStandardMaterial({color:0xb8bea7,roughness:.93}));ground.rotation.x=-Math.PI/2;ground.position.set(20,-.365,8);ground.receiveShadow=true;scene.add(ground);
- contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});batchExterior(object,[]);object.traverse(o=>{if(o.isMesh&&o.userData.presentationBatch&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});},onChange:status=>{renderer.shadowMap.needsUpdate=true;$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});
+ contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});sharpenTextures(object);batchExterior(object,[]);object.traverse(o=>{if(o.isMesh&&o.userData.presentationBatch&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});},onChange:status=>{renderer.shadowMap.needsUpdate=true;$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});
  new ResizeObserver(resize).observe($('viewport'));
  renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();failed=true;stopTour();fail(Object.assign(Error('WebGL context lost'),{userMessage:'הדפדפן עצר את התצוגה התלת־ממדית כדי לפנות זיכרון גרפי. לחצו ״ניסיון נוסף״ לטעינה מחדש.'}));});
  renderer.domElement.addEventListener('webglcontextrestored',()=>location.reload());
- renderer.setAnimationLoop(time=>{if(document.hidden||failed||['gallery','walk'].includes(state.tab)||!$('plan-view').hidden)return;motion?.tick(time);const moving=String(!!motion?.active);if(document.body.dataset.cameraMoving!==moving)document.body.dataset.cameraMoving=moving;controls.update();if(dirtyFrames>0){compass.update(camera,controls.target,true);floorLabels.update(camera,active);updateFloorHotspots();if(cutaway.update())renderer.shadowMap.needsUpdate=true;floorRendering.setCutawayMode?.(cutaway.snapshot().mode);lighting.update(camera,controls.target);visual.render();dirtyFrames--;}});resize();
+ renderer.setAnimationLoop(time=>{if(document.hidden||failed||['gallery','walk'].includes(state.tab)||!$('plan-view').hidden)return;motion?.tick(time);const moving=String(!!motion?.active);if(document.body.dataset.cameraMoving!==moving)document.body.dataset.cameraMoving=moving;controls.update();if(dirtyFrames>0){compass.update(camera,controls.target,true);floorLabels.update(camera,active);updateFloorHotspots();if(cutaway.update())renderer.shadowMap.needsUpdate=true;floorRendering.setCutawayMode?.(cutaway.snapshot().mode);lighting.update(camera,controls.target);visual.render();dirtyFrames--;
+  // Frame pacing feeds the adaptive resolution only while the view is in motion.
+  if((motion?.active||time-lastCameraChange<120)&&lastRenderTime)visual.reportFrame(time-lastRenderTime);lastRenderTime=time;}else lastRenderTime=0;});resize();
 }
 function resize(recompose=true){if(!renderer)return;const box=$('viewport').getBoundingClientRect();if(box.width<1||box.height<1)return;renderer.setSize(box.width,box.height,false);visual?.resize(box.width,box.height);camera.aspect=box.width/box.height;camera.fov=state.tab==='floors'&&state.floorPresentation!=='inside'?38:responsiveFov(state.refFov,state.refAspect,camera.aspect);
  if(currentScene&&state.tab==='building')state.shiftX=box.width>=900?.075:0;
@@ -114,7 +122,7 @@ async function load(mode){cacheTouched.set(mode,performance.now());if(cache.has(
  if(mode!=='exterior')object.traverse(mesh=>{if(/source.plan.*underlay/i.test(mesh.name.replace(/_/g,' '))){mesh.visible=false;mesh.userData.floorSourceUnderlay=true;}});
  if(mode==='exterior'){const surface=await import('./surface-finish.js').catch(()=>null);if(surface?.applySurfaceFinish)await surface.applySurfaceFinish(object,THREE);}
  applyFurnitureRefinement(object,THREE);
- await applyMaterialDetail(object,THREE,{kind:mode==='exterior'?'building':'interior'});
+ await applyMaterialDetail(object,THREE,{kind:mode==='exterior'?'building':'interior'});sharpenTextures(object);
  materials(object,(m,o)=>{o.castShadow=!(m.transmission>.05||m.opacity<.95);o.receiveShadow=true;});if(mode==='exterior'){batchExterior(object);contextLayer.setBuilding(object);lighting.setModel?.(object);}for(const light of config[mode].lights||[]){const p=new THREE.PointLight(0xfff1db,light.intensity*(config[mode].lightScale??1),18,2);p.position.set(...light.position);object.add(p);}
  floorLabels.attach(mode,object);object.visible=false;scene.add(object);cache.set(mode,object);return object;
  }).finally(()=>pending.delete(mode)));return pending.get(mode);}
@@ -129,11 +137,13 @@ function stopTour(){state.playing=false;clearTimeout(tourTimer);$('tour-play').t
 function setPanels(tab){document.body.dataset.tab=tab;floorStudio?.setVisible(tab==='floors');if(tab!=='floors'){basementControls.setVisible(false);floorRequest++;floorFraming=null;floorAnchors=[];floorSource.close();floorCompare.close();cutaway?.restore();floorRendering?.setVisible(false);}motion?.stop();experience?.setPlaying(false);experience?.setTab(tab);presentation?.setTab(tab);compass?.update(camera,controls.target,!['gallery','walk'].includes(tab));$('plan-view').hidden=true;$('floor-quickbar').hidden=tab!=='floors';document.querySelector('.workspace').classList.toggle('floor-mode',tab==='floors');$('tour-quickbar').hidden=tab!=='tour';document.querySelectorAll('.tabs [data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));for(const id of ['building','floor','tour','gallery','walk'])$(`${id}-panel`).hidden=(id==='floor'?'floors':id)!==tab;
  $('viewport').hidden=['gallery','walk'].includes(tab);$('render-gallery').hidden=tab!=='gallery';$('walk-frame').hidden=tab!=='walk';document.querySelector('.stage').classList.toggle('walking',tab==='walk');$('thumbnail-strip').hidden=tab!=='building';$('stage-footer').hidden=['gallery','walk'].includes(tab);
  const text={building:['כל הבניין. מכל זווית.','סובבו את המבנה, התקרבו לחזית ובחרו את המקום שתרצו להכיר.'],floors:['קומה אחר קומה.','בחרו מפלס ופתחו מבט אל המבנה.'],tour:['חמש תחנות. מבנה אחד.','דרך פשוטה להכיר את המבנה, הסביבה והכניסה.'],gallery:['המבנה באור אחר.','תמונות באיכות גבוהה, מזוויות נבחרות.'],walk:['נכנסים פנימה.','סיור חופשי באזורים שכבר הוכנו להליכה.']}[tab];$('panel-title').textContent=text[0];$('panel-description').textContent=text[1];}
-async function setTab(tab){stopTour();if(state.tab!==tab)experience?.setPanel(false);if(state.tab==='walk'&&tab!=='walk')$('walk-frame').src='about:blank';state.tab=tab;setPanels(tab);
+async function setTab(tab){stopTour();if(state.tab!==tab)experience?.setPanel(false);if(state.tab==='walk'&&tab!=='walk')setWalkSource('about:blank');state.tab=tab;setPanels(tab);
  if(tab==='gallery'){++sequence;await galleryReady;if(state.tab!=='gallery')return;$('loading').hidden=true;$('viewer-error').hidden=true;$('view-title').textContent='מבטי הדמיה';$('view-kind').textContent='חוץ ופנים';$('view-subtitle').textContent='בחירת תמונה פותחת את הקובץ המלא';return;}
- if(tab==='walk'){++sequence;$('loading').hidden=true;$('viewer-error').hidden=true;$('walk-frame').src='./walk/index.html';return;}
+ if(tab==='walk'){++sequence;$('loading').hidden=true;$('viewer-error').hidden=true;setWalkSource('./walk/index.html');return;}
  if(tab==='tour'){state.tour=0;await showTour();return;}
  if(tab==='floors'){await selectFloor();return;}if(!await showModel('exterior','fit')||state.tab!=='building')return;showArchitecturalScene(SCENES[0],firstComposition);firstComposition=false;}
+// Replacing the frame location keeps the walk out of the browser's Back history.
+function setWalkSource(url){const frame=$('walk-frame');try{frame.contentWindow.location.replace(new URL(url,location.href).href);}catch{frame.src=url;}}
 function selectedRegion(){const f=regionCatalog.floors.find(f=>f.id===floors[state.floor].id);return {floor:f,region:f.regions.find(r=>r.id===state.area)||f.regions[0]};}
 function syncRegionControls(){
  const {floor,region}=selectedRegion();state.area=region.id;regionNav?.setSelection(floor.id,region.id);

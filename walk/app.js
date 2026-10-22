@@ -6,6 +6,7 @@ import {applyFurnitureRefinement} from '../furniture-refinement.js?v=20261013-r4
 import {createContextLayer} from '../context-layer.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {configureModelLoader} from '../model-loader.js?v=20261022-r7';
+import {skipTransmissionPass,isFoliageMaterial} from '../render-passes.js?v=20261022-r7';
 import {navigators,doorSegments} from './route.js';
 import {batchStatic} from './batching.js';
 import {createLighting} from '../lighting.js?v=20261013-r4-final';
@@ -37,34 +38,63 @@ let noticeTimer,lastHud=0;
 function notice(text){$('notice').textContent=text;clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>$('notice').textContent='',3200);}
 function stopTour(){tour=null;$('exterior-tour').textContent='הקפה חיצונית';$('exterior-tour').setAttribute('aria-pressed','false');$('guided').textContent='מסלול כניסה מודרך';$('guided').setAttribute('aria-pressed','false');}
 function clearInput(){keys.clear();stick.fill(0);lookPointer=null;stickId=null;$('stick').style.transform='';stopTour();}
+function setLoadText(text){$('load-text').textContent=text;}
+function isWalkSurface(mesh){return mesh.isMesh&&!mesh.name.startsWith('Presentation_batch_')&&!isFoliageMaterial(mesh.material);}
+async function loadLegacyNearfield(){
+ // Fallback only: used when the accepted surroundings cannot be displayed.
+ const response=await fetch('../assets/context/manifest.json');
+ if(!response.ok)throw Error('Site context manifest unavailable');
+ const manifest=await response.json();
+ if(manifest.accepted!==true||manifest.nearfield!=='./assets/context/nearfield.glb')throw Error('Unaccepted site context');
+ const context=(await loader.loadAsync('../assets/context/nearfield.glb')).scene;
+ await applySurfaceFinish(context,THREE,manifest.surfaceMaterials);
+ applyFurnitureRefinement(context,THREE);
+ await applyMaterialDetail(context,THREE,{kind:'context'});
+ context.traverse(o=>{if(o.isMesh){o.receiveShadow=true;const mats=Array.isArray(o.material)?o.material:[o.material];o.castShadow=mats.every(m=>!(m.transmission>.05||m.opacity<.95));}});
+ return {context,manifest};
+}
 async function load(which){
  if(models[which])return;
  const viewerConfig=which==='ground'?await (await fetch('../assets/viewer.json')).json():null;
  const modelUrl=which==='ground'?'../'+viewerConfig.exterior.model.replace(/^\.\//,''):'../assets/models/interior.glb';
+ let surroundings=null;
+ if(which==='ground'){
+  // The walk stands on the same accepted surroundings the atlas displays. They
+  // download alongside the building instead of after it.
+  visualContext=createContextLayer(THREE,scene,{loadAsync:path=>loader.loadAsync('../'+path.replace(/^\.\//,''))},new THREE.Object3D(),{
+   fetcher:path=>fetch('../'+path.replace(/^\.\//,'')),
+   prepareNearfield:async(object,manifest)=>{if(manifest.surfaceMaterials?.length)await applySurfaceFinish(object,THREE,manifest.surfaceMaterials);applyFurnitureRefinement(object,THREE);await applyMaterialDetail(object,THREE,{kind:'context'});finishModel(object);batchStatic(object);
+    object.traverse(o=>{if(o.isMesh&&o.name.startsWith('Presentation_batch_')&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});},
+   onChange:status=>{visualRevision++;if(siteContext)siteContext.visible=mode==='ground'&&!status.ready;renderer.shadowMap.needsUpdate=true;}
+  });
+  surroundings=visualContext.load();
+ }
  const gltf=await loader.loadAsync(modelUrl,e=>{
- if(e.total)$('load-text').textContent=e.loaded>e.total?'טוענים את המודל ומכינים לתצוגה…':'טוענים את המודל · '+Math.round(100*e.loaded/e.total)+'%';
+  if(e.total)setLoadText(e.loaded>e.total?'טוענים את המודל ומכינים לתצוגה…':'טוענים את המודל · '+Math.round(100*e.loaded/e.total)+'%');
  });
+ setLoadText('מכינים את חומרי המבנה…');
  if(which==='ground')await applySurfaceFinish(gltf.scene,THREE);
  applyFurnitureRefinement(gltf.scene,THREE);
  await applyMaterialDetail(gltf.scene,THREE,{kind:which==='ground'?'building':'interior'});
  finishModel(gltf.scene);
- const replacements=new Set();
- let context=null;
+ const replacements=new Set(),contextMeshes=[];
+ let context=null,replacedNames=[];
  if(which==='ground'){
-  const response=await fetch('../assets/context/manifest.json');
-  if(!response.ok)throw Error('Site context manifest unavailable');
-  const manifest=await response.json();
-  if(manifest.accepted!==true||manifest.nearfield!=='./assets/context/nearfield.glb')throw Error('Unaccepted site context');
-  context=(await loader.loadAsync('../assets/context/nearfield.glb')).scene;
-  await applySurfaceFinish(context,THREE,manifest.surfaceMaterials);
-  applyFurnitureRefinement(context,THREE);
-  await applyMaterialDetail(context,THREE,{kind:'context'});
-  for(const name of manifest.replacesNodes){
+  setLoadText('טוענים את סביבת הבניין…');
+  visualContext.setBuilding(gltf.scene);
+  const displayed=await surroundings,state=visualContext.getState();
+  if(displayed&&state.near){
+   replacedNames=state.manifest.replacesNodes;
+   state.near.updateMatrixWorld(true);state.near.traverse(o=>{if(isWalkSurface(o))contextMeshes.push(o);});
+  }else{
+   const legacy=await loadLegacyNearfield();context=legacy.context;replacedNames=legacy.manifest.replacesNodes;
+  }
+  for(const name of replacedNames){
    const node=gltf.scene.getObjectByName(name);if(!node)throw Error('Missing site replacement');
    node.visible=false;node.traverse(o=>{if(o.isMesh)replacements.add(o);});
   }
-  context.traverse(o=>{if(o.isMesh){o.receiveShadow=true;const mats=Array.isArray(o.material)?o.material:[o.material];o.castShadow=mats.every(m=>!(m.transmission>.05||m.opacity<.95));}});
  }
+ setLoadText('מכינים את מסלול ההליכה…');
  models[which]=gltf.scene;meshes[which]=[];
  gltf.scene.traverse(o=>{if(o.isMesh&&!replacements.has(o))meshes[which].push(o);});
  scene.add(gltf.scene);gltf.scene.updateMatrixWorld(true);
@@ -80,18 +110,9 @@ async function load(which){
   context.traverse(o=>{if(o.isMesh){meshes[which].push(o);if(!o.name.startsWith('Nearfield_geometry_'))floorMeshes.push(o);}});
   batchStatic(context);scene.add(context);siteContext=context;context.visible=false;
  }
- physics[which]=createWalkingPhysics(THREE,{meshes:meshes[which],floorMeshes,dynamicMeshes:doorParts.map(p=>p.object),navigator:nav[which],radius:data.radius});
- if(which==='ground'){
-  // The surveyed walking support remains separate from the visual surroundings.
-  // Reuse the main viewer's accepted context and material handling so the two
-  // experiences do not show different streets or stale neighbour buildings.
-  visualContext=createContextLayer(THREE,scene,{loadAsync:path=>loader.loadAsync('../'+path.replace(/^\.\//,''))},new THREE.Object3D(),{
-   fetcher:path=>fetch('../'+path.replace(/^\.\//,'')),
-   prepareNearfield:async(object,manifest)=>{if(manifest.surfaceMaterials?.length)await applySurfaceFinish(object,THREE,manifest.surfaceMaterials);applyFurnitureRefinement(object,THREE);await applyMaterialDetail(object,THREE,{kind:'context'});finishModel(object);batchStatic(object);},
-   onChange:status=>{visualRevision++;if(siteContext)siteContext.visible=mode==='ground'&&!status.ready;renderer.shadowMap.needsUpdate=true;}
-  });
-  visualContext.setBuilding(gltf.scene);await visualContext.load();
- }
+ for(const o of contextMeshes){meshes[which].push(o);floorMeshes.push(o);}
+ // Curb seams of a few centimetres between pavings are bridged; real holes are not.
+ physics[which]=createWalkingPhysics(THREE,{meshes:meshes[which],floorMeshes,dynamicMeshes:doorParts.map(p=>p.object),navigator:nav[which],radius:data.radius,maxHeight:which==='ground'?8:Infinity,seamTolerance:contextMeshes.length?.04:0});
  gltf.scene.visible=false;
 }
 
@@ -181,6 +202,7 @@ for(const event of ['pointerup','pointercancel','lostpointercapture'])joystick.a
  if(e.pointerId!==stickId)return;stickId=null;stick.fill(0);$('stick').style.transform='';
 });
 $('ground-mode').onclick=()=>switchMode('ground');
+document.querySelector('.overview-link')?.addEventListener('click',event=>{try{const leave=window.parent!==window&&window.parent.document.getElementById('leave-walk');if(leave){event.preventDefault();leave.click();}}catch{/* Opened on its own: follow the link. */}});
 
 $('reset').onclick=()=>{reset();viewport.focus();};
 $('door-button').onclick=()=>{toggleDoor();viewport.focus();};
@@ -188,15 +210,16 @@ $('guided').onclick=()=>startTour('entrance');$('exterior-tour').onclick=()=>sta
 $('help-button').onclick=()=>{clearInput();document.exitPointerLock?.();$('help').showModal();};
 $('close-help').onclick=()=>$('help').close();
 $('help').addEventListener('close',()=>viewport.focus());
-$('look-lock').onclick=async()=>{try{stopTour();await viewport.requestPointerLock();viewport.focus();}catch{notice('אפשר לגרור את המבט עם העכבר');}};
+$('look-lock').onclick=async()=>{try{stopTour();await viewport.requestPointerLock();}catch{notice('אפשר לגרור את המבט עם העכבר');}finally{viewport.focus();}};
 document.addEventListener('pointerlockerror',()=>notice('אפשר לגרור את המבט עם העכבר'));
 let highQuality=visual.snapshot().effectiveQuality!=='low';
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,highQuality?1.5:1));renderer.setSize(innerWidth,innerHeight);visual.resize(innerWidth,innerHeight);
 $('quality').textContent=highQuality?'תצוגה: מפורטת':'תצוגה: קלה';
 $('quality').onclick=()=>{highQuality=!highQuality;renderer.setPixelRatio(Math.min(devicePixelRatio||1,highQuality?1.5:1));renderer.setSize(innerWidth,innerHeight);const effective=visual.setQuality(highQuality?'balanced':'low');visual.resize(innerWidth,innerHeight);lighting.setQuality(effective);visualRevision++;$('quality').textContent=highQuality?'תצוגה: מפורטת':'תצוגה: קלה';renderer.shadowMap.needsUpdate=true;viewport.focus();};
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);visual.resize(innerWidth,innerHeight);visualRevision++;});
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();ready=false;clearInput();$('error').hidden=false;$('error-text').textContent='התצוגה נעצרה. יש לטעון מחדש.';});
 renderer.shadowMap.autoUpdate=false;
-let last=performance.now(),blockedAt=0,frameCount=0,fpsAt=last,lastRenderState='';
+let last=performance.now(),blockedAt=0,frameCount=0,fpsAt=last,lastRenderState='',lastDoorState='',lastHudState='';
 renderer.setAnimationLoop(now=>{
  const dt=Math.min(.05,(now-last)/1000);last=now;if(!ready||document.hidden)return;
  animateDoor(dt);
@@ -229,9 +252,10 @@ renderer.setAnimationLoop(now=>{
  }
  camera.position.set(position[0],feet+data.eyeHeight,position[1]);camera.rotation.set(pitch,yaw,0);
  const distance=Math.hypot(position[0]-door.center[0],position[1]-door.center[1]),near=mode==='ground'&&distance<2.7;
- $('door-prompt').hidden=!near;$('door-button').textContent=doorTarget?'סגירת דלת · E':'פתיחת דלת · E';
- if(now-lastHud>150){
- lastHud=now;map.draw(mode,position,yaw,doorProgress);
+ const doorState=near+'|'+doorTarget;if(doorState!==lastDoorState){lastDoorState=doorState;$('door-prompt').hidden=!near;$('door-button').textContent=doorTarget?'סגירת דלת · E':'פתיחת דלת · E';}
+ const hudState=[mode,position[0].toFixed(2),position[1].toFixed(2),yaw.toFixed(3),doorProgress.toFixed(3),tour?tour.phase:'off'].join('|');
+ if(now-lastHud>150&&hudState!==lastHudState){
+ lastHud=now;lastHudState=hudState;map.draw(mode,position,yaw,doorProgress);
  $('zone-label').textContent=zone(data,mode,position);
  $('location-detail').textContent=mode==='ground'?distance.toFixed(1)+' מ׳ מהכניסה · גובה עיניים 1.65 מ׳':'גובה עיניים 1.65 מ׳ · עיצוב מוצע';
  // Read-only, local QA observability; not a camera-control or teleport interface.

@@ -48,12 +48,16 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  output.uniforms.tSceneDepth={value:null};output.uniforms.r5Atmosphere={value:1};
  output.material.fragmentShader=output.material.fragmentShader.replace('uniform sampler2D tDiffuse;','uniform sampler2D tDiffuse;\n uniform sampler2D tSceneDepth; uniform float r5Atmosphere;').replace('// tone mapping','// tone mapping\n if(texture2D(tSceneDepth,vUv).x<.999999||r5Atmosphere>.5){').replace('// color space','}\n // color space');
  let sceneTarget=null,contactTarget=null,compositeTarget=null,mode='exterior',requested='auto',effective='balanced',width=1,height=1,disposed=false,failure=null,frames=0,sceneCalls=0,sceneTriangles=0,renderMs=0;
+ // Adaptive resolution: only ever lowered, after sustained slow continuous frames.
+ let budgetScale=1,slowFrames=[];
  const supported=renderer.capabilities.isWebGL2&&renderer.extensions.has('EXT_color_buffer_float');
  function selectQuality(value){if(value!=='auto')return value;const coarse=typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches,memory=typeof navigator!=='undefined'?navigator.deviceMemory:undefined;return coarse||(memory&&memory<=4)?'low':'balanced';}
  function releaseTargets(){for(const t of [sceneTarget,contactTarget,compositeTarget])t?.dispose();sceneTarget=contactTarget=compositeTarget=null;}
  function allocate(){
   releaseTargets();if(effective==='low'||!supported||failure)return;
-  const ratio=Math.min(renderer.getPixelRatio(),1.5),budget=effective==='high'?2600000:1800000;
+  // Device pixels up to 2x, so HiDPI and 4K screens are not upscaled from a
+  // small buffer; the pixel budget keeps the cost bounded.
+  const ratio=Math.min(renderer.getPixelRatio(),2),budget=(effective==='high'?4200000:2600000)*budgetScale;
   const scale=Math.min(ratio,Math.sqrt(budget/(width*height))),w=Math.max(1,Math.round(width*scale)),h=Math.max(1,Math.round(height*scale));
   sceneTarget=new THREE.WebGLRenderTarget(w,h,{type:THREE.HalfFloatType,depthBuffer:true,stencilBuffer:false,samples:Math.min(renderer.capabilities.maxSamples,4)});
   sceneTarget.depthTexture=new THREE.DepthTexture(w,h,THREE.UnsignedIntType);sceneTarget.resolveDepthBuffer=true;output.uniforms.tSceneDepth.value=sceneTarget.depthTexture;
@@ -63,7 +67,7 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
   compositeMaterial.uniforms.tDepth.value=sceneTarget.depthTexture;compositeMaterial.uniforms.tDiffuse.value=sceneTarget.texture;compositeMaterial.uniforms.tContact.value=contactTarget.texture;compositeMaterial.uniforms.contactResolution.value.set(contactTarget.width,contactTarget.height);
  }
  function resize(w,h){const nextWidth=Math.max(1,Math.round(w)),nextHeight=Math.max(1,Math.round(h));if(nextWidth===width&&nextHeight===height&&sceneTarget)return;width=nextWidth;height=nextHeight;allocate();}
- function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown visual quality: '+value);requested=value;effective=selectQuality(value);allocate();return sceneTarget?effective:'low';}
+ function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown visual quality: '+value);requested=value;effective=selectQuality(value);budgetScale=1;slowFrames=[];allocate();return sceneTarget?effective:'low';}
  function setMode(value){mode=value;
   // Exterior glazing is seen at a distance: a half-resolution see-through pass is
   // indistinguishable there. Floor and room views keep full resolution.
@@ -77,7 +81,13 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
   }catch(error){failure=String(error?.message||error);releaseTargets();onFallback(error);renderer.setRenderTarget(previous);renderer.render(scene,camera);}
   finally{renderer.setRenderTarget(previous);renderer.autoClear=autoClear;renderMs=performance.now()-started;}
  }
+ // Interval between two consecutive rendered frames while the camera moves.
+ function reportFrame(interval){
+  if(!sceneTarget||budgetScale<=.45||!(interval>0&&interval<250))return;slowFrames.push(interval);if(slowFrames.length<45)return;
+  const sorted=[...slowFrames].sort((a,b)=>a-b),median=sorted[sorted.length>>1];slowFrames=[];
+  if(median>27){budgetScale*=.7;allocate();}
+ }
  function dispose(){if(disposed)return;disposed=true;releaseTargets();quad.dispose();contactMaterial.dispose();compositeMaterial.dispose();output.dispose();}
- function snapshot(){return{revision:THREE.REVISION,mode,requestedQuality:requested,effectiveQuality:sceneTarget?effective:'low',supported,contactEnabled:!!sceneTarget,renderSize:sceneTarget?[sceneTarget.width,sceneTarget.height]:null,samples:sceneTarget?.samples||0,maximumContactDarkening:sceneTarget?compositeMaterial.uniforms.strength.value:0,frames,sceneCalls,sceneTriangles,renderMs,failure};}
- renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,dispose,snapshot,get target(){return sceneTarget;}};
+ function snapshot(){return{revision:THREE.REVISION,mode,requestedQuality:requested,effectiveQuality:sceneTarget?effective:'low',supported,contactEnabled:!!sceneTarget,renderSize:sceneTarget?[sceneTarget.width,sceneTarget.height]:null,samples:sceneTarget?.samples||0,maximumContactDarkening:sceneTarget?compositeMaterial.uniforms.strength.value:0,frames,sceneCalls,sceneTriangles,renderMs,failure,budgetScale};}
+ renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,reportFrame,dispose,snapshot,get target(){return sceneTarget;}};
 }

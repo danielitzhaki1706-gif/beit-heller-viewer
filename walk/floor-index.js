@@ -1,6 +1,6 @@
 // Local, immutable triangle height index. World-space source vertices are read,
 // never changed. Upward surfaces only; no inferred or extrapolated support.
-export function createFloorIndex(THREE,meshes,{bounds=[-10.5,-22.5,60.5,40.5],cellSize=2}={}){
+export function createFloorIndex(THREE,meshes,{bounds=[-10.5,-22.5,60.5,40.5],cellSize=2,maxHeight=8}={}){
  const cells=new Map(),a=new THREE.Vector3(),b=new THREE.Vector3(),c=new THREE.Vector3(),ab=new THREE.Vector3(),ac=new THREE.Vector3(),normal=new THREE.Vector3();
  let triangles=0,references=0;
  const cell=v=>Math.floor(v/cellSize),key=(x,z)=>x+','+z;
@@ -11,11 +11,15 @@ export function createFloorIndex(THREE,meshes,{bounds=[-10.5,-22.5,60.5,40.5],ce
    a.fromBufferAttribute(p,index?index.getX(i):i).applyMatrix4(mesh.matrixWorld);
    b.fromBufferAttribute(p,index?index.getX(i+1):i+1).applyMatrix4(mesh.matrixWorld);
    c.fromBufferAttribute(p,index?index.getX(i+2):i+2).applyMatrix4(mesh.matrixWorld);
-   normal.crossVectors(ab.subVectors(b,a),ac.subVectors(c,a)).normalize();if(normal.y<=.65)continue;
+   if(Math.min(a.y,b.y,c.y)>maxHeight)continue;
+   normal.crossVectors(ab.subVectors(b,a),ac.subVectors(c,a)).normalize();
+   // Steep faces are not floors, except curb-height chamfers (at most 20 cm),
+   // which a pedestrian steps over at a sidewalk edge or threshold.
+   if(normal.y<=.65&&!(normal.y>.05&&Math.max(a.y,b.y,c.y)-Math.min(a.y,b.y,c.y)<=.2))continue;
    const x0=Math.max(bounds[0],Math.min(a.x,b.x,c.x)),x1=Math.min(bounds[2],Math.max(a.x,b.x,c.x)),z0=Math.max(bounds[1],Math.min(a.z,b.z,c.z)),z1=Math.min(bounds[3],Math.max(a.z,b.z,c.z));
    if(x1<x0||z1<z0)continue;
    const denominator=(b.z-c.z)*(a.x-c.x)+(c.x-b.x)*(a.z-c.z);if(Math.abs(denominator)<1e-14)continue;
-   const triangle=[a.x,a.y,a.z,b.x,b.y,b.z,c.x,c.y,c.z,denominator];triangles++;
+   const triangle=Float64Array.of(a.x,a.y,a.z,b.x,b.y,b.z,c.x,c.y,c.z,denominator);triangles++;
    for(let x=cell(x0);x<=cell(x1);x++)for(let z=cell(z0);z<=cell(z1);z++){
     const k=key(x,z);if(!cells.has(k))cells.set(k,[]);cells.get(k).push(triangle);references++;
    }

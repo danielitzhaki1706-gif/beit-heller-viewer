@@ -19,6 +19,8 @@ uniform float night;
 uniform float photoReady;
 uniform float photoRotation;
 uniform sampler2D photo;
+uniform sampler2D photoDetail;
+uniform float detailReady;
 uniform vec3 horizonColor;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
@@ -37,6 +39,9 @@ void main(){
  vec3 rotated=vec3(cr*d.x-sr*d.z,d.y,sr*d.x+cr*d.z);
  vec2 uv=vec2(atan(rotated.z,rotated.x)*.159154943+.5,asin(clamp(rotated.y,-1.,1.))*.318309886+.5);
  vec3 source=texture2D(photo,uv).rgb;
+ // 4K visible-sky layer (gamma-encoded radiance up to 6); dithered against banding.
+ // Only the brightest sun core exceeds the encoded range; keep the HDR value there.
+ if(detailReady>.5&&max(source.r,max(source.g,source.b))<5.5){vec3 encoded=texture2D(photoDetail,uv).rgb+(hash(gl_FragCoord.xy)-.5)/255.;source=6.*pow(clamp(encoded,0.,1.),vec3(2.2));}
  vec2 cloudPosition=d.xz/max(d.y+.20,.14)*1.6;
  float cloudNoise=noise(cloudPosition)*.6+noise(cloudPosition*2.07+8.1)*.28+noise(cloudPosition*4.3)*.12;
  float fallbackCloud=smoothstep(.54,.76,cloudNoise)*.52;
@@ -75,7 +80,7 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
  const dir=new THREE.Vector3(),focus=new THREE.Vector3(22,18,8),lastFocus=new THREE.Vector3(Infinity,0,0);
  const emptyPhoto=new THREE.DataTexture(new Uint8Array([128,160,192,255]),1,1,THREE.RGBAFormat);emptyPhoto.needsUpdate=true;
  const horizons={daylight:new THREE.Color(.35,.38,.46),golden:new THREE.Color(.48,.40,.34),twilight:new THREE.Color(.075,.095,.145)};
- const material=new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,depthTest:false,uniforms:{sunDirection:{value:dir},warmth:{value:0},night:{value:0},photoReady:{value:0},photoRotation:{value:0},photo:{value:emptyPhoto},horizonColor:{value:horizons.daylight.clone()}},vertexShader:skyVertex,fragmentShader:skyFragment});
+ const material=new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,depthTest:false,uniforms:{sunDirection:{value:dir},warmth:{value:0},night:{value:0},photoReady:{value:0},photoRotation:{value:0},photo:{value:emptyPhoto},photoDetail:{value:emptyPhoto},detailReady:{value:0},horizonColor:{value:horizons.daylight.clone()}},vertexShader:skyVertex,fragmentShader:skyFragment});
  const sky=new THREE.Mesh(new THREE.SphereGeometry(450,40,24),material);sky.name='R5 atmospheric sky · illustrative';sky.frustumCulled=false;sky.renderOrder=-1000;scene.add(sky);
  const envScene=new THREE.Scene();envScene.add(new THREE.Mesh(sky.geometry,material));const environments={};
  function skyUniforms(key){dir.fromArray(LIGHT_LOOKS[key].direction).normalize();material.uniforms.warmth.value=key==='daylight'?0:1;material.uniforms.night.value=key==='twilight'?1:0;material.uniforms.photoRotation.value=(.5951-.5)*Math.PI*2-Math.atan2(dir.z,dir.x);material.uniforms.horizonColor.value.copy(horizons[key]);}
@@ -134,7 +139,7 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
  function setMode(mode){currentMode=mode;apply();}
  function setLook(look){if(!LIGHT_LOOKS[look])throw Error('Unknown light look: '+look);currentLook=look;apply();onReady();}
  function setModel(root){facadeRoot=root;facadeState=setFacadeAtmosphere(root,currentLook,currentMode==='exterior');onReady();return facadeState;}
- function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown lighting quality: '+value);quality=value;const small=value==='low'||(value==='auto'&&typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches),size=small?1024:value==='high'?3072:2048;if(sun.shadow.mapSize.x!==size){sun.shadow.mapSize.set(size,size);sun.shadow.map?.dispose();sun.shadow.map=null;updateShadowBias(lastExtent||55);renderer.shadowMap.needsUpdate=true;}}
+ function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown lighting quality: '+value);quality=value;const small=value==='low'||(value==='auto'&&typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches),size=small?1024:value==='high'?4096:3072;if(sun.shadow.mapSize.x!==size){sun.shadow.mapSize.set(size,size);sun.shadow.map?.dispose();sun.shadow.map=null;updateShadowBias(lastExtent||55);renderer.shadowMap.needsUpdate=true;}}
  setMode('exterior');
  const ready=(async()=>{let texture,generator;try{
   texture=await loadLocalHDRI(THREE,new URL('./assets/sky/kloofendal_puresky_2k.hdr',import.meta.url));if(disposed){texture.dispose();return{status:'DISPOSED'};}
@@ -145,8 +150,16 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   for(let x=0;x<w;x++)for(let c=0;c<3;c++)sum[c]+=Math.min(4,THREE.DataUtils.fromHalfFloat(pixels[(row*w+x)*4+c]))/w;
   horizons.daylight.setRGB(sum[0]*.78,sum[1]*.78,sum[2]*.78);
   for(const key of ['golden','twilight']){skyUniforms(key);const previous=environments[key];environments[key]=generator.fromScene(envScene,.025,.1,1000);previous.dispose();}
-  apply();onReady();return{status:'LOCAL_HDRI_READY',look:currentLook,visibleSky:true};
+  apply();onReady();loadSkyDetail();return{status:'LOCAL_HDRI_READY',look:currentLook,visibleSky:true};
  }catch(error){if(!photoSky)texture?.dispose();if(!disposed){console.warn('Local sky unavailable; procedural fallback retained',error);apply();onReady();}return{status:'PROCEDURAL_FALLBACK'};}finally{generator?.dispose();}})();
- function dispose(){if(disposed)return;disposed=true;for(const o of [sun,sun.target,hemi,fill,floorRim,sky])scene.remove(o);sun.shadow.map?.dispose();for(const e of Object.values(environments))e.dispose();indoor.dispose();photoEnvironment?.dispose();if(scene.background===photoSky)scene.background=null;photoSky?.dispose();emptyPhoto.dispose();material.dispose();sky.geometry.dispose();scene.environment=null;}
- return{setMode,setLook,setModel,setQuality,update,dispose,sun,sky,outdoor:environments.daylight,indoor,ready,snapshot:()=>({mode:currentMode,look:currentLook,quality,shadowSize:sun.shadow.mapSize.x,shadowExtent:lastExtent,shadowTexelMetres:2*lastExtent/sun.shadow.mapSize.x,shadowNormalBias:sun.shadow.normalBias,shadowDepthBias:sun.shadow.bias,environmentIntensity:scene.environmentIntensity,exposure:renderer.toneMappingExposure,sky:photoSky?(currentLook==='daylight'?'local-photographic-hdri':'photo-contour-atmosphere'):'procedural-fallback',visibleSky:currentMode==='exterior',facade:facadeState,artisticLighting:true})};
+ // Desktop only: a 4K layer for the visible clouds (the 2K HDR keeps lighting and reflections).
+ let skyDetail=null;
+ function loadSkyDetail(){
+  if(disposed||skyDetail||quality==='low'||(typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches))return;
+  skyDetail=new THREE.TextureLoader().load(new URL('./assets/sky/kloofendal_puresky_4k_detail.webp',import.meta.url).href,texture=>{if(disposed){texture.dispose();return;}material.uniforms.detailReady.value=1;onReady();},undefined,()=>{skyDetail=null;});
+  skyDetail.colorSpace=THREE.NoColorSpace;skyDetail.generateMipmaps=false;skyDetail.minFilter=THREE.LinearFilter;skyDetail.magFilter=THREE.LinearFilter;skyDetail.wrapS=THREE.RepeatWrapping;
+  material.uniforms.photoDetail.value=skyDetail;
+ }
+ function dispose(){if(disposed)return;disposed=true;skyDetail?.dispose();for(const o of [sun,sun.target,hemi,fill,floorRim,sky])scene.remove(o);sun.shadow.map?.dispose();for(const e of Object.values(environments))e.dispose();indoor.dispose();photoEnvironment?.dispose();if(scene.background===photoSky)scene.background=null;photoSky?.dispose();emptyPhoto.dispose();material.dispose();sky.geometry.dispose();scene.environment=null;}
+ return{setMode,setLook,setModel,setQuality,update,dispose,sun,sky,outdoor:environments.daylight,indoor,ready,snapshot:()=>({mode:currentMode,look:currentLook,quality,shadowSize:sun.shadow.mapSize.x,shadowExtent:lastExtent,shadowTexelMetres:2*lastExtent/sun.shadow.mapSize.x,shadowNormalBias:sun.shadow.normalBias,shadowDepthBias:sun.shadow.bias,environmentIntensity:scene.environmentIntensity,exposure:renderer.toneMappingExposure,sky:photoSky?(currentLook==='daylight'?'local-photographic-hdri':'photo-contour-atmosphere'):'procedural-fallback',skyDetail:material.uniforms.detailReady.value>0,visibleSky:currentMode==='exterior',facade:facadeState,artisticLighting:true})};
 }
