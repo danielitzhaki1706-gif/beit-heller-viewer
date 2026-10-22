@@ -156,7 +156,9 @@ function refinedMaterial(source,role,THREE,channel=1){
   if(role==='glass')installClearPaneDetail(m,THREE);
  }else if(role==='proxyGlass'){
   // These proxy neighbour/car panes have no modeled interiors behind them.
-  m.roughness=.17;m.metalness=.38;m.clearcoat=.30;m.clearcoatRoughness=.08;
+  // Dielectric glazing over a dark unlit interior: the sky reflection, not a
+  // painted blue, gives the window its value (darker head-on, bright at grazing).
+  m.color.lerp(new THREE.Color(.16,.19,.21),.7);m.roughness=.05;m.metalness=0;m.clearcoat=1;m.clearcoatRoughness=.03;m.envMapIntensity=1.25;
  }else{
   const textures=texturesFor(THREE,role,channel);m.roughness=1;m.roughnessMap=textures.detail;
   m.normalMap=textures.normal;m.normalMapType=THREE.TangentSpaceNormalMap;m.normalScale.set(1,1);

@@ -5,9 +5,9 @@ import {setFacadeAtmosphere} from './facade-atmosphere.js?v=20261018-r5';
 
 // Architectural lighting moods. Not a site/date-dependent solar simulation.
 export const LIGHT_LOOKS=Object.freeze({
- daylight:{direction:[-.55,.85,-.45],sun:0xfff4e8,sky:0xc3d9f0,ground:0x9c9383,exposure:1.0,strength:3.0,environment:.64},
- golden:{direction:[.65,.45,-.85],sun:0xffd6ac,sky:0xb3c9e7,ground:0xa2907d,exposure:.98,strength:2.55,environment:.59},
- twilight:{direction:[-.66,.30,-.61],sun:0xabc8f4,sky:0x92b1e0,ground:0x626578,exposure:1.18,strength:.64,environment:.72}
+ daylight:{direction:[-.55,.85,-.45],sun:0xfff4e8,sky:0xc3d9f0,ground:0x9c9383,exposure:.9,strength:3.9,environment:.55},
+ golden:{direction:[.65,.45,-.85],sun:0xffd6ac,sky:0xb3c9e7,ground:0xa2907d,exposure:.88,strength:3.2,environment:.5},
+ twilight:{direction:[-.66,.30,-.61],sun:0xabc8f4,sky:0x92b1e0,ground:0x626578,exposure:1.06,strength:.64,environment:.72}
 });
 const skyVertex=`varying vec3 vDirection;
 void main(){vDirection=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
@@ -76,7 +76,7 @@ void main(){
  #endif
 }`;
 export function createLighting(renderer,scene,{onReady=()=>{}}={}){
- renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+ renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;renderer.toneMapping=THREE.NeutralToneMapping;
  const dir=new THREE.Vector3(),focus=new THREE.Vector3(22,18,8),lastFocus=new THREE.Vector3(Infinity,0,0);
  const emptyPhoto=new THREE.DataTexture(new Uint8Array([128,160,192,255]),1,1,THREE.RGBAFormat);emptyPhoto.needsUpdate=true;
  const horizons={daylight:new THREE.Color(.35,.38,.46),golden:new THREE.Color(.48,.40,.34),twilight:new THREE.Color(.075,.095,.145)};
@@ -117,8 +117,8 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   scene.background=outside?null:new THREE.Color(background);
   scene.backgroundRotation.copy(scene.environmentRotation);scene.backgroundIntensity=.78;scene.backgroundBlurriness=0;
   sky.visible=outside;
-  scene.fog=outside?new THREE.Fog(horizons[currentLook],180,450):null;
-  sun.intensity=enclosed?0:outside?look.strength:cutaway?2.25:1.85;hemi.intensity=enclosed?.11:outside?(currentLook==='twilight'?.21:.20):cutaway?.19:.23;fill.intensity=enclosed?.025:outside?(currentLook==='twilight'?.14:.11):cutaway?.07:.09;
+  scene.fog=outside?new THREE.Fog(horizons[currentLook],180,450):null;placeFog(lastCameraDistance);
+  sun.intensity=enclosed?0:outside?look.strength:cutaway?2.25:1.85;hemi.intensity=enclosed?.11:outside?(currentLook==='twilight'?.21:.13):cutaway?.19:.23;fill.intensity=enclosed?.025:outside?(currentLook==='twilight'?.14:.11):cutaway?.07:.09;
   floorRim.intensity=0;floorRim.visible=floorStudio;
   if(floorStudio){
    // This is a neutral presentation rig, not a sun-position prediction.
@@ -128,11 +128,16 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
    fill.intensity=floorInside?.24:.08;floorRim.intensity=floorInside?.10:.08;
   }
   // Enclosed/cutaway exposure stays independent of outdoor blue-hour.
-  renderer.toneMappingExposure=outside?look.exposure:enclosed?1.10:1.0;
+  // Khronos PBR Neutral tone mapping: about 8% less exposure matches the former ACES brightness.
+  renderer.toneMappingExposure=outside?look.exposure:enclosed?1.01:.92;
   facadeState=setFacadeAtmosphere(facadeRoot,currentLook,outside);lastExtent=0;placeSun(55);renderer.shadowMap.needsUpdate=true;
  }
+ // Aerial perspective starts beyond the subject: an aerial view of the site
+ // stays clear while the ground plane still dissolves into the horizon.
+ let lastCameraDistance=120;
+ function placeFog(distance){if(!scene.fog)return;scene.fog.near=Math.max(180,distance+140);scene.fog.far=Math.max(450,distance+520);}
  function update(camera,target){
-  if(disposed||!target)return false;sky.position.copy(camera.position);const outside=currentMode==='exterior',distance=camera.position.distanceTo(target);
+  if(disposed||!target)return false;sky.position.copy(camera.position);lastCameraDistance=camera.position.distanceTo(target);placeFog(lastCameraDistance);const outside=currentMode==='exterior',distance=camera.position.distanceTo(target);
   const desired=outside?Math.max(48,Math.min(88,distance*.52)):Math.max(7,Math.min(48,distance*.48)),extent=Math.ceil(desired/2)*2;
   if(extent===lastExtent&&lastFocus.distanceToSquared(target)<.04)return false;focus.copy(target);lastFocus.copy(target);lastExtent=extent;placeSun(extent);renderer.shadowMap.needsUpdate=true;return true;
  }

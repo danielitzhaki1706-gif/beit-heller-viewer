@@ -66,6 +66,15 @@ const materials=(object,visit)=>object?.traverse(o=>{if(o.isMesh)for(const m of 
 // Static frames are identical; a short tail covers damping and late uploads.
 function invalidate(){dirtyFrames=Math.max(dirtyFrames,12);}
 // Full anisotropic filtering keeps roads, paving and floors crisp at grazing angles.
+// The mapped neighbours share two proxy wall colours. A stable tint per building
+// (keyed by its OSM id) breaks the uniform block look; geometry is untouched.
+const NEIGHBOUR_TINTS=[0xddd7ca,0xcfd0cc,0xd9cfbe,0xc7cbca,0xe3ded3];
+function varyNeighbourFacades(root){
+ const variants=new Map();
+ root.traverse(o=>{if(!o.isMesh||Array.isArray(o.material)||!/^R3 \| neighbour (pale render|limestone)/.test(o.material.name))return;
+  const id=Number((o.name.match(/\d{3,}/)||[0])[0])||[...o.name].reduce((a,c)=>a+c.charCodeAt(0),0),tint=NEIGHBOUR_TINTS[id%NEIGHBOUR_TINTS.length],key=o.material.uuid+'/'+tint;
+  if(!variants.has(key)){const m=o.material.clone();m.color.setHex(tint);variants.set(key,m);}o.material=variants.get(key);});
+}
 function sharpenTextures(root){
  const level=Math.min(renderer.capabilities.getMaxAnisotropy(),matchMedia('(pointer:coarse)').matches?4:16);
  materials(root,m=>{for(const value of Object.values(m))if(value?.isTexture&&value.anisotropy<level&&value.minFilter!==THREE.LinearFilter&&value.minFilter!==THREE.NearestFilter){value.anisotropy=level;value.needsUpdate=true;}});
@@ -73,7 +82,7 @@ function sharpenTextures(root){
 function fail(error){console.error('Viewer load failed',error);$('loading').hidden=true;$('viewer-error').hidden=false;$('error-message').textContent=error?.userMessage||'התצוגה המרחבית לא נטענה. אפשר לפתוח את ההדמיות או לבחור קומה אחרת.';}
 function initialize(){
  if(renderer)return;
- renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,matchMedia('(pointer:coarse)').matches?1.5:2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;renderer.localClippingEnabled=true;
+ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,matchMedia('(pointer:coarse)').matches?1.5:2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NeutralToneMapping;renderer.toneMappingExposure=.92;renderer.localClippingEnabled=true;
  $('viewport').append(renderer.domElement);scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(38,1,.05,1200);
  controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=3;controls.maxDistance=300;controls.maxPolarAngle=Math.PI*.49;
  cutaway=createAdaptiveCutaway(THREE,{camera,controls,invalidate,mergeGeometries,host:document.querySelector('.stage')});
@@ -93,7 +102,7 @@ function initialize(){
  experience=mountExperience({onScene:showArchitecturalScene,onLook:setAtmosphere,onPlay:()=>{const playing=motion.setOrbit(!motion.orbit);experience.setPlaying(playing);if(playing){state.fit=false;currentScene=null;experience.setScene(null);stopTour();}},onPanel:()=>experience.setPanel(document.body.dataset.panel!=='open')});
  experience?.setLook(currentLook);experience?.setTab(state.tab);experience?.setPanel(false);
  ground=new THREE.Mesh(new THREE.PlaneGeometry(2000,2000),new THREE.MeshStandardMaterial({color:0xb8bea7,roughness:.93}));ground.rotation.x=-Math.PI/2;ground.position.set(20,-.365,8);ground.receiveShadow=true;scene.add(ground);
- contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});sharpenTextures(object);batchExterior(object,[]);object.traverse(o=>{if(o.isMesh&&o.userData.presentationBatch&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});},onChange:status=>{renderer.shadowMap.needsUpdate=true;$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});
+ contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});sharpenTextures(object);varyNeighbourFacades(object);batchExterior(object,[]);object.traverse(o=>{if(o.isMesh&&o.userData.presentationBatch&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});},onChange:status=>{renderer.shadowMap.needsUpdate=true;$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});
  new ResizeObserver(resize).observe($('viewport'));
  renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();failed=true;stopTour();fail(Object.assign(Error('WebGL context lost'),{userMessage:'הדפדפן עצר את התצוגה התלת־ממדית כדי לפנות זיכרון גרפי. לחצו ״ניסיון נוסף״ לטעינה מחדש.'}));});
  renderer.domElement.addEventListener('webglcontextrestored',()=>location.reload());

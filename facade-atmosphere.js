@@ -2,8 +2,8 @@
 // materials are changed. These are an artistic mood, not a lighting study.
 const states = new WeakMap();
 const LOOKS = Object.freeze({
-  daylight: { transmission: .74, glow: 0, reflection: 1.30 },
-  golden: { transmission: .69, glow: .025, reflection: 1.24 },
+  daylight: { transmission: .74, glow: 0, reflection: 1.45 },
+  golden: { transmission: .69, glow: .025, reflection: 1.36 },
   twilight: { transmission: .58, glow: .28, reflection: 1.45 }
 });
 
