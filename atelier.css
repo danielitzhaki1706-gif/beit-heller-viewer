@@ -1,7 +1,7 @@
 /* Beit Heller R5 — an architectural scene, framed like a studio plate. */
 body[data-tab=gallery] .stage{height:100%;min-height:0}
-@font-face{font-family:Heebo;src:url('./assets/fonts/Heebo-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
-@font-face{font-family:Assistant;src:url('./assets/fonts/Assistant-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+@font-face{font-family:Heebo;src:url('./assets/fonts/Heebo-Variable.woff2') format('woff2'),url('./assets/fonts/Heebo-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
+@font-face{font-family:Assistant;src:url('./assets/fonts/Assistant-Variable.woff2') format('woff2'),url('./assets/fonts/Assistant-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
 :root{font-family:Assistant,'Segoe UI',sans-serif;--ink:#142b38;--muted:#607988;--accent:#bda278;--paper:#f5f8fa;--line:#cdd9e1;--glass:rgba(255,255,255,.89);color:var(--ink);background:#dee8ee}
 html,body{width:100%;min-height:100%;margin:0}body{overflow:hidden}button,select,input,summary{font-family:inherit}button,a,summary{-webkit-tap-highlight-color:transparent}button{transition:background .18s,border-color .18s,box-shadow .18s,transform .18s}button:hover{background:#e7eff3}button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible,#viewport:focus-visible{outline:2px solid #a48250;outline-offset:4px}button:active{transform:translateY(1px)}button:disabled{transform:none}
 .topbar{position:fixed;inset:20px 24px auto;height:64px;min-height:0;z-index:40;display:flex;flex-wrap:nowrap;gap:22px;padding:0 19px;border:1px solid #ffffffa6;border-radius:12px;background:var(--glass);box-shadow:0 5px 32px #142b380b,0 1px 0 #ffffffcf inset;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}

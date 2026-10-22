@@ -37,3 +37,27 @@ export async function loadLocalHDRI(THREE,url) {
   texture.name='Poly Haven Kloofendal puresky CC0 · art-directed environment';
   return texture;
 }
+
+// Compact sky: linear radiance gamma-encoded up to maxRadiance in an 8-bit WebP.
+// The GPU decodes it into a half-float equirectangular target that stands in for
+// the RGBE asset. Only the sun core is clipped, and the sun is lit separately by
+// the scene's directional light.
+export async function loadEncodedSky(THREE,renderer,url,{maxRadiance=6,horizonRow=.483}={}){
+  const image=await new THREE.ImageLoader().loadAsync(url);
+  const source=new THREE.Texture(image);source.colorSpace=THREE.NoColorSpace;source.generateMipmaps=false;source.minFilter=source.magFilter=THREE.LinearFilter;source.needsUpdate=true;
+  const target=new THREE.WebGLRenderTarget(image.width,image.height,{type:THREE.HalfFloatType,depthBuffer:false,stencilBuffer:false,generateMipmaps:false,minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,wrapS:THREE.RepeatWrapping});
+  const material=new THREE.ShaderMaterial({uniforms:{encoded:{value:source},maxRadiance:{value:maxRadiance}},depthTest:false,depthWrite:false,toneMapped:false,
+    vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}',
+    fragmentShader:'uniform sampler2D encoded;uniform float maxRadiance;varying vec2 vUv;void main(){gl_FragColor=vec4(maxRadiance*pow(texture2D(encoded,vUv).rgb,vec3(2.2)),1.);}'});
+  const quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),material),scene=new THREE.Scene(),camera=new THREE.Camera();quad.frustumCulled=false;scene.add(quad);
+  const previous=renderer.getRenderTarget();
+  try{renderer.setRenderTarget(target);renderer.render(scene,camera);}finally{renderer.setRenderTarget(previous);quad.geometry.dispose();material.dispose();source.dispose();}
+  // Horizon average from one decoded row in linear radiance, as with the RGBE asset.
+  const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=1;
+  const context=canvas.getContext('2d',{willReadFrequently:true});context.drawImage(image,0,Math.floor(image.height*horizonRow),image.width,1,0,0,image.width,1);
+  const row=context.getImageData(0,0,image.width,1).data,horizon=[0,0,0];
+  for(let x=0;x<image.width;x++)for(let c=0;c<3;c++)horizon[c]+=Math.min(4,maxRadiance*Math.pow(row[x*4+c]/255,2.2))/image.width;
+  const texture=target.texture;texture.mapping=THREE.EquirectangularReflectionMapping;texture.colorSpace=THREE.LinearSRGBColorSpace;
+  texture.name='Poly Haven Kloofendal puresky CC0 · encoded radiance';
+  return {texture,horizon,dispose:()=>target.dispose()};
+}

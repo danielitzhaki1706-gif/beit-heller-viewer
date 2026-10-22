@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-import {loadLocalHDRI} from './local-hdri.js';
+import {loadLocalHDRI,loadEncodedSky} from './local-hdri.js?v=20261022-r7';
 import {setFacadeAtmosphere} from './facade-atmosphere.js?v=20261022-r7';
 
 // Architectural lighting moods. Not a site/date-dependent solar simulation.
@@ -93,7 +93,7 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
  // Dedicated soft studio bounce for floor presentations. Zero intensity in
  // every existing R5 mode keeps the exterior and original rooms unchanged.
  const floorRim=new THREE.DirectionalLight(0xe4edff,0);floorRim.position.set(-35,38,55);scene.add(floorRim);
- let currentMode='exterior',currentLook='daylight',quality='balanced',photoSky=null,photoEnvironment=null,disposed=false,lastExtent=0,facadeRoot=null;
+ let encodedSky=null,currentMode='exterior',currentLook='daylight',quality='balanced',photoSky=null,photoEnvironment=null,disposed=false,lastExtent=0,facadeRoot=null;
  let facadeState={look:'daylight',materials:0,facadeMeshes:0,glow:0,illustrative:true};
  function updateShadowBias(extent){
   // Preserve verified r4 texel-scaled bias: broad urban receivers require more
@@ -107,7 +107,7 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   sun.color.setHex(look.sun);hemi.color.setHex(look.sky);hemi.groundColor.setHex(look.ground);fill.color.setHex(look.sky);
   const photographic=outside&&photoEnvironment&&currentLook==='daylight';
   scene.environment=outside?(photographic?photoEnvironment.texture:environments[currentLook].texture):indoor.texture;
-  scene.environmentIntensity=floorInside?.36:floorOverview?.24:enclosed?.26:cutaway?.28:outside?look.environment:.40;
+  scene.environmentIntensity=floorInside?.36:floorOverview?.24:enclosed?.26:cutaway?.28:outside?look.environment*(encodedSky?1.4:1):.40;
   scene.environmentRotation.set(0,photographic?material.uniforms.photoRotation.value:0,0);
   const background=floorStudio?'#e3e2da':outside?(currentLook==='twilight'?'#596479':currentLook==='golden'?'#d2c1ad':'#bdcddf'):enclosed?'#343b3f':cutaway?'#c7d0d0':'#dbe2e2';
   // The HDR used to be hidden behind a flat background. Display it, aligned
@@ -147,16 +147,20 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
  function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown lighting quality: '+value);quality=value;const small=value==='low'||(value==='auto'&&typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches),size=small?1024:value==='high'?4096:3072;if(sun.shadow.mapSize.x!==size){sun.shadow.mapSize.set(size,size);sun.shadow.map?.dispose();sun.shadow.map=null;updateShadowBias(lastExtent||55);renderer.shadowMap.needsUpdate=true;}}
  setMode('exterior');
  const ready=(async()=>{let texture,generator;try{
-  texture=await loadLocalHDRI(THREE,new URL('./assets/sky/kloofendal_puresky_2k.hdr',import.meta.url));if(disposed){texture.dispose();return{status:'DISPOSED'};}
+  // A 65 KB encoded sky replaces the 3.4 MB RGBE download; the RGBE stays as fallback.
+  try{encodedSky=await loadEncodedSky(THREE,renderer,new URL('./assets/sky/kloofendal_puresky_2k.webp',import.meta.url).href);texture=encodedSky.texture;}
+  catch(error){encodedSky=null;console.warn('Encoded sky unavailable; using the RGBE asset',error);texture=await loadLocalHDRI(THREE,new URL('./assets/sky/kloofendal_puresky_2k.hdr',import.meta.url));}
+  if(disposed){encodedSky?encodedSky.dispose():texture.dispose();return{status:'DISPOSED'};}
   generator=new THREE.PMREMGenerator(renderer);photoEnvironment=generator.fromEquirectangular(texture);photoSky=texture;material.uniforms.photo.value=texture;material.uniforms.photoReady.value=1;
   // Average the actual photographic horizon (about 3 degrees above it), in
   // linear radiance, rather than choosing an unrelated CSS background color.
-  const pixels=texture.image.data,w=texture.image.width,row=Math.floor(texture.image.height*.483),sum=[0,0,0];
-  for(let x=0;x<w;x++)for(let c=0;c<3;c++)sum[c]+=Math.min(4,THREE.DataUtils.fromHalfFloat(pixels[(row*w+x)*4+c]))/w;
+  let sum=encodedSky?.horizon;
+  if(!sum){const pixels=texture.image.data,w=texture.image.width,row=Math.floor(texture.image.height*.483);sum=[0,0,0];
+  for(let x=0;x<w;x++)for(let c=0;c<3;c++)sum[c]+=Math.min(4,THREE.DataUtils.fromHalfFloat(pixels[(row*w+x)*4+c]))/w;}
   horizons.daylight.setRGB(sum[0]*.78,sum[1]*.78,sum[2]*.78);
   for(const key of ['golden','twilight']){skyUniforms(key);const previous=environments[key];environments[key]=generator.fromScene(envScene,.025,.1,1000);previous.dispose();}
-  apply();onReady();loadSkyDetail();return{status:'LOCAL_HDRI_READY',look:currentLook,visibleSky:true};
- }catch(error){if(!photoSky)texture?.dispose();if(!disposed){console.warn('Local sky unavailable; procedural fallback retained',error);apply();onReady();}return{status:'PROCEDURAL_FALLBACK'};}finally{generator?.dispose();}})();
+  apply();onReady();loadSkyDetail();return{status:encodedSky?'ENCODED_SKY_READY':'LOCAL_HDRI_READY',look:currentLook,visibleSky:true};
+ }catch(error){if(!photoSky){if(encodedSky)encodedSky.dispose();else texture?.dispose();}if(!disposed){console.warn('Local sky unavailable; procedural fallback retained',error);apply();onReady();}return{status:'PROCEDURAL_FALLBACK'};}finally{generator?.dispose();}})();
  // Desktop only: a 4K layer for the visible clouds (the 2K HDR keeps lighting and reflections).
  let skyDetail=null;
  function loadSkyDetail(){
@@ -165,6 +169,6 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   skyDetail.colorSpace=THREE.NoColorSpace;skyDetail.generateMipmaps=false;skyDetail.minFilter=THREE.LinearFilter;skyDetail.magFilter=THREE.LinearFilter;skyDetail.wrapS=THREE.RepeatWrapping;
   material.uniforms.photoDetail.value=skyDetail;
  }
- function dispose(){if(disposed)return;disposed=true;skyDetail?.dispose();for(const o of [sun,sun.target,hemi,fill,floorRim,sky])scene.remove(o);sun.shadow.map?.dispose();for(const e of Object.values(environments))e.dispose();indoor.dispose();photoEnvironment?.dispose();if(scene.background===photoSky)scene.background=null;photoSky?.dispose();emptyPhoto.dispose();material.dispose();sky.geometry.dispose();scene.environment=null;}
+ function dispose(){if(disposed)return;disposed=true;skyDetail?.dispose();for(const o of [sun,sun.target,hemi,fill,floorRim,sky])scene.remove(o);sun.shadow.map?.dispose();for(const e of Object.values(environments))e.dispose();indoor.dispose();photoEnvironment?.dispose();if(scene.background===photoSky)scene.background=null;if(encodedSky)encodedSky.dispose();else photoSky?.dispose();emptyPhoto.dispose();material.dispose();sky.geometry.dispose();scene.environment=null;}
  return{setMode,setLook,setModel,setQuality,update,dispose,sun,sky,outdoor:environments.daylight,indoor,ready,snapshot:()=>({mode:currentMode,look:currentLook,quality,shadowSize:sun.shadow.mapSize.x,shadowExtent:lastExtent,shadowTexelMetres:2*lastExtent/sun.shadow.mapSize.x,shadowNormalBias:sun.shadow.normalBias,shadowDepthBias:sun.shadow.bias,environmentIntensity:scene.environmentIntensity,exposure:renderer.toneMappingExposure,sky:photoSky?(currentLook==='daylight'?'local-photographic-hdri':'photo-contour-atmosphere'):'procedural-fallback',skyDetail:material.uniforms.detailReady.value>0,visibleSky:currentMode==='exterior',facade:facadeState,artisticLighting:true})};
 }

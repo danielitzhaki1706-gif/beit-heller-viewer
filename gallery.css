@@ -31,7 +31,7 @@
 @media(max-width:760px){.gallery-standalone-page #render-gallery.bh-gallery{padding:0 16px 25px}.bh-gallery .bh-gallery-cover,.bh-gallery .bh-gallery-cover:first-child{grid-template-columns:1fr;grid-template-rows:180px auto;height:auto;min-height:0}.bh-gallery-cover img{height:180px;min-height:0}.bh-gallery-cover-copy{padding:16px;gap:7px}.bh-gallery-cover-open{padding-top:4px}.bh-gallery-cover-description{font-size:12px}.bh-gallery-cover strong{font-size:20px}}
 
 /* R5 studio collection: preserve every source image without cropping. */
-@font-face{font-family:Heebo;src:url('./assets/fonts/Heebo-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
+@font-face{font-family:Heebo;src:url('./assets/fonts/Heebo-Variable.woff2') format('woff2'),url('./assets/fonts/Heebo-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
 .gallery-standalone-page,.gallery-standalone-page .bh-gallery{font-family:Heebo,Arial,sans-serif;background:#f5f8fa}
 .gallery-standalone-page .bh-gallery-section-intro h2,.gallery-standalone-page .bh-gallery-intro h2{font-family:Heebo,Arial,sans-serif}
 [data-gallery-collection=studio] .bh-gallery-toolbar,[data-gallery-collection=studio] .bh-gallery-section-header{display:none}
