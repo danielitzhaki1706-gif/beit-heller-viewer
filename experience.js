@@ -28,6 +28,10 @@ export function createCameraMotion(camera,controls,invalidate) {
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let transition=null,orbit=false,previous=0;
  function stop(){transition=null;orbit=false;controls.autoRotate=false;}
+ // Stopping only the orbit keeps an in-flight move; finish() lands it instead of
+ // leaving the camera between two views.
+ function stopOrbit(){orbit=false;controls.autoRotate=false;}
+ function finish(){if(transition){camera.position.copy(transition.to);controls.target.copy(transition.toTarget);controls.update();transition=null;invalidate();}stopOrbit();}
  function move(position,target,{duration=1450,immediate=false}={}){
   transition=null;
   if(immediate||reduced.matches){camera.position.copy(position);controls.target.copy(target);controls.update();invalidate();return;}
@@ -39,7 +43,7 @@ export function createCameraMotion(camera,controls,invalidate) {
   if(orbit){const v=camera.position.clone().sub(controls.target);v.applyAxisAngle(new THREE.Vector3(0,1,0),dt*.035);camera.position.copy(controls.target).add(v);invalidate();}
  }
  function setOrbit(enabled){transition=null;orbit=!!enabled;previous=0;invalidate();return orbit;}
- return {move,tick,stop,setOrbit,get active(){return !!transition||orbit;},get orbit(){return orbit;},get reduced(){return reduced.matches;}};
+ return {move,tick,stop,stopOrbit,finish,setOrbit,get active(){return !!transition||orbit;},get orbit(){return orbit;},get reduced(){return reduced.matches;}};
 }
 
 export function mountExperience({onScene,onLook,onPlay,onPanel}) {

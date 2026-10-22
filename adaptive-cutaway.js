@@ -114,9 +114,12 @@ export function createAdaptiveCutaway(THREE,{camera,controls,invalidate=()=>{},h
  function update(){
   if(!prepared)return;
   const focus=controls.target;
-  const key=[enabled,mode,modelId,...camera.position.toArray(),...camera.quaternion.toArray(),camera.fov,camera.aspect,...focus.toArray()].join('|');
+  // Solid or disabled presentation does not depend on the camera. Report a
+  // change once, so the shadow map is not re-rendered on every orbit frame.
+  const fixed=!enabled||mode==='solid';
+  const key=fixed?['fixed',enabled,mode,modelId,clipRange?.join(',')].join('|'):[enabled,mode,modelId,...camera.position.toArray(),...camera.quaternion.toArray(),camera.fov,camera.aspect,...focus.toArray()].join('|');
   if(key===lastKey)return false;lastKey=key;
-  if(!enabled||mode==='solid'){
+  if(fixed){
    // Keep the unbatched source architecture while examining a floor; restore
    // normal batching only when leaving the interior/floor context.
    for(const e of prepared.entries){e.mesh.material=e.original;e.mesh.visible=enabled?inFloor(e):e.visible;e.revealed=false;}

@@ -107,7 +107,9 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   const background=floorStudio?'#e3e2da':outside?(currentLook==='twilight'?'#596479':currentLook==='golden'?'#d2c1ad':'#bdcddf'):enclosed?'#343b3f':cutaway?'#c7d0d0':'#dbe2e2';
   // The HDR used to be hidden behind a flat background. Display it, aligned
   // with its own reflections. All assets are bundled and work offline.
-  scene.background=outside&&currentLook==='daylight'&&photoSky?photoSky:new THREE.Color(background);
+  // Outdoors the sky dome covers the frame; a background texture underneath it
+  // would only be drawn twice more per frame (main and transmission passes).
+  scene.background=outside?null:new THREE.Color(background);
   scene.backgroundRotation.copy(scene.environmentRotation);scene.backgroundIntensity=.78;scene.backgroundBlurriness=0;
   sky.visible=outside;
   scene.fog=outside?new THREE.Fog(horizons[currentLook],180,450):null;
