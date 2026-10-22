@@ -81,6 +81,13 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
   }catch(error){failure=String(error?.message||error);releaseTargets();onFallback(error);renderer.setRenderTarget(previous);renderer.render(scene,camera);}
   finally{renderer.setRenderTarget(previous);renderer.autoClear=autoClear;renderMs=performance.now()-started;}
  }
+ // Compiles the scene's shader programs (in parallel where the browser allows)
+ // for the target the next frame renders into, so the first frame does not stall.
+ async function compile(timeout=4000,object=scene){
+  if(!renderer.compileAsync)return;const previous=renderer.getRenderTarget();let pending;
+  try{renderer.setRenderTarget(sceneTarget);pending=renderer.compileAsync(object,camera,object===scene?null:scene);}finally{renderer.setRenderTarget(previous);}
+  await Promise.race([pending,new Promise(resolve=>setTimeout(resolve,timeout))]);
+ }
  // Interval between two consecutive rendered frames while the camera moves.
  function reportFrame(interval){
   if(!sceneTarget||budgetScale<=.45||!(interval>0&&interval<250))return;slowFrames.push(interval);if(slowFrames.length<45)return;
@@ -89,5 +96,5 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  }
  function dispose(){if(disposed)return;disposed=true;releaseTargets();quad.dispose();contactMaterial.dispose();compositeMaterial.dispose();output.dispose();}
  function snapshot(){return{revision:THREE.REVISION,mode,requestedQuality:requested,effectiveQuality:sceneTarget?effective:'low',supported,contactEnabled:!!sceneTarget,renderSize:sceneTarget?[sceneTarget.width,sceneTarget.height]:null,samples:sceneTarget?.samples||0,maximumContactDarkening:sceneTarget?compositeMaterial.uniforms.strength.value:0,frames,sceneCalls,sceneTriangles,renderMs,failure,budgetScale};}
- renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,reportFrame,dispose,snapshot,get target(){return sceneTarget;}};
+ renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,reportFrame,compile,dispose,snapshot,get target(){return sceneTarget;}};
 }
