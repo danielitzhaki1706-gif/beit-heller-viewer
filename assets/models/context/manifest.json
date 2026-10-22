@@ -1,14 +1,14 @@
 {
   "schema": "beit-heller-context-v1",
   "accepted": true,
-  "nearfield": "./assets/models/context/surroundings-r3.glb",
+  "nearfield": "./assets/models/context/surroundings-r3.mo.glb",
   "replacesNodes": [
     "Building_part_0754",
     "Building_part_0735"
   ],
   "hideDefaultGround": true,
   "surfaceMaterials": [],
-  "nearfieldSha256": "3edec63c4b99411b1e85032f5937875da1c214bb1f3f60c4f190f117c1f748dc",
+  "nearfieldSha256": "13694b865c669baa0d067418a156b2a8df3c53548cd07349a6a5a2545b8b160e",
   "backgroundGeometry": "Geographic mapped surroundings plus neutral continuous ground apron",
   "acceptance": "Duplicate roof caps removed; geometry-only patch verified. Browser recheck of roof/rail depth precision pending.",
   "attribution": [

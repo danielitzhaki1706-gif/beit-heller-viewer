@@ -1,7 +1,7 @@
 {
   "schema": "beit-heller-context-v1",
   "accepted": true,
-  "nearfield": "./assets/context/nearfield.glb",
+  "nearfield": "./assets/context/nearfield.mo.glb",
   "replacesNodes": [
     "Building_part_0754",
     "Building_part_0735"
@@ -13,7 +13,7 @@
       "role": "PAVING_HALF_BOND"
     }
   ],
-  "nearfieldSha256": "a16eac59634ee2849c2b76fe361298c612709311b43e0dd491db8aead2c122fd",
+  "nearfieldSha256": "070fde13788618eed700d34916a1ea9d826df04b56900b6574802854d58e00f9",
   "backgroundGeometry": "Baked into context GLB; roads represented by texture on the same ground surface.",
   "acceptance": "Exterior visualization checkpoint; native pilot reviewed. Browser visual QA remains pending.",
   "attribution": [

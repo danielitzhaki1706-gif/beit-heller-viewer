@@ -49,12 +49,12 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  output.material.fragmentShader=output.material.fragmentShader.replace('uniform sampler2D tDiffuse;','uniform sampler2D tDiffuse;\n uniform sampler2D tSceneDepth; uniform float r5Atmosphere;').replace('// tone mapping','// tone mapping\n if(texture2D(tSceneDepth,vUv).x<.999999||r5Atmosphere>.5){').replace('// color space','}\n // color space');
  let sceneTarget=null,contactTarget=null,compositeTarget=null,mode='exterior',requested='auto',effective='balanced',width=1,height=1,disposed=false,failure=null,frames=0,sceneCalls=0,sceneTriangles=0,renderMs=0;
  // Adaptive resolution: only ever lowered, after sustained slow continuous frames.
- let budgetScale=1,slowFrames=[];
+ let budgetScale=1,slowFrames=[],idleFrames=[],refresh=16.7,allocatedRatio=0;
  const supported=renderer.capabilities.isWebGL2&&renderer.extensions.has('EXT_color_buffer_float');
  function selectQuality(value){if(value!=='auto')return value;const coarse=typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches,memory=typeof navigator!=='undefined'?navigator.deviceMemory:undefined;return coarse||(memory&&memory<=4)?'low':'balanced';}
  function releaseTargets(){for(const t of [sceneTarget,contactTarget,compositeTarget])t?.dispose();sceneTarget=contactTarget=compositeTarget=null;}
  function allocate(){
-  releaseTargets();if(effective==='low'||!supported||failure)return;
+  releaseTargets();allocatedRatio=renderer.getPixelRatio();if(effective==='low'||!supported||failure)return;
   // Device pixels up to 2x, so HiDPI and 4K screens are not upscaled from a
   // small buffer; the pixel budget keeps the cost bounded.
   const ratio=Math.min(renderer.getPixelRatio(),2),budget=(effective==='high'?4200000:2600000)*budgetScale;
@@ -66,7 +66,7 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
   contactMaterial.uniforms.tDepth.value=sceneTarget.depthTexture;contactMaterial.uniforms.resolution.value.set(w,h);contactMaterial.uniforms.samples.value=effective==='high'?12:8;
   compositeMaterial.uniforms.tDepth.value=sceneTarget.depthTexture;compositeMaterial.uniforms.tDiffuse.value=sceneTarget.texture;compositeMaterial.uniforms.tContact.value=contactTarget.texture;compositeMaterial.uniforms.contactResolution.value.set(contactTarget.width,contactTarget.height);
  }
- function resize(w,h){const nextWidth=Math.max(1,Math.round(w)),nextHeight=Math.max(1,Math.round(h));if(nextWidth===width&&nextHeight===height&&sceneTarget)return;width=nextWidth;height=nextHeight;allocate();}
+ function resize(w,h){const nextWidth=Math.max(1,Math.round(w)),nextHeight=Math.max(1,Math.round(h));if(nextWidth===width&&nextHeight===height&&sceneTarget&&renderer.getPixelRatio()===allocatedRatio)return;width=nextWidth;height=nextHeight;allocate();}
  function setQuality(value){if(!['auto','high','balanced','low'].includes(value))throw Error('Unknown visual quality: '+value);requested=value;effective=selectQuality(value);budgetScale=1;slowFrames=[];allocate();return sceneTarget?effective:'low';}
  function setMode(value){mode=value;
   // Exterior glazing is seen at a distance: a half-resolution see-through pass is
@@ -92,9 +92,12 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
  function reportFrame(interval){
   if(!sceneTarget||budgetScale<=.45||!(interval>0&&interval<250))return;slowFrames.push(interval);if(slowFrames.length<45)return;
   const sorted=[...slowFrames].sort((a,b)=>a-b),median=sorted[sorted.length>>1];slowFrames=[];
-  if(median>27){budgetScale*=.7;allocate();}
+  // Only a GPU that misses the display's own refresh by half again counts as slow;
+  // a 30 Hz or battery-capped display never lowers the resolution by itself.
+  if(median>Math.max(27,refresh*1.5)){budgetScale*=.7;allocate();}
  }
+ function reportIdle(interval){if(!(interval>0&&interval<250))return;idleFrames.push(interval);if(idleFrames.length<30)return;const sorted=[...idleFrames].sort((a,b)=>a-b);refresh=sorted[sorted.length>>1];idleFrames=[];}
  function dispose(){if(disposed)return;disposed=true;releaseTargets();quad.dispose();contactMaterial.dispose();compositeMaterial.dispose();output.dispose();}
  function snapshot(){return{revision:THREE.REVISION,mode,requestedQuality:requested,effectiveQuality:sceneTarget?effective:'low',supported,contactEnabled:!!sceneTarget,renderSize:sceneTarget?[sceneTarget.width,sceneTarget.height]:null,samples:sceneTarget?.samples||0,maximumContactDarkening:sceneTarget?compositeMaterial.uniforms.strength.value:0,frames,sceneCalls,sceneTriangles,renderMs,failure,budgetScale};}
- renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,reportFrame,compile,dispose,snapshot,get target(){return sceneTarget;}};
+ renderer.getSize(screenSize);width=Math.max(1,screenSize.x);height=Math.max(1,screenSize.y);setQuality('auto');setMode('exterior');return{render,resize,setMode,setQuality,reportFrame,reportIdle,compile,dispose,snapshot,get target(){return sceneTarget;}};
 }

@@ -49,7 +49,7 @@
       "status": "partial-source-model",
       "assets": [
         {
-          "href": "./assets/models/B04-overview.glb",
+          "href": "./assets/models/B04-overview.mo.glb",
           "role": "existing source-derived assembly; source grades remain approximate",
           "sha256": "860ccd3ce45457c21c1f97a6ef1a574971623347685f7a75ddf61a9817255f6a",
           "bytes": 2186528

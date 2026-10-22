@@ -60,11 +60,14 @@ const guide=[
  {title:'הכניסה והרחבות',text:'המפגש בין החזית, הרחבה והכניסה בקומת הקרקע.',mode:'exterior',view:8}
 ];
 const state={tab:'building',mode:'exterior',floor:4,area:'overview',floorPresentation:'overview',cut:'band',view:'fit',tour:0,playing:false,refFov:38,refAspect:4/3,shift:0,shiftX:0,fit:false,fitDirection:[1,.58,-1.13]};
-const cache=new Map(),pending=new Map();let lastRenderTime=0,lastCameraChange=0,renderer,scene,camera,controls,lighting,visual,presentation,active,ground,contextLayer,cutaway,sequence=0,tourTimer,failed=false,dirtyFrames=0,motion,experience,currentScene='signature',currentLook='daylight',firstComposition=true;
+const cache=new Map(),pending=new Map();let lastRenderTime=0,lastLoopTime=0,lastCameraChange=0,renderer,scene,camera,controls,lighting,visual,presentation,active,ground,contextLayer,cutaway,sequence=0,tourTimer,failed=false,dirtyFrames=0,motion,experience,currentScene='signature',currentLook='daylight',firstComposition=true;
 const loader=configureModelLoader(THREE,new GLTFLoader()),upperPlane=new THREE.Plane(new THREE.Vector3(0,-1,0),100),lowerPlane=new THREE.Plane(new THREE.Vector3(0,1,0),100);
 const materials=(object,visit)=>object?.traverse(o=>{if(o.isMesh)for(const m of Array.isArray(o.material)?o.material:[o.material])visit(m,o);});
 // Static frames are identical; a short tail covers damping and late uploads.
 function invalidate(){dirtyFrames=Math.max(dirtyFrames,12);}
+// Without the post-processing target, "low" draws straight to the canvas: keep it at
+// the former 1.5x density cap. Other qualities use device pixels up to 2x.
+function applyQuality(quality){const effective=visual.setQuality(quality);renderer.setPixelRatio(Math.min(devicePixelRatio||1,effective==='low'||matchMedia('(pointer:coarse)').matches?1.5:2));visual.resize(...renderer.getSize(new THREE.Vector2()).toArray());lighting.setQuality(effective);}
 // Full anisotropic filtering keeps roads, paving and floors crisp at grazing angles.
 // The mapped neighbours share two proxy wall colours. A stable tint per building
 // (keyed by its OSM id) breaks the uniform block look; geometry is untouched.
@@ -95,9 +98,9 @@ function initialize(){
  controls.addEventListener('change',()=>{invalidate();lastCameraChange=performance.now();if(!gesture)return;gesture=false;motion?.stop();experience?.setPlaying(false);experience?.setScene(null);currentScene=null;state.fit=false;floorFraming=null;state.view='free';stopTour();if(state.tab!=='floors')$('view-title').textContent='מבט חופשי';markViews();});
  lighting=createLighting(renderer,scene,{onReady:invalidate});
  visual=createVisualPipeline(renderer,scene,camera,{onFallback:error=>console.warn('Visual quality fallback',error)});
- lighting.setQuality(visual.setQuality('auto'));
+ applyQuality('auto');
  floorRendering=createFloorRendering(THREE,{scene,renderer,lighting,invalidate});
- presentation=mountPresentationControls({onLook:setAtmosphere,onQuality:quality=>{lighting.setQuality(visual.setQuality(quality));resize();},onResize:resize,onCapture:captureView});
+ presentation=mountPresentationControls({onLook:setAtmosphere,onQuality:quality=>{applyQuality(quality);resize();},onResize:resize,onCapture:captureView});
  presentation.setTab(state.tab);lighting.setLook(currentLook);
  experience=mountExperience({onScene:showArchitecturalScene,onLook:setAtmosphere,onPlay:()=>{const playing=motion.setOrbit(!motion.orbit);experience.setPlaying(playing);if(playing){state.fit=false;currentScene=null;experience.setScene(null);stopTour();}},onPanel:()=>experience.setPanel(document.body.dataset.panel!=='open')});
  experience?.setLook(currentLook);experience?.setTab(state.tab);experience?.setPanel(false);
@@ -108,7 +111,7 @@ function initialize(){
  renderer.domElement.addEventListener('webglcontextrestored',()=>location.reload());
  renderer.setAnimationLoop(time=>{if(document.hidden||failed||['gallery','walk'].includes(state.tab)||!$('plan-view').hidden)return;motion?.tick(time);const moving=String(!!motion?.active);if(document.body.dataset.cameraMoving!==moving)document.body.dataset.cameraMoving=moving;controls.update();if(dirtyFrames>0){compass.update(camera,controls.target,true);floorLabels.update(camera,active);updateFloorHotspots();if(cutaway.update())renderer.shadowMap.needsUpdate=true;floorRendering.setCutawayMode?.(cutaway.snapshot().mode);lighting.update(camera,controls.target);visual.render();dirtyFrames--;
   // Frame pacing feeds the adaptive resolution only while the view is in motion.
-  if((motion?.active||time-lastCameraChange<120)&&lastRenderTime)visual.reportFrame(time-lastRenderTime);lastRenderTime=time;}else lastRenderTime=0;});resize();
+  if((motion?.active||time-lastCameraChange<120)&&lastRenderTime)visual.reportFrame(time-lastRenderTime);lastRenderTime=time;}else{if(lastLoopTime)visual.reportIdle(time-lastLoopTime);lastRenderTime=0;}lastLoopTime=time;});resize();
 }
 function resize(recompose=true){if(!renderer)return;const box=$('viewport').getBoundingClientRect();if(box.width<1||box.height<1)return;renderer.setSize(box.width,box.height,false);visual?.resize(box.width,box.height);camera.aspect=box.width/box.height;camera.fov=state.tab==='floors'&&state.floorPresentation!=='inside'?38:responsiveFov(state.refFov,state.refAspect,camera.aspect);
  if(currentScene&&state.tab==='building')state.shiftX=box.width>=900?.075:0;
@@ -136,7 +139,7 @@ async function load(mode){cacheTouched.set(mode,performance.now());if(cache.has(
  floorLabels.attach(mode,object);object.visible=false;scene.add(object);cache.set(mode,object);return object;
  }).finally(()=>pending.delete(mode)));return pending.get(mode);}
 async function showModel(mode,view='fit'){const token=++sequence;$('viewer-error').hidden=true;$('loading').hidden=cache.has(mode);
- try{if(failed)throw Error('יש לטעון מחדש את התצוגה.');initialize();const object=await load(mode);if(token!==sequence){evictFloorModels();return false;}cutaway?.restore();if(active)active.visible=false;active=object;active.visible=true;state.mode=mode;if(state.tab==='floors')floorRendering.prepare(object,{floor:floors[state.floor],mode,region:selectedRegion().region});const lightMode=mode==='exterior'?'exterior':config[mode].lightingPreset||'interior';lighting.setMode(lightMode);visual.setMode(lightMode);contextLayer.setMode(mode);if(mode==='exterior'&&state.tab!=='floors')contextLayer.load(); // surroundings follow the building, never compete with itcontrols.minDistance=mode!=='exterior'?.15:3;controls.maxDistance=mode!=='exterior'?90:300;controls.maxPolarAngle=mode!=='exterior'?Math.PI*.95:Math.PI*.495;
+ try{if(failed)throw Error('יש לטעון מחדש את התצוגה.');initialize();const object=await load(mode);if(token!==sequence){evictFloorModels();return false;}cutaway?.restore();if(active)active.visible=false;active=object;active.visible=true;state.mode=mode;if(state.tab==='floors')floorRendering.prepare(object,{floor:floors[state.floor],mode,region:selectedRegion().region});const lightMode=mode==='exterior'?'exterior':config[mode].lightingPreset||'interior';lighting.setMode(lightMode);visual.setMode(lightMode);contextLayer.setMode(mode);if(mode==='exterior'&&state.tab!=='floors')contextLayer.load();/* surroundings follow the building, never compete with it */controls.minDistance=mode!=='exterior'?.15:3;controls.maxDistance=mode!=='exterior'?90:300;controls.maxPolarAngle=mode!=='exterior'?Math.PI*.95:Math.PI*.495;
  $('view-kind').textContent=mode==='exterior'?'בית הלר · רחובות':config[mode].title;$('evidence-text').textContent=config[mode].evidence;buildViews();if(state.tab!=='floors'){applyClip();resize();if(view==='fit')fitModel(true,[1,.58,-1.13]);else setView(view);if(!$('loading').hidden){await visual.compile().catch(()=>{});if(token!==sequence)return false;}}$('loading').hidden=true;document.body.dataset.viewerReady='true';return true;
  }catch(error){if(token===sequence)fail(error);return false;}}
 function buildViews(){const options=[['fit',state.mode==='exterior'?'הבניין השלם':'מבט מרחבי'],...config[state.mode].views.map((v,i)=>[i,v.label])];$('destinations').replaceChildren();$('thumbnail-strip').replaceChildren();
@@ -150,7 +153,7 @@ async function setTab(tab){stopTour();if(state.tab!==tab)experience?.setPanel(fa
  if(tab==='gallery'){++sequence;await galleryReady;if(state.tab!=='gallery')return;$('loading').hidden=true;$('viewer-error').hidden=true;$('view-title').textContent='מבטי הדמיה';$('view-kind').textContent='חוץ ופנים';$('view-subtitle').textContent='בחירת תמונה פותחת את הקובץ המלא';return;}
  if(tab==='walk'){++sequence;$('loading').hidden=true;$('viewer-error').hidden=true;setWalkSource('./walk/index.html');return;}
  if(tab==='tour'){state.tour=0;await showTour();return;}
- if(tab==='floors'){await selectFloor();return;}if(!await showModel('exterior','fit')||state.tab!=='building')return;showArchitecturalScene(SCENES[0],firstComposition);firstComposition=false;}
+ if(tab==='floors'){await selectFloor();return;}if(!await showModel('exterior','fit')||state.tab!=='building')return;if(state.view!=='architectural')showArchitecturalScene(SCENES[0],firstComposition);firstComposition=false;}
 // Replacing the frame location keeps the walk out of the browser's Back history.
 function setWalkSource(url){const frame=$('walk-frame');try{frame.contentWindow.location.replace(new URL(url,location.href).href);}catch{frame.src=url;}}
 function selectedRegion(){const f=regionCatalog.floors.find(f=>f.id===floors[state.floor].id);return {floor:f,region:f.regions.find(r=>r.id===state.area)||f.regions[0]};}

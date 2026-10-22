@@ -2,19 +2,16 @@ import {createFloorIndex} from './floor-index.js?v=20261022-r7';
 import {createCollisionIndex} from './collision-index.js?v=20261022-r7';
 // Sampled walking collision for visualization, not a certified clearance model.
 // The same implementation is imported by the app and CPU regression checks.
-export function createWalkingPhysics(THREE,{meshes,floorMeshes=meshes,fallbackFloorMeshes=[],dynamicMeshes=[],navigator,radius=.25,maxHeight=Infinity,seamTolerance=0}){
+export function createWalkingPhysics(THREE,{meshes,floorMeshes=meshes,dynamicMeshes=[],navigator,radius=.25,maxHeight=Infinity,seamTolerance=0}){
  const ray=new THREE.Raycaster(),origin=new THREE.Vector3(),direction=new THREE.Vector3();
  ray.layers.enable(1);
  const dynamic=new Set(dynamicMeshes);
  const floorIndex=createFloorIndex(THREE,floorMeshes.filter(mesh=>!dynamic.has(mesh)),{maxHeight});
- // The displayed ground leads; a fallback model only bridges seams (a few cm)
- // where the displayed surfaces leave no walkable triangle.
- const fallbackIndex=fallbackFloorMeshes.length?createFloorIndex(THREE,fallbackFloorMeshes,{maxHeight}):null;
  const collisionIndex=createCollisionIndex(THREE,meshes.filter(mesh=>!dynamic.has(mesh)),{maxHeight});
  const stats={bodyRays:0,floorQueries:0,substeps:0,floorIndex:floorIndex.stats,collisionIndex:collisionIndex.stats};
  function floorAt(p,reference){
   stats.floorQueries++;
-  const y=floorIndex.floorAt(p,reference)??fallbackIndex?.floorAt(p,reference)??null;if(y!==null||!seamTolerance)return y; // No invented floor across holes.
+  const y=floorIndex.floorAt(p,reference);if(y!==null||!seamTolerance)return y; // No invented floor across holes.
   // Hairline seams between separately modelled pavings (a few cm) are not
   // holes: accept the highest surface found within seamTolerance.
   let best=null;for(const [dx,dz]of [[seamTolerance,0],[-seamTolerance,0],[0,seamTolerance],[0,-seamTolerance]]){const h=floorIndex.floorAt([p[0]+dx,p[1]+dz],reference);if(h!==null&&(best===null||h>best))best=h;}

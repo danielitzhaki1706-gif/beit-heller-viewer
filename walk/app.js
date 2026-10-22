@@ -45,8 +45,8 @@ async function loadLegacyNearfield(){
  const response=await fetch('../assets/context/manifest.json');
  if(!response.ok)throw Error('Site context manifest unavailable');
  const manifest=await response.json();
- if(manifest.accepted!==true||manifest.nearfield!=='./assets/context/nearfield.glb')throw Error('Unaccepted site context');
- const context=(await loader.loadAsync('../assets/context/nearfield.glb')).scene;
+ if(manifest.accepted!==true||manifest.nearfield!=='./assets/context/nearfield.mo.glb')throw Error('Unaccepted site context');
+ const context=(await loader.loadAsync('../assets/context/nearfield.mo.glb')).scene;
  await applySurfaceFinish(context,THREE,manifest.surfaceMaterials);
  applyFurnitureRefinement(context,THREE);
  await applyMaterialDetail(context,THREE,{kind:'context'});
