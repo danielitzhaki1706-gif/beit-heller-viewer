@@ -1,7 +1,7 @@
 // Shared GLTFLoader setup for the atlas and the walk. Meshopt-compressed assets
 // decode to the same plain Float32 attributes as the uncompressed models, so
 // batching, cutaways and material detail see identical geometry layouts.
-import {MeshoptDecoder} from './vendor/meshopt/meshopt_decoder.mjs?v=20261022-r7';
+import {MeshoptDecoder} from './vendor/meshopt/meshopt_decoder.module.js?v=20261022-r7';
 const converted=new WeakMap();
 function floatAttribute(THREE,attribute){
  if(converted.has(attribute))return converted.get(attribute);
