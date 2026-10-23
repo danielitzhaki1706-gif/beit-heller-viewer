@@ -5,9 +5,9 @@ import {setFacadeAtmosphere} from './facade-atmosphere.js?v=20261022-r7';
 
 // Architectural lighting moods. Not a site/date-dependent solar simulation.
 export const LIGHT_LOOKS=Object.freeze({
- daylight:{direction:[-.55,.85,-.45],sun:0xfff4e8,sky:0xc3d9f0,ground:0x9c9383,exposure:.9,strength:3.9,environment:.55},
- golden:{direction:[.65,.45,-.85],sun:0xffd6ac,sky:0xb3c9e7,ground:0xa2907d,exposure:1.3,strength:3.4,environment:.54,haze:[.55,2.0]},
- twilight:{direction:[-.66,.30,-.61],sun:0xabc8f4,sky:0x92b1e0,ground:0x626578,exposure:1.06,strength:.64,environment:.72}
+ daylight:{direction:[-.55,.85,-.45],sun:0xfff4e8,sky:0xc3d9f0,ground:0x9c9383,exposure:1.08,strength:3.9,environment:.55},
+ golden:{direction:[.65,.45,-.85],sun:0xffd6ac,sky:0xb3c9e7,ground:0xa2907d,exposure:1.22,strength:3.4,environment:.54,haze:[.8,2.8]},
+ twilight:{direction:[-.66,.30,-.61],sun:0xabc8f4,sky:0x92b1e0,ground:0x626578,exposure:1.18,strength:.64,environment:.72}
 });
 const skyVertex=`varying vec3 vDirection;
 void main(){vDirection=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;

@@ -66,7 +66,9 @@ body[data-tab=walk] .sidebar{display:none!important}
    lines, deeper text in golden hour, and light text for the evening look (the older
    rules targeted a look named "bluehour", which no longer exists). */
 .atelier-masthead>span,.atelier-masthead p,.stage-heading h2,.view-details summary{text-shadow:0 0 3px #fffffff0,0 1px 12px #ffffffe0}
-body[data-look=golden] .atelier-masthead>span,body[data-look=golden] .atelier-masthead p{color:#5a5040}body[data-look=golden] .stage-heading h2{color:#3b4851}
+body[data-look=golden] .atelier-masthead>span,body[data-look=golden] .atelier-masthead p{color:#463d30}body[data-look=golden] .stage-heading h2{color:#2e3b44}
+.atelier-masthead>span{color:#2e4b5a}.atelier-masthead p{color:#33505f}.stage-heading h2{color:#1c3646}.view-details summary{color:#2c4d5f;border-color:#2c4d5f70}#interaction-hint{color:#2b4a5b;text-shadow:0 0 3px #fffffff0,0 1px 10px #ffffffe0}
 body[data-tab=building][data-look=twilight] .atelier-masthead,body[data-tab=building][data-look=twilight] .stage-heading{color:#eef3f8;text-shadow:0 1px 14px #0a1c3a80}
 body[data-tab=building][data-look=twilight] .atelier-masthead>span,body[data-tab=building][data-look=twilight] .atelier-masthead p,body[data-tab=building][data-look=twilight] .stage-heading h2,body[data-tab=building][data-look=twilight] .view-details summary{color:#dbe6f1;text-shadow:0 0 3px #0a1c3acc,0 1px 12px #0a1c3a99}
 body[data-tab=building][data-look=twilight] .view-details[open] summary{color:#355b72;text-shadow:none}body[data-tab=building][data-look=twilight] .masthead-rule{background:#afc4dc}
+.atelier-masthead p>span[dir=ltr]{color:#2f4a58;font-weight:600;font-size:10px;text-shadow:0 0 2px #ffffffcc}body[data-look=golden] .atelier-masthead p>span[dir=ltr]{color:#4a4133}body[data-tab=building][data-look=twilight] .atelier-masthead p>span[dir=ltr]{color:#dbe6f1;text-shadow:0 0 3px #0a1c3acc}
