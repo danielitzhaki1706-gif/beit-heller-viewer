@@ -62,3 +62,11 @@ body[data-tab=walk] .sidebar{display:none!important}
 @media(max-width:760px){.stage.walking{height:100dvh;min-height:560px}}
 /* Landscape phones: the walk takes the whole screen (its own link returns to the atlas). */
 @media(max-height:500px) and (pointer:coarse){body[data-tab=walk] #walk-frame{position:fixed;inset:0;width:100vw;height:100dvh;z-index:60;border:0;border-radius:0}}
+/* R7: the title block stays legible over darker scenes. A tight halo under the small
+   lines, deeper text in golden hour, and light text for the evening look (the older
+   rules targeted a look named "bluehour", which no longer exists). */
+.atelier-masthead>span,.atelier-masthead p,.stage-heading h2,.view-details summary{text-shadow:0 0 3px #fffffff0,0 1px 12px #ffffffe0}
+body[data-look=golden] .atelier-masthead>span,body[data-look=golden] .atelier-masthead p{color:#5a5040}body[data-look=golden] .stage-heading h2{color:#3b4851}
+body[data-tab=building][data-look=twilight] .atelier-masthead,body[data-tab=building][data-look=twilight] .stage-heading{color:#eef3f8;text-shadow:0 1px 14px #0a1c3a80}
+body[data-tab=building][data-look=twilight] .atelier-masthead>span,body[data-tab=building][data-look=twilight] .atelier-masthead p,body[data-tab=building][data-look=twilight] .stage-heading h2,body[data-tab=building][data-look=twilight] .view-details summary{color:#dbe6f1;text-shadow:0 0 3px #0a1c3acc,0 1px 12px #0a1c3a99}
+body[data-tab=building][data-look=twilight] .view-details[open] summary{color:#355b72;text-shadow:none}body[data-tab=building][data-look=twilight] .masthead-rule{background:#afc4dc}

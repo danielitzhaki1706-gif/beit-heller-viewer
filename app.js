@@ -6,7 +6,7 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {configureModelLoader} from './model-loader.js?v=20261022-r7';
-import {skipTransmissionPass,isFoliageMaterial} from './render-passes.js?v=20261022-r7';
+import {skipTransmissionPass,isFoliageMaterial,orientOpenSurfacesUp} from './render-passes.js?v=20261022-r7';
 import {responsiveFov} from './camera-fit.js';
 import {createLighting} from './lighting.js?v=20261022-r7';
 import {createVisualPipeline} from './visual-pipeline.js?v=20261022-r7';
@@ -105,7 +105,7 @@ function initialize(){
  experience=mountExperience({onScene:showArchitecturalScene,onLook:setAtmosphere,onPlay:()=>{const playing=motion.setOrbit(!motion.orbit);experience.setPlaying(playing);if(playing){state.fit=false;currentScene=null;experience.setScene(null);stopTour();}},onPanel:()=>experience.setPanel(document.body.dataset.panel!=='open')});
  experience?.setLook(currentLook);experience?.setTab(state.tab);experience?.setPanel(false);
  ground=new THREE.Mesh(new THREE.PlaneGeometry(2000,2000),new THREE.MeshStandardMaterial({color:0xb8bea7,roughness:.93}));ground.rotation.x=-Math.PI/2;ground.position.set(20,-.365,8);ground.receiveShadow=true;scene.add(ground);
- contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});sharpenTextures(object);varyNeighbourFacades(object);batchExterior(object,[]);object.traverse(o=>{if(o.isMesh&&o.userData.presentationBatch&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});await visual.compile(4000,object).catch(()=>{});},onChange:status=>{renderer.shadowMap.needsUpdate=true;$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});
+ contextLayer=createContextLayer(THREE,scene,loader,ground,{invalidate,prepareNearfield:async (object,manifest)=>{if(manifest.surfaceMaterials?.length){const surface=await import('./surface-finish.js');await surface.applySurfaceFinish(object,THREE,manifest.surfaceMaterials);}await applyMaterialDetail(object,THREE,{kind:'context'});sharpenTextures(object);varyNeighbourFacades(object);object.updateMatrixWorld(true);orientOpenSurfacesUp(object);batchExterior(object,[]);object.traverse(o=>{if(o.isMesh&&o.userData.presentationBatch&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});await visual.compile(4000,object).catch(()=>{});},onChange:status=>{renderer.shadowMap.needsUpdate=true;$('context-toggle').disabled=!status.ready;$('context-toggle').checked=status.enabled;$('context-status').textContent=status.loading?'טוענים את הסביבה':status.ready?'סביבה ממופה · כבישים, כיכר ורכבת':'הסביבה עדיין בהכנה';$('context-attribution').hidden=!status.active;}});
  new ResizeObserver(resize).observe($('viewport'));
  renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();failed=true;stopTour();fail(Object.assign(Error('WebGL context lost'),{userMessage:'הדפדפן עצר את התצוגה התלת־ממדית כדי לפנות זיכרון גרפי. לחצו ״ניסיון נוסף״ לטעינה מחדש.'}));});
  renderer.domElement.addEventListener('webglcontextrestored',()=>location.reload());
@@ -277,7 +277,7 @@ function showArchitecturalScene(preset,immediate=false){
  $('view-kind').textContent='BEIT HELLER · REHOVOT';$('view-subtitle').textContent=preset.subtitle+' · חומרים ותאורה להמחשה';
  state.view='architectural';markViews();experience?.setScene(preset.id);invalidate();
 }
-document.addEventListener('keydown',event=>{if(event.key!=='Escape'||document.querySelector('dialog[open]'))return;motion?.stopOrbit();experience?.setPlaying(false);experience?.setPanel(false);});
+document.addEventListener('keydown',event=>{if(event.key!=='Escape'||document.querySelector('dialog[open]'))return;stopTour();motion?.stopOrbit();experience?.setPlaying(false);experience?.setPanel(false);});
 const initialQuery=new URLSearchParams(location.search),initialFloor=floors.findIndex(f=>f.id===initialQuery.get('floor'));
 if(initialFloor>=0)state.floor=initialFloor;
 if(initialQuery.get('view')==='stack'&&/^B0[1-4]$/.test(floors[state.floor].id))state.floorPresentation='stack';

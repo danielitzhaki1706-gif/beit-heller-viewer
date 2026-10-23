@@ -6,7 +6,7 @@ import {applyFurnitureRefinement} from '../furniture-refinement.js?v=20261013-r4
 import {createContextLayer} from '../context-layer.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {configureModelLoader} from '../model-loader.js?v=20261022-r7';
-import {skipTransmissionPass,isFoliageMaterial} from '../render-passes.js?v=20261022-r7';
+import {skipTransmissionPass,isFoliageMaterial,orientOpenSurfacesUp} from '../render-passes.js?v=20261022-r7';
 import {navigators,doorSegments} from './route.js';
 import {batchStatic} from './batching.js?v=20261022-r7';
 import {createLighting} from '../lighting.js?v=20261022-r7';
@@ -63,7 +63,7 @@ async function load(which){
   // download alongside the building instead of after it.
   visualContext=createContextLayer(THREE,scene,{loadAsync:path=>loader.loadAsync('../'+path.replace(/^\.\//,''))},new THREE.Object3D(),{
    fetcher:path=>fetch('../'+path.replace(/^\.\//,'')),
-   prepareNearfield:async(object,manifest)=>{if(manifest.surfaceMaterials?.length)await applySurfaceFinish(object,THREE,manifest.surfaceMaterials);applyFurnitureRefinement(object,THREE);await applyMaterialDetail(object,THREE,{kind:'context'});finishModel(object);batchStatic(object);
+   prepareNearfield:async(object,manifest)=>{if(manifest.surfaceMaterials?.length)await applySurfaceFinish(object,THREE,manifest.surfaceMaterials);applyFurnitureRefinement(object,THREE);await applyMaterialDetail(object,THREE,{kind:'context'});finishModel(object);object.updateMatrixWorld(true);orientOpenSurfacesUp(object);batchStatic(object);
     object.traverse(o=>{if(o.isMesh&&o.name.startsWith('Presentation_batch_')&&isFoliageMaterial(o.material))skipTransmissionPass(o,()=>renderer.getRenderTarget()===visual.target);});},
    onChange:status=>{visualRevision++;if(siteContext)siteContext.visible=mode==='ground'&&!status.ready;renderer.shadowMap.needsUpdate=true;}
   });

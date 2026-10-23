@@ -57,7 +57,7 @@ export function createVisualPipeline(renderer,scene,camera,{onFallback=()=>{}}={
   releaseTargets();allocatedRatio=renderer.getPixelRatio();if(effective==='low'||!supported||failure)return;
   // Device pixels up to 2x, so HiDPI and 4K screens are not upscaled from a
   // small buffer; the pixel budget keeps the cost bounded.
-  const ratio=Math.min(renderer.getPixelRatio(),2),budget=(effective==='high'?4200000:2600000)*budgetScale;
+  const ratio=Math.min(renderer.getPixelRatio(),2),budget=(effective==='high'?5600000:3500000)*budgetScale;
   const scale=Math.min(ratio,Math.sqrt(budget/(width*height))),w=Math.max(1,Math.round(width*scale)),h=Math.max(1,Math.round(height*scale));
   sceneTarget=new THREE.WebGLRenderTarget(w,h,{type:THREE.HalfFloatType,depthBuffer:true,stencilBuffer:false,samples:Math.min(renderer.capabilities.maxSamples,4)});
   sceneTarget.depthTexture=new THREE.DepthTexture(w,h,THREE.UnsignedIntType);sceneTarget.resolveDepthBuffer=true;output.uniforms.tSceneDepth.value=sceneTarget.depthTexture;

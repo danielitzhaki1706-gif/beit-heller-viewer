@@ -6,7 +6,7 @@ import {setFacadeAtmosphere} from './facade-atmosphere.js?v=20261022-r7';
 // Architectural lighting moods. Not a site/date-dependent solar simulation.
 export const LIGHT_LOOKS=Object.freeze({
  daylight:{direction:[-.55,.85,-.45],sun:0xfff4e8,sky:0xc3d9f0,ground:0x9c9383,exposure:.9,strength:3.9,environment:.55},
- golden:{direction:[.65,.45,-.85],sun:0xffd6ac,sky:0xb3c9e7,ground:0xa2907d,exposure:.88,strength:3.2,environment:.5},
+ golden:{direction:[.65,.45,-.85],sun:0xffd6ac,sky:0xb3c9e7,ground:0xa2907d,exposure:1.3,strength:3.4,environment:.54,haze:[.55,2.0]},
  twilight:{direction:[-.66,.30,-.61],sun:0xabc8f4,sky:0x92b1e0,ground:0x626578,exposure:1.06,strength:.64,environment:.72}
 });
 const skyVertex=`varying vec3 vDirection;
@@ -129,13 +129,17 @@ export function createLighting(renderer,scene,{onReady=()=>{}}={}){
   }
   // Enclosed/cutaway exposure stays independent of outdoor blue-hour.
   // Khronos PBR Neutral tone mapping: about 8% less exposure matches the former ACES brightness.
-  renderer.toneMappingExposure=outside?look.exposure:enclosed?1.01:.92;
+  renderer.toneMappingExposure=outside?look.exposure:enclosed?1.06:.98;
   facadeState=setFacadeAtmosphere(facadeRoot,currentLook,outside);lastExtent=0;placeSun(55);renderer.shadowMap.needsUpdate=true;
  }
  // Aerial perspective starts beyond the subject: an aerial view of the site
  // stays clear while the ground plane still dissolves into the horizon.
  let lastCameraDistance=120;
- function placeFog(distance){if(!scene.fog)return;scene.fog.near=Math.max(180,distance+140);scene.fog.far=Math.max(450,distance+520);}
+ // Golden hour keeps a warm atmospheric haze in front of the subject (a fraction
+ // of the viewing distance); other looks stay clear up to the subject.
+ function placeFog(distance){if(!scene.fog)return;const haze=currentMode==='exterior'&&LIGHT_LOOKS[currentLook].haze;
+  if(haze){scene.fog.near=Math.max(60,distance*haze[0]);scene.fog.far=Math.max(scene.fog.near+240,distance*haze[1]);return;}
+  scene.fog.near=Math.max(180,distance+140);scene.fog.far=Math.max(450,distance+520);}
  function update(camera,target){
   if(disposed||!target)return false;sky.position.copy(camera.position);lastCameraDistance=camera.position.distanceTo(target);placeFog(lastCameraDistance);const outside=currentMode==='exterior',distance=camera.position.distanceTo(target);
   const desired=outside?Math.max(48,Math.min(88,distance*.52)):Math.max(7,Math.min(48,distance*.48)),extent=Math.ceil(desired/2)*2;
