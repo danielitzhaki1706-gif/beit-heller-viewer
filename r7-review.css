@@ -1,5 +1,5 @@
 /* R7 additions on top of the R6 review page. */
-.hero-image img{aspect-ratio:16/10}
+.hero-image img,.comparison-frame{aspect-ratio:16/10}
 .numbers{display:grid;grid-template-columns:.78fr 1.22fr;gap:5.4%;border-top:1px solid var(--line);padding-block:43px 51px}
 .metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 34px}
 .metric-grid article{border-bottom:1px solid #d4d9cc;padding-block:17px 19px}
