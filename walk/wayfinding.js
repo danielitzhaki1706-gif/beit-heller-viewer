@@ -1,9 +1,10 @@
 import {pointInPolygon} from './navigation.js';
 // Follow the clear aisle beside the furnished reception counter.
 export const routePoints=data=>[data.ground.spawn,data.ground.door.center,[26.425078,.121378],[26,3.5],[25.5,4.8]];
-// Loop searched on the displayed surroundings with the walking physics itself:
-// it clears parked cars and curbs and was simulated end to end (about 3 min).
-export const exteriorRoute=data=>[data.ground.spawn,[53,1],[44,30],[4,34],[-8,24],[-3,-1],[13,-19],[18,-20],data.ground.spawn];
+// Loop searched on the displayed surroundings with the walking physics itself,
+// using a 0.7 m body so it keeps clear of lamp posts, parked cars and curbs;
+// simulated end to end with the 0.25 m walker (about 3 min).
+export const exteriorRoute=data=>[data.ground.spawn,[53,1],[44,30],[4,34],[-8,24],[-5,5],[-3.5,3.5],[8,-19],[18.5,-20.5],data.ground.spawn];
 export function createMap(data,canvas){
  const ctx=canvas.getContext('2d');
  const groundView=data.ground.bounds.map((v,i)=>v+(i<2?-1:1)),officeView=(()=>{
