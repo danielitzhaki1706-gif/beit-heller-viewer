@@ -1,6 +1,6 @@
 // Runtime material refinement. Positions, indices, source UVs and source assets are untouched.
 // Detail textures are deterministic procedural finishes, not measured product scans.
-import {installFacadeAtmosphere} from './facade-atmosphere.js?v=20261022-r7';
+import {installFacadeAtmosphere,installNeighbourWindows,seedNeighbourWindows} from './facade-atmosphere.js?v=20261024-r8';
 const VERSION='r5.1';
 const materialCache=new WeakMap(),geometryCache=new WeakMap(),rootCache=new WeakMap(),textureCaches=new WeakMap();
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
@@ -32,7 +32,8 @@ export function classifyMaterialDetail(material,meshName='',kind='building'){
  if(/signage|label|letter|display|diffuser|luminaire|headlamp|indicator|gauge|marking|circulation white|road paint|paving joints|\bwater\b|neutral model edge/.test(n)||/^(text|label)(\.|\s|$)/.test(mesh))return null;
  if(material.emissiveIntensity>1||material.isMeshBasicMaterial)return null;
  if(native[name])return native[name];
- if(/neighbour blue grey glazing|automotive glass/.test(n))return 'proxyGlass';
+ if(/neighbour blue grey glazing/.test(n))return 'neighbourGlass';
+ if(/automotive glass/.test(n))return 'proxyGlass';
  if((material.transmission||0)>.05||/transparent glazing|clear.*glaz|glazed entrance|clear.*guard|clear.*partition/.test(n))return 'glass';
  if(/asphalt/.test(n))return 'asphalt';
  if(/roof membrane|roof_study/.test(n))return 'roof';
@@ -130,7 +131,7 @@ function installClearPaneDetail(material,THREE){
 function refinedMaterial(source,role,THREE,channel=1){
  let cache=materialCache.get(source);if(!cache){cache=new Map();materialCache.set(source,cache);}
  const cacheKey=role+'/'+channel;if(cache.has(cacheKey))return cache.get(cacheKey);
- const physical=['glass','facadeGlass','proxyGlass','fabric'].includes(role);
+ const physical=['glass','facadeGlass','proxyGlass','neighbourGlass','fabric'].includes(role);
  let m;
  if(physical&&!source.isMeshPhysicalMaterial){
   m=new THREE.MeshPhysicalMaterial();THREE.MeshStandardMaterial.prototype.copy.call(m,source);
@@ -154,11 +155,13 @@ function refinedMaterial(source,role,THREE,channel=1){
   m.clearcoat=0;m.specularIntensity=1;m.envMapIntensity=role==='facadeGlass'?1.30:1;
   if(role==='facadeGlass')installFacadeAtmosphere(m,THREE);
   if(role==='glass')installClearPaneDetail(m,THREE);
- }else if(role==='proxyGlass'){
+ }else if(role==='proxyGlass'||role==='neighbourGlass'){
   // These proxy neighbour/car panes have no modeled interiors behind them.
   // Dielectric glazing over a dark unlit interior: the sky reflection, not a
   // painted blue, gives the window its value (darker head-on, bright at grazing).
   m.color.lerp(new THREE.Color(.16,.19,.21),.7);m.roughness=.05;m.metalness=0;m.clearcoat=1;m.clearcoatRoughness=.03;m.envMapIntensity=1.25;
+  // Neighbour panes light up at twilight (illustrative occupancy, see facade-atmosphere.js).
+  if(role==='neighbourGlass')installNeighbourWindows(m,THREE);
  }else{
   const textures=texturesFor(THREE,role,channel);m.roughness=1;m.roughnessMap=textures.detail;
   m.normalMap=textures.normal;m.normalMapType=THREE.TangentSpaceNormalMap;m.normalScale.set(1,1);
@@ -217,6 +220,7 @@ export async function applyMaterialDetail(root,THREE,{kind='building'}={}){
   if(detailRoles.length){const scale=new THREE.Vector3();mesh.getWorldScale(scale);scale.set(Math.max(Math.abs(scale.x),1e-6),Math.max(Math.abs(scale.y),1e-6),Math.max(Math.abs(scale.z),1e-6));mesh.geometry=metricGeometry(mesh.geometry,scale,profiles[detailRoles[0]].period,THREE,channel);stats.metricGeometryCount++;}
   const changed=mats.map((material,i)=>{const role=roles[i];if(!role)return material;const refined=refinedMaterial(material,role,THREE,channel);seen.add(refined);stats.roles[role]=(stats.roles[role]||0)+1;return refined;});
   mesh.material=Array.isArray(mesh.material)?changed:changed[0];stats.refinedMeshes++;
+  if(roles.includes('neighbourGlass'))stats.neighbourPanes=(stats.neighbourPanes||0)+seedNeighbourWindows(mesh,THREE);
  }
  stats.materials=seen.size;stats.textureSets=needed.size;root.userData.materialDetail={...stats};rootCache.set(root,stats);return stats;
 }

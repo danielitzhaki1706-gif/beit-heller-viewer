@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {createWalkingPhysics} from './physics.js?v=20261022-r7';
 import {applySurfaceFinish} from '../surface-finish.js';
-import {applyMaterialDetail} from '../material-detail.js?v=20261022-r7';
+import {applyMaterialDetail} from '../material-detail.js?v=20261024-r8';
 import {applyFurnitureRefinement} from '../furniture-refinement.js?v=20261013-r4-final';
 import {createContextLayer} from '../context-layer.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
@@ -9,7 +9,7 @@ import {configureModelLoader} from '../model-loader.js?v=20261022-r7';
 import {skipTransmissionPass,isFoliageMaterial,orientOpenSurfacesUp} from '../render-passes.js?v=20261022-r7';
 import {navigators,doorSegments} from './route.js';
 import {batchStatic} from './batching.js?v=20261022-r7';
-import {createLighting} from '../lighting.js?v=20261022-r7';
+import {createLighting} from '../lighting.js?v=20261024-r8';
 import {createVisualPipeline} from '../visual-pipeline.js?v=20261022-r7';
 import {createMap,routePoints,exteriorRoute,zone} from './wayfinding.js?v=20261022-r7';
 const $=id=>document.getElementById(id),viewport=$('viewport');

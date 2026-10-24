@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {loadLocalHDRI,loadEncodedSky} from './local-hdri.js?v=20261022-r7';
-import {setFacadeAtmosphere} from './facade-atmosphere.js?v=20261022-r7';
+import {setFacadeAtmosphere} from './facade-atmosphere.js?v=20261024-r8';
 
 // Architectural lighting moods. Not a site/date-dependent solar simulation.
 export const LIGHT_LOOKS=Object.freeze({
